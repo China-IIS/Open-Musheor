@@ -1,0 +1,60 @@
+plugins {
+    id 'fabric-loom' version '1.10.5'
+    id 'java'
+}
+
+version = '1.7.1'
+group = 'com.musheor'
+
+base {
+    archivesName = 'musheor'
+}
+
+repositories {
+    maven { name = 'meteor'; url = 'https://maven.meteordev.org/releases' }
+    maven { name = 'meteor-snapshots'; url = 'https://maven.meteordev.org/snapshots' }
+    mavenCentral()
+}
+
+dependencies {
+    minecraft "com.mojang:minecraft:1.21.11"
+    mappings "net.fabricmc:yarn:1.21.11+build.6:v2"
+    modImplementation "net.fabricmc:fabric-loader:0.16.9"
+    modImplementation "meteordevelopment:meteor-client:1.21.11-SNAPSHOT"
+    compileOnly files("libs/baritone.jar")
+    include files('libs/Java-WebSocket-1.5.4.jar')
+}
+
+loom {
+    accessWidenerPath = file("src/main/resources/musheor.accesswidener")
+}
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(21)
+    }
+}
+
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = 'UTF-8'
+    options.compilerArgs += ['-Xlint:none', '-nowarn', '-Xmaxerrs', '2000']
+}
+
+sourceSets {
+    main {
+        java {
+            exclude 'musheor/compat/LitematicaHelperImpl.java'
+            exclude 'musheor/compat/XearoHelperImpl.java'
+            exclude 'musheor/compat/XearoMapHooks.java'
+            exclude 'musheor/mixin/MixinXaeroGuiMapCoords.java'
+            exclude 'musheor/mixin/MixinXearoGuiMap.java'
+            exclude 'musheor/mixin/MixinXaeroInfoDisplayCompiler.java'
+        }
+    }
+}
+
+
+processResources {
+    inputs.property 'version', project.version
+    duplicatesStrategy = DuplicatesStrategy.INCLUDE
+}
