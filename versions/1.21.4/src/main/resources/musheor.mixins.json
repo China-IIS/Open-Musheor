@@ -1,0 +1,40 @@
+{
+  "required": true,
+  "package": "musheor.mixin",
+  "compatibilityLevel": "JAVA_21",
+  "client": [
+    "AbstractClientPlayerEntityMixin",
+    "ChatScreenMixin",
+    "DebugHudMixin",
+    "MixinClientCommonNetworkHandler",
+    "MixinClientConnection",
+    "MixinClientPlayNetworkHandler",
+    "MixinClientPlayerEntity",
+    "MixinClientPlayerInteractionManager",
+    "MixinKeyboardInput",
+    "MixinPlayerEntityRenderer",
+    "ScreenHandlerMixin",
+    "ViaClientVehicleStorageMixin",
+    "meteor.ClientPlayerInteractionManagerMixin",
+    "meteor.PlayerListHudMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  },
+  "mixins": [
+    "AxeItemAccessor",
+    "MixinEntity",
+    "MixinLivingEntity",
+    "MixinPearlOutline",
+    "MixinPlayerOutline",
+    "MixinProjectileEntity",
+    "MixinXearoGuiMap",
+    "meteor.AutoEatMixin",
+    "meteor.FriendsCommandMixin",
+    "meteor.BaritonePathManagerMixin",
+    "meteor.BetterTabMixin",
+    "meteor.MixinAutoGap",
+    "meteor.TimerMixin",
+    "meteor.KillAuraMixin"
+  ]
+}
