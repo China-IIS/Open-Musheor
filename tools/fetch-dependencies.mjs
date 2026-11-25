@@ -15,6 +15,7 @@ const DEFAULT_VERSIONS = [...ALLOWED_VERSIONS];
 const MAX_REDIRECTS = 5;
 const MAX_DOWNLOAD_BYTES = 128 * 1024 * 1024;
 const REQUEST_TIMEOUT_MS = 60_000;
+// Maven Central's Java-WebSocket 1.5.4 hash is 4a7037bd...0c3657, not the original nested Fabric jar; keep the pinned original source below.
 const JAVA_WEBSOCKET_SHA256 = '163970acb5211d84e9a072badad7c415bcf90ffb24d7dff777a67ae49962d174';
 const JAVA_WEBSOCKET_URL = commit =>
   'https://raw.githubusercontent.com/China-IIS/Open-Musheor/' + commit +

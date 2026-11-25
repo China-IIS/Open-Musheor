@@ -2,6 +2,7 @@
 **/.gradle/
 **/run/
 .build-tmp/
+.local/
 *.log
 *.jar
 !gradle/wrapper/gradle-wrapper.jar
