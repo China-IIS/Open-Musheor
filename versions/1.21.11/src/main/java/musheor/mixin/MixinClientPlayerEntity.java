@@ -11,7 +11,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-@Mixin({ClientPlayerEntity.class})
+@Mixin(ClientPlayerEntity.class)
 public abstract class MixinClientPlayerEntity extends AbstractClientPlayerEntity {
    @Unique
    private boolean musheor$spoofed;
@@ -30,10 +30,7 @@ public abstract class MixinClientPlayerEntity extends AbstractClientPlayerEntity
       super(world, profile);
    }
 
-   @Inject(
-      method = {"sendMovementPackets"},
-      at = {@At("HEAD")}
-   )
+   @Inject(method = "sendMovementPackets", at = @At("HEAD"))
    private void musheor$spoofPacketRotation(CallbackInfo ci) {
       this.musheor$spoofed = false;
       if (!RotationManager.isActive()) {
@@ -54,10 +51,7 @@ public abstract class MixinClientPlayerEntity extends AbstractClientPlayerEntity
       }
    }
 
-   @Inject(
-      method = {"sendMovementPackets"},
-      at = {@At("RETURN")}
-   )
+   @Inject(method = "sendMovementPackets", at = @At("RETURN"))
    private void musheor$restorePacketRotation(CallbackInfo ci) {
       if (this.musheor$spoofed) {
          this.setYaw(this.musheor$yaw);

@@ -8,17 +8,16 @@ import meteordevelopment.meteorclient.gui.GuiTheme;
 import meteordevelopment.meteorclient.gui.widgets.WWidget;
 import meteordevelopment.meteorclient.gui.widgets.containers.WVerticalList;
 import meteordevelopment.meteorclient.gui.widgets.pressable.WButton;
-import meteordevelopment.meteorclient.settings.BoolSetting.Builder;
 import meteordevelopment.meteorclient.settings.Setting;
 import meteordevelopment.meteorclient.settings.SettingGroup;
+import meteordevelopment.meteorclient.settings.BoolSetting.Builder;
 import meteordevelopment.meteorclient.systems.modules.Module;
 import meteordevelopment.meteorclient.utils.player.ChatUtils;
 import meteordevelopment.meteorclient.utils.player.InvUtils;
 import meteordevelopment.orbit.EventHandler;
-import musheor.musheor;
 import musheor.utils.irzXX;
-import musheor.utils.manager.pvfA15fQSVM;
 import musheor.utils.oyDPiOVBGKG;
+import musheor.utils.manager.pvfA15fQSVM;
 import net.minecraft.block.ShulkerBoxBlock;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.item.BlockItem;
@@ -57,7 +56,7 @@ public class InventoryCleaner extends Module {
          ((meteordevelopment.meteorclient.settings.EnumSetting.Builder)((meteordevelopment.meteorclient.settings.EnumSetting.Builder)((meteordevelopment.meteorclient.settings.EnumSetting.Builder)new meteordevelopment.meteorclient.settings.EnumSetting.Builder()
                      .name("item-filter"))
                   .description("Whitelist keeps selected items in the inventory, Blacklist throws selected items out."))
-               .defaultValue(InventoryCleaner.ItemFilterList.fStlZIvY9lS8))
+               .defaultValue(InventoryCleaner.ItemFilterList.Blacklist))
             .build()
       );
    private final Setting<List<Item>> TXWyNb = this.TJImwK2
@@ -81,7 +80,7 @@ public class InventoryCleaner extends Module {
    private final Map<Integer, Integer> j376sIQ = new HashMap<>();
 
    public InventoryCleaner() {
-      super(musheor.AUTOMATION, "inv-cleaner", "Automatically dispose of unwanted items.");
+      super(musheor.musheor.AUTOMATION, "inv-cleaner", "Automatically dispose of unwanted items.");
    }
 
    public WWidget getWidget(GuiTheme theme) {
@@ -110,36 +109,33 @@ public class InventoryCleaner extends Module {
             }
          }
 
-         for (int ix = firstSlot; ix < QfZy2gWnKInxFPr.player.getInventory().main.size(); ix++) {
+         for (int i = firstSlot; i < QfZy2gWnKInxFPr.player.getInventory().main.size(); i++) {
             if (this.duJ6sPeetAcBh6P < (Integer)this.I3psabmOrOI.get()) {
                this.duJ6sPeetAcBh6P++;
                return;
             }
 
-            ItemStack itemStack = QfZy2gWnKInxFPr.player.getInventory().getStack(ix);
+            ItemStack itemStack = QfZy2gWnKInxFPr.player.getInventory().getStack(i);
             if (!(itemStack.getItem() instanceof BlockItem) || !(((BlockItem)itemStack.getItem()).getBlock() instanceof ShulkerBoxBlock)) {
                if (itemStack.getItem() != Items.AIR
-                  && (this.BrmKXSYhWhqoB1.get() != InventoryCleaner.ItemFilterList.fStlZIvY9lS8 || !((List)this.TXWyNb.get()).contains(itemStack.getItem()))
-                  && (
-                     this.BrmKXSYhWhqoB1.get() != InventoryCleaner.ItemFilterList.QfZy2gWnKInxFPr
-                        || ((List)this.TXWyNb.get()).contains(itemStack.getItem())
-                  )) {
+                  && (this.BrmKXSYhWhqoB1.get() != InventoryCleaner.ItemFilterList.Blacklist || !((List)this.TXWyNb.get()).contains(itemStack.getItem()))
+                  && (this.BrmKXSYhWhqoB1.get() != InventoryCleaner.ItemFilterList.Whitelist || ((List)this.TXWyNb.get()).contains(itemStack.getItem()))) {
                   if ((Boolean)this.qhulAUwd.get()) {
-                     this.fStlZIvY9lS8(ix);
+                     this.fStlZIvY9lS8(i);
                      this.duJ6sPeetAcBh6P = 0;
                   } else {
-                     InvUtils.drop().slot(ix);
+                     InvUtils.drop().slot(i);
                      this.duJ6sPeetAcBh6P = 0;
                   }
                }
-            } else if ((Boolean)this.wSJeYsJcmjNZf.get()
-               && pvfA15fQSVM.TJImwK2(itemStack)
-               && this.j376sIQ.getOrDefault(ix, 0) >= (Integer)this.i2Nu6XHKic.get()) {
-               this.j376sIQ.remove(ix);
+            } else if ((Boolean)this.wSJeYsJcmjNZf.get() && pvfA15fQSVM.TJImwK2(itemStack) && this.j376sIQ.getOrDefault(i, 0) >= (Integer)this.i2Nu6XHKic.get()
+               )
+             {
+               this.j376sIQ.remove(i);
                if ((Boolean)this.qhulAUwd.get()) {
-                  this.fStlZIvY9lS8(ix);
+                  this.fStlZIvY9lS8(i);
                } else {
-                  InvUtils.drop().slot(ix);
+                  InvUtils.drop().slot(i);
                }
 
                this.duJ6sPeetAcBh6P = 0;
@@ -151,7 +147,7 @@ public class InventoryCleaner extends Module {
    private void fStlZIvY9lS8() {
       if (QfZy2gWnKInxFPr.player != null && QfZy2gWnKInxFPr.world != null) {
          ((List)this.TXWyNb.get()).clear();
-         this.BrmKXSYhWhqoB1.set(InventoryCleaner.ItemFilterList.fStlZIvY9lS8);
+         this.BrmKXSYhWhqoB1.set(InventoryCleaner.ItemFilterList.Blacklist);
 
          for (int i = 0; i <= QfZy2gWnKInxFPr.player.getInventory().size(); i++) {
             Item currentItem = QfZy2gWnKInxFPr.player.getInventory().getStack(i).getItem();
@@ -166,22 +162,22 @@ public class InventoryCleaner extends Module {
 
    private void fStlZIvY9lS8(int i) {
       assert QfZy2gWnKInxFPr.player != null;
-
       float previousYaw = QfZy2gWnKInxFPr.player.getYaw();
       irzXX.fStlZIvY9lS8(false);
       QfZy2gWnKInxFPr.player
          .networkHandler
          .sendPacket(
-            new PlayerMoveC2SPacket.LookAndOnGround(
-               oyDPiOVBGKG.gVOhtBej1x.QfZy2gWnKInxFPr(QfZy2gWnKInxFPr.player.getYaw()), -20.0F, QfZy2gWnKInxFPr.player.isOnGround(), false
-            )
+            new LookAndOnGround(oyDPiOVBGKG.gVOhtBej1x.QfZy2gWnKInxFPr(QfZy2gWnKInxFPr.player.getYaw()), -20.0F, QfZy2gWnKInxFPr.player.isOnGround(), false)
          );
       InvUtils.drop().slot(i);
       QfZy2gWnKInxFPr.player.setYaw(previousYaw);
    }
 
-   public static enum ItemFilterList {
-      fStlZIvY9lS8,
-      QfZy2gWnKInxFPr;
+   public enum ItemFilterList {
+      Blacklist,
+      Whitelist;
+
+      ItemFilterList() {
+      }
    }
 }

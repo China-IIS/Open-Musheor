@@ -20,12 +20,12 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-@Mixin({PlayerEntityRenderer.class})
+@Mixin(PlayerEntityRenderer.class)
 public class MixinPlayerEntityRenderer {
-   @Inject(
-      method = {"updateRenderState"},
-      at = {@At("TAIL")}
-   )
+   public MixinPlayerEntityRenderer() {
+   }
+
+   @Inject(method = "updateRenderState", at = @At("TAIL"))
    private void applyServerRotation(AbstractClientPlayerEntity player, PlayerEntityRenderState state, float tickDelta, CallbackInfo ci) {
       KekBounce bounce = (KekBounce)Modules.get().get(KekBounce.class);
       if (player == JhujBv5.fStlZIvY9lS8.player) {
@@ -56,13 +56,14 @@ public class MixinPlayerEntityRenderer {
       }
    }
 
-   @Inject(
-      method = {"renderLabelIfPresent"},
-      at = {@At("HEAD")},
-      cancellable = true
-   )
+   @Inject(method = "renderLabelIfPresent", at = @At("HEAD"), cancellable = true)
    private void cancelDefaultNametag(
-      PlayerEntityRenderState playerEntityRenderState, Text text, MatrixStack matrixStack, VertexConsumerProvider vertexConsumerProvider, int i, CallbackInfo ci
+      PlayerEntityRenderState playerEntityRenderState,
+      Text text,
+      MatrixStack matrixStack,
+      VertexConsumerProvider vertexConsumerProvider,
+      int i,
+      CallbackInfo ci
    ) {
       MoreTags module = (MoreTags)Modules.get().get(MoreTags.class);
       if (module != null && module.isActive() && (Boolean)module.fStlZIvY9lS8.get()) {

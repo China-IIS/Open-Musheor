@@ -10,15 +10,14 @@ import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 import meteordevelopment.meteorclient.events.world.TickEvent.Pre;
-import meteordevelopment.meteorclient.settings.EntityTypeListSetting.Builder;
 import meteordevelopment.meteorclient.settings.Setting;
 import meteordevelopment.meteorclient.settings.SettingGroup;
+import meteordevelopment.meteorclient.settings.EntityTypeListSetting.Builder;
 import meteordevelopment.meteorclient.systems.modules.Module;
 import meteordevelopment.meteorclient.utils.player.PlayerUtils;
 import meteordevelopment.meteorclient.utils.player.Rotations;
 import meteordevelopment.orbit.EventHandler;
 import musheor.compat.VersionHelper;
-import musheor.musheor;
 import musheor.utils.manager.pvfA15fQSVM;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.Entity;
@@ -54,7 +53,7 @@ public class AutoBreeder extends Module {
    private UUID vGAMA89H = null;
 
    public AutoBreeder() {
-      super(musheor.AUTOMATION, "auto-breeder", "Automatically breeds specific animals.");
+      super(musheor.musheor.AUTOMATION, "auto-breeder", "Automatically breeds specific animals.");
    }
 
    public void onActivate() {
@@ -116,7 +115,9 @@ public class AutoBreeder extends Module {
                float yaw = (float)Rotations.getYaw(animal);
                float pitch = (float)Rotations.getPitch(animal);
                Rotations.rotate(yaw, pitch);
-               this.fStlZIvY9lS8.interactionManager.sendSequencedPacket(this.fStlZIvY9lS8.world, sequence -> new PlayerInteractItemC2SPacket(Hand.MAIN_HAND, sequence, yaw, pitch));
+               this.fStlZIvY9lS8
+                  .interactionManager
+                  .sendSequencedPacket(this.fStlZIvY9lS8.world, sequence -> new PlayerInteractItemC2SPacket(Hand.MAIN_HAND, sequence, yaw, pitch));
                VersionHelper.get().interactEntityAt(animal, Hand.MAIN_HAND);
                this.fStlZIvY9lS8
                   .interactionManager

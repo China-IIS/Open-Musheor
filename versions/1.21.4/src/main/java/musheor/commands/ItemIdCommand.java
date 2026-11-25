@@ -45,13 +45,13 @@ public class ItemIdCommand extends Command {
             this.info("Found §b%d§r entities within §b%d§r blocks:", new Object[]{found.size(), range});
             int listed = 0;
 
-            for (Entity entityx : found) {
+            for (Entity entity : found) {
                if (listed++ >= 100) {
                   this.info("§7... and %d more (increase chat length or lower the range).", new Object[]{found.size() - 100});
                   break;
                }
 
-               this.info("§b%d§r - %s §7(%.1fm)", new Object[]{entityx.getId(), this.fStlZIvY9lS8(entityx), mc.player.distanceTo(entityx)});
+               this.info("§b%d§r - %s §7(%.1fm)", new Object[]{entity.getId(), this.fStlZIvY9lS8(entity), mc.player.distanceTo(entity)});
             }
          }
       } else {
@@ -64,11 +64,7 @@ public class ItemIdCommand extends Command {
       if (entity instanceof PlayerEntity player) {
          return type + " §a" + player.getName().getString();
       } else if (entity instanceof ItemEntity item) {
-         return type
-            + " §a"
-            + item.getStack().getCount()
-            + "x "
-            + Registries.ITEM.getId(item.getStack().getItem()).toString().replace("minecraft:", "");
+         return type + " §a" + item.getStack().getCount() + "x " + Registries.ITEM.getId(item.getStack().getItem()).toString().replace("minecraft:", "");
       } else {
          String name = entity.getName().getString();
          return !entity.hasCustomName() && name.equalsIgnoreCase(type.replace('_', ' ')) ? type : type + " §a" + name;

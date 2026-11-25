@@ -10,12 +10,12 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-@Mixin({DebugHud.class})
+@Mixin(DebugHud.class)
 public class DebugHudMixin {
-   @Inject(
-      method = {"drawText"},
-      at = {@At("HEAD")}
-   )
+   public DebugHudMixin() {
+   }
+
+   @Inject(method = "drawText", at = @At("HEAD"))
    private void filterCoords(DrawContext context, List<String> text, boolean left, CallbackInfo ci) {
       CoordHider ch = (CoordHider)Modules.get().get(CoordHider.class);
       if (ch != null && ch.isActive()) {

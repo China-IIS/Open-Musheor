@@ -19,16 +19,15 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-@Mixin({Entity.class})
+@Mixin(Entity.class)
 public class MixinEntity {
    @Shadow
    protected UUID uuid;
 
-   @Inject(
-      at = {@At("RETURN")},
-      method = {"getRotationVector"},
-      cancellable = true
-   )
+   public MixinEntity() {
+   }
+
+   @Inject(at = @At("RETURN"), method = "getRotationVector", cancellable = true)
    private void getRotationVector(CallbackInfoReturnable<Vec3d> cir) {
       if (JhujBv5.fStlZIvY9lS8.player != null && this.uuid == JhujBv5.fStlZIvY9lS8.player.getUuid() && RotationManager.isActive()) {
          float yaw = RotationManager.yawOr(JhujBv5.fStlZIvY9lS8.player.getYaw());
@@ -43,13 +42,7 @@ public class MixinEntity {
       }
    }
 
-   @Redirect(
-      method = {"updateVelocity"},
-      at = @At(
-         value = "INVOKE",
-         target = "Lnet/minecraft/Entity;getYaw()F"
-      )
-   )
+   @Redirect(method = "updateVelocity", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/Entity;getYaw()F"))
    private float musheor$travelYaw(Entity self) {
       float yaw = self.getYaw();
       return JhujBv5.fStlZIvY9lS8.player != null && this.uuid == JhujBv5.fStlZIvY9lS8.player.getUuid() && RotationManager.isInputManaged()
@@ -57,11 +50,7 @@ public class MixinEntity {
          : yaw;
    }
 
-   @Inject(
-      at = {@At("HEAD")},
-      method = {"getPose"},
-      cancellable = true
-   )
+   @Inject(at = @At("HEAD"), method = "getPose", cancellable = true)
    private void getPose(CallbackInfoReturnable<EntityPose> cir) {
       KekBounce bounce = (KekBounce)Modules.get().get(KekBounce.class);
       if (JhujBv5.fStlZIvY9lS8.player != null && this.uuid == JhujBv5.fStlZIvY9lS8.player.getUuid()) {

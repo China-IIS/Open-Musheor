@@ -6,9 +6,9 @@ import meteordevelopment.meteorclient.events.render.Render3DEvent;
 import meteordevelopment.meteorclient.events.world.TickEvent.Pre;
 import meteordevelopment.meteorclient.renderer.ShapeMode;
 import meteordevelopment.meteorclient.renderer.text.TextRenderer;
-import meteordevelopment.meteorclient.settings.DoubleSetting.Builder;
 import meteordevelopment.meteorclient.settings.Setting;
 import meteordevelopment.meteorclient.settings.SettingGroup;
+import meteordevelopment.meteorclient.settings.DoubleSetting.Builder;
 import meteordevelopment.meteorclient.systems.modules.Module;
 import meteordevelopment.meteorclient.systems.modules.Modules;
 import meteordevelopment.meteorclient.utils.player.InvUtils;
@@ -17,7 +17,6 @@ import meteordevelopment.meteorclient.utils.render.color.Color;
 import meteordevelopment.meteorclient.utils.render.color.SettingColor;
 import meteordevelopment.orbit.EventHandler;
 import musheor.compat.VersionHelper;
-import musheor.musheor;
 import musheor.utils.manager.RotationManager;
 import musheor.utils.manager.pvfA15fQSVM;
 import musheor.utils.system.MusheorSystem;
@@ -29,10 +28,10 @@ import net.minecraft.item.Items;
 import net.minecraft.network.packet.c2s.play.PlayerInteractEntityC2SPacket;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Direction.Axis;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.Direction.Axis;
 import obf.JhujBv5;
 import org.joml.Vector3d;
 
@@ -55,7 +54,7 @@ public class MapPlacer extends Module {
          ((meteordevelopment.meteorclient.settings.EnumSetting.Builder)((meteordevelopment.meteorclient.settings.EnumSetting.Builder)((meteordevelopment.meteorclient.settings.EnumSetting.Builder)new meteordevelopment.meteorclient.settings.EnumSetting.Builder()
                      .name("rotate"))
                   .description("How to face the frame being filled. Packet keeps the camera still, Client turns it for real, None sends the interact as-is."))
-               .defaultValue(MapPlacer.RotateMode.fStlZIvY9lS8))
+               .defaultValue(MapPlacer.RotateMode.Packet))
             .build()
       );
    private final Setting<Boolean> vGAMA89H = this.fStlZIvY9lS8
@@ -167,7 +166,7 @@ public class MapPlacer extends Module {
          ((meteordevelopment.meteorclient.settings.EnumSetting.Builder)((meteordevelopment.meteorclient.settings.EnumSetting.Builder)((meteordevelopment.meteorclient.settings.EnumSetting.Builder)((meteordevelopment.meteorclient.settings.EnumSetting.Builder)new meteordevelopment.meteorclient.settings.EnumSetting.Builder()
                         .name("labels"))
                      .description("What to write on each frame: its grid coordinate, its row-major index, both, or nothing."))
-                  .defaultValue(MapPlacer.LabelMode.TJImwK2))
+                  .defaultValue(MapPlacer.LabelMode.Both))
                .visible(this.voxTwgNzyrpaAnP::get))
             .build()
       );
@@ -177,7 +176,7 @@ public class MapPlacer extends Module {
                .defaultValue(2.0)
                .sliderRange(0.25, 3.0)
                .decimalPlaces(2)
-               .visible(() -> (Boolean)this.voxTwgNzyrpaAnP.get() && this.zkcZ4Xkp9Ez7Y.get() != MapPlacer.LabelMode.wSJeYsJcmjNZf))
+               .visible(() -> (Boolean)this.voxTwgNzyrpaAnP.get() && this.zkcZ4Xkp9Ez7Y.get() != MapPlacer.LabelMode.None))
             .build()
       );
    private final Setting<Boolean> FVjbhYkk53UT = this.TJImwK2
@@ -186,7 +185,7 @@ public class MapPlacer extends Module {
                         .name("label-distance-scaling"))
                      .description("Shrink labels with distance instead of keeping them one size on screen."))
                   .defaultValue(true))
-               .visible(() -> (Boolean)this.voxTwgNzyrpaAnP.get() && this.zkcZ4Xkp9Ez7Y.get() != MapPlacer.LabelMode.wSJeYsJcmjNZf))
+               .visible(() -> (Boolean)this.voxTwgNzyrpaAnP.get() && this.zkcZ4Xkp9Ez7Y.get() != MapPlacer.LabelMode.None))
             .build()
       );
    private final Setting<SettingColor> Nt3xeF = this.TJImwK2
@@ -236,10 +235,10 @@ public class MapPlacer extends Module {
    private float DqGSCWplcjMi;
    private int cO1FU7fW = Integer.MIN_VALUE;
    private JhujBv5.gVOhtBej1x g0iiTDJzfIGXdui;
-   private MapPlacer.Status VIbihOaIVyhvJw = MapPlacer.Status.fStlZIvY9lS8;
+   private MapPlacer.Status VIbihOaIVyhvJw = MapPlacer.Status.NoCanvas;
 
    public MapPlacer() {
-      super(musheor.AUTOMATION, "map-placer", "Places a mapart into a wall of item frames, reading each map's position out of its name. Set it up with .mp.");
+      super(musheor.musheor.AUTOMATION, "map-placer", "Places a mapart into a wall of item frames, reading each map's position out of its name. Set it up with .mp.");
    }
 
    public static MapPlacer fStlZIvY9lS8() {
@@ -275,7 +274,7 @@ public class MapPlacer extends Module {
       RotationManager.release(10);
       this.vGAMA89H();
       this.g0iiTDJzfIGXdui = null;
-      this.VIbihOaIVyhvJw = ZlNrrNcv3Ylc.QfZy2gWnKInxFPr() ? MapPlacer.Status.qhulAUwd : MapPlacer.Status.fStlZIvY9lS8;
+      this.VIbihOaIVyhvJw = ZlNrrNcv3Ylc.QfZy2gWnKInxFPr() ? MapPlacer.Status.Paused : MapPlacer.Status.NoCanvas;
    }
 
    @EventHandler
@@ -284,7 +283,7 @@ public class MapPlacer extends Module {
          this.pF16zz4NJECfg7++;
          RotationManager.release(10);
          if (!ZlNrrNcv3Ylc.QfZy2gWnKInxFPr()) {
-            this.VIbihOaIVyhvJw = MapPlacer.Status.fStlZIvY9lS8;
+            this.VIbihOaIVyhvJw = MapPlacer.Status.NoCanvas;
          } else if (!EVSMbf && (!(Boolean)this.BrmKXSYhWhqoB1.get() || this.mc.currentScreen == null)) {
             if ((Boolean)this.qhulAUwd.get() && --this.JAj4YwE2MVx <= 0) {
                this.JAj4YwE2MVx = (Integer)this.V7zKJ4n6D.get();
@@ -294,10 +293,10 @@ public class MapPlacer extends Module {
             ZlNrrNcv3Ylc.voxTwgNzyrpaAnP();
             ZlNrrNcv3Ylc.FVjbhYkk53UT();
             if (ZlNrrNcv3Ylc.nOwp0NYl() == 0) {
-               this.VIbihOaIVyhvJw = MapPlacer.Status.QfZy2gWnKInxFPr;
+               this.VIbihOaIVyhvJw = MapPlacer.Status.NoFrames;
             } else if (ZlNrrNcv3Ylc.zkcZ4Xkp9Ez7Y()) {
-               boolean announce = this.VIbihOaIVyhvJw != MapPlacer.Status.BrmKXSYhWhqoB1;
-               this.VIbihOaIVyhvJw = MapPlacer.Status.BrmKXSYhWhqoB1;
+               boolean announce = this.VIbihOaIVyhvJw != MapPlacer.Status.Done;
+               this.VIbihOaIVyhvJw = MapPlacer.Status.Done;
                this.g0iiTDJzfIGXdui = null;
                this.vGAMA89H();
                if (announce) {
@@ -319,13 +318,13 @@ public class MapPlacer extends Module {
                   ItemFrameEntity frame = this.g0iiTDJzfIGXdui.wSJeYsJcmjNZf();
                   if (frame != null) {
                      if (!this.fStlZIvY9lS8(frame)) {
-                        this.VIbihOaIVyhvJw = MapPlacer.Status.wSJeYsJcmjNZf;
+                        this.VIbihOaIVyhvJw = MapPlacer.Status.Aiming;
                      } else {
                         int hotbarSlot = this.fStlZIvY9lS8(this.g0iiTDJzfIGXdui.QfZy2gWnKInxFPr());
                         if (hotbarSlot >= 0) {
                            if (this.icQ738dpWr7W > 0) {
                               this.icQ738dpWr7W--;
-                              this.VIbihOaIVyhvJw = MapPlacer.Status.wSJeYsJcmjNZf;
+                              this.VIbihOaIVyhvJw = MapPlacer.Status.Aiming;
                            } else {
                               this.fStlZIvY9lS8(frame, this.g0iiTDJzfIGXdui);
                            }
@@ -335,7 +334,7 @@ public class MapPlacer extends Module {
                }
             }
          } else {
-            this.VIbihOaIVyhvJw = MapPlacer.Status.qhulAUwd;
+            this.VIbihOaIVyhvJw = MapPlacer.Status.Paused;
             this.g0iiTDJzfIGXdui = null;
             this.vGAMA89H();
          }
@@ -354,45 +353,45 @@ public class MapPlacer extends Module {
             if (cell.QfZy2gWnKInxFPr() >= 0) {
                anyCarried = true;
                if (!cell.fStlZIvY9lS8(this.pF16zz4NJECfg7, (Integer)MusheorSystem.Manager.placementTimeout.get())) {
-                  this.VIbihOaIVyhvJw = MapPlacer.Status.TJImwK2;
+                  this.VIbihOaIVyhvJw = MapPlacer.Status.Placing;
                   return cell;
                }
             }
          }
       }
 
-      this.VIbihOaIVyhvJw = !anyInRange ? MapPlacer.Status.i2Nu6XHKic : (anyCarried ? MapPlacer.Status.TJImwK2 : MapPlacer.Status.vGAMA89H);
+      this.VIbihOaIVyhvJw = !anyInRange ? MapPlacer.Status.OutOfRange : (anyCarried ? MapPlacer.Status.Placing : MapPlacer.Status.NoMaps);
       return null;
    }
 
    private boolean fStlZIvY9lS8(ItemFrameEntity frame) {
-      if (this.i2Nu6XHKic.get() == MapPlacer.RotateMode.TJImwK2) {
+      if (this.i2Nu6XHKic.get() == MapPlacer.RotateMode.None) {
          return true;
-      } else {
-         Vec3d aimPoint = frame.getBoundingBox().getCenter();
-         Vec3d eye = this.mc.player.getEyePos();
-         double dx = aimPoint.x - eye.x;
-         double dy = aimPoint.y - eye.y;
-         double dz = aimPoint.z - eye.z;
-         float yaw = (float)Math.toDegrees(Math.atan2(dz, dx)) - 90.0F;
-         float pitch = (float)(-Math.toDegrees(Math.atan2(dy, Math.sqrt(dx * dx + dz * dz))));
-         if (this.i2Nu6XHKic.get() == MapPlacer.RotateMode.QfZy2gWnKInxFPr) {
-            this.mc.player.setYaw(yaw);
-            this.mc.player.setPitch(pitch);
-            return true;
-         } else {
-            boolean onTheWire = this.cO1FU7fW == this.pF16zz4NJECfg7 - 1
-               && Math.abs(MathHelper.wrapDegrees(this.MR1DKzw - yaw)) <= 8.0F
-               && Math.abs(this.DqGSCWplcjMi - pitch) <= 8.0F;
-            if (RotationManager.setYaw(yaw, 10) && RotationManager.setPitch(pitch, 10)) {
-               this.MR1DKzw = yaw;
-               this.DqGSCWplcjMi = pitch;
-               this.cO1FU7fW = this.pF16zz4NJECfg7;
-            }
-
-            return onTheWire;
-         }
       }
+
+      Vec3d aimPoint = frame.getBoundingBox().getCenter();
+      Vec3d eye = this.mc.player.getEyePos();
+      double dx = aimPoint.x - eye.x;
+      double dy = aimPoint.y - eye.y;
+      double dz = aimPoint.z - eye.z;
+      float yaw = (float)Math.toDegrees(Math.atan2(dz, dx)) - 90.0F;
+      float pitch = (float)(-Math.toDegrees(Math.atan2(dy, Math.sqrt(dx * dx + dz * dz))));
+      if (this.i2Nu6XHKic.get() == MapPlacer.RotateMode.Client) {
+         this.mc.player.setYaw(yaw);
+         this.mc.player.setPitch(pitch);
+         return true;
+      }
+
+      boolean onTheWire = this.cO1FU7fW == this.pF16zz4NJECfg7 - 1
+         && Math.abs(MathHelper.wrapDegrees(this.MR1DKzw - yaw)) <= 8.0F
+         && Math.abs(this.DqGSCWplcjMi - pitch) <= 8.0F;
+      if (RotationManager.setYaw(yaw, 10) && RotationManager.setPitch(pitch, 10)) {
+         this.MR1DKzw = yaw;
+         this.DqGSCWplcjMi = pitch;
+         this.cO1FU7fW = this.pF16zz4NJECfg7;
+      }
+
+      return onTheWire;
    }
 
    private int fStlZIvY9lS8(int slot) {
@@ -405,7 +404,7 @@ public class MapPlacer extends Module {
          }
 
          this.icQ738dpWr7W = Math.max(1, (Integer)this.j376sIQ.get());
-         this.VIbihOaIVyhvJw = MapPlacer.Status.wSJeYsJcmjNZf;
+         this.VIbihOaIVyhvJw = MapPlacer.Status.Aiming;
          return -1;
       } else {
          if (selected != slot) {
@@ -416,7 +415,7 @@ public class MapPlacer extends Module {
             pvfA15fQSVM.fStlZIvY9lS8(slot);
             this.icQ738dpWr7W = (Integer)this.j376sIQ.get();
             if (this.icQ738dpWr7W > 0) {
-               this.VIbihOaIVyhvJw = MapPlacer.Status.wSJeYsJcmjNZf;
+               this.VIbihOaIVyhvJw = MapPlacer.Status.Aiming;
                return -1;
             }
          }
@@ -428,7 +427,9 @@ public class MapPlacer extends Module {
    private void fStlZIvY9lS8(ItemFrameEntity frame, JhujBv5.gVOhtBej1x cell) {
       String name = this.mc.player.getMainHandStack().getName().getString();
       VersionHelper.get().interactEntityAt(frame, Hand.MAIN_HAND);
-      this.mc.interactionManager.sendSequencedPacket(this.mc.world, sequence -> PlayerInteractEntityC2SPacket.interact(frame, this.mc.player.isSneaking(), Hand.MAIN_HAND));
+      this.mc
+         .interactionManager
+         .sendSequencedPacket(this.mc.world, sequence -> PlayerInteractEntityC2SPacket.interact(frame, this.mc.player.isSneaking(), Hand.MAIN_HAND));
       cell.fStlZIvY9lS8(this.pF16zz4NJECfg7);
       this.WGmfQKK = (Integer)this.duJ6sPeetAcBh6P.get();
       if ((Boolean)this.I3psabmOrOI.get()) {
@@ -443,9 +444,9 @@ public class MapPlacer extends Module {
          }
       }
 
-      for (int slotx = 0; slotx < 9; slotx++) {
-         if (this.mc.player.getInventory().getStack(slotx).getItem() == Items.FILLED_MAP) {
-            return slotx;
+      for (int slot = 0; slot < 9; slot++) {
+         if (this.mc.player.getInventory().getStack(slot).getItem() == Items.FILLED_MAP) {
+            return slot;
          }
       }
 
@@ -477,9 +478,9 @@ public class MapPlacer extends Module {
                Vec3d front = JhujBv5.fStlZIvY9lS8(pos, facing, 0.0625);
                Vec3d back = JhujBv5.fStlZIvY9lS8(pos, facing, 0.0);
                double inset = 0.0625;
-               boolean onX = facing.getAxis() == Direction.Axis.X;
-               boolean onY = facing.getAxis() == Direction.Axis.Y;
-               boolean onZ = facing.getAxis() == Direction.Axis.Z;
+               boolean onX = facing.getAxis() == Axis.X;
+               boolean onY = facing.getAxis() == Axis.Y;
+               boolean onZ = facing.getAxis() == Axis.Z;
                event.renderer
                   .box(
                      onX ? Math.min(front.x, back.x) : pos.getX() + inset,
@@ -500,7 +501,7 @@ public class MapPlacer extends Module {
 
    @EventHandler
    private void fStlZIvY9lS8(Render2DEvent event) {
-      if ((Boolean)this.voxTwgNzyrpaAnP.get() && this.zkcZ4Xkp9Ez7Y.get() != MapPlacer.LabelMode.wSJeYsJcmjNZf) {
+      if ((Boolean)this.voxTwgNzyrpaAnP.get() && this.zkcZ4Xkp9Ez7Y.get() != MapPlacer.LabelMode.None) {
          if (ZlNrrNcv3Ylc.QfZy2gWnKInxFPr() && this.mc.player != null && !this.mc.options.hudHidden) {
             Direction facing = ZlNrrNcv3Ylc.vGAMA89H();
             double maxDistSq = (Double)this.nOwp0NYl.get() * (Double)this.nOwp0NYl.get();
@@ -543,29 +544,29 @@ public class MapPlacer extends Module {
       int index = cell.QfZy2gWnKInxFPr(ZlNrrNcv3Ylc.TXWyNb(), base);
 
       return switch ((MapPlacer.LabelMode)this.zkcZ4Xkp9Ez7Y.get()) {
-         case fStlZIvY9lS8 -> cell.QfZy2gWnKInxFPr(base);
-         case QfZy2gWnKInxFPr -> index < 0 ? cell.QfZy2gWnKInxFPr(base) : String.valueOf(index);
-         case TJImwK2 -> index < 0 ? cell.QfZy2gWnKInxFPr(base) : cell.QfZy2gWnKInxFPr(base) + " #" + index;
-         case wSJeYsJcmjNZf -> "";
+         case Coords -> cell.QfZy2gWnKInxFPr(base);
+         case Index -> index < 0 ? cell.QfZy2gWnKInxFPr(base) : String.valueOf(index);
+         case Both -> index < 0 ? cell.QfZy2gWnKInxFPr(base) : cell.QfZy2gWnKInxFPr(base) + " #" + index;
+         case None -> "";
       };
    }
 
    public String QfZy2gWnKInxFPr() {
       if (!ZlNrrNcv3Ylc.QfZy2gWnKInxFPr()) {
          return "§7no canvas";
-      } else {
-         String state = switch (this.VIbihOaIVyhvJw) {
-            case fStlZIvY9lS8 -> "§7no canvas";
-            case QfZy2gWnKInxFPr -> "§eno frames scanned";
-            case TJImwK2 -> "§aplacing";
-            case wSJeYsJcmjNZf -> "§aaiming";
-            case i2Nu6XHKic -> "§ewalk closer";
-            case vGAMA89H -> "§cmaps missing";
-            case qhulAUwd -> "§epaused";
-            case BrmKXSYhWhqoB1 -> "§adone";
-         };
-         return String.format("%s §7(%d/%d frames)", state, ZlNrrNcv3Ylc.umvNbb7iD9UpR(), ZlNrrNcv3Ylc.nOwp0NYl());
       }
+
+      String state = switch (this.VIbihOaIVyhvJw) {
+         case NoCanvas -> "§7no canvas";
+         case NoFrames -> "§eno frames scanned";
+         case Placing -> "§aplacing";
+         case Aiming -> "§aaiming";
+         case OutOfRange -> "§ewalk closer";
+         case NoMaps -> "§cmaps missing";
+         case Paused -> "§epaused";
+         case Done -> "§adone";
+      };
+      return String.format("%s §7(%d/%d frames)", state, ZlNrrNcv3Ylc.umvNbb7iD9UpR(), ZlNrrNcv3Ylc.nOwp0NYl());
    }
 
    public String getInfoString() {
@@ -576,40 +577,49 @@ public class MapPlacer extends Module {
       ClientPlayerEntity player = MinecraftClient.getInstance().player;
       if (player == null) {
          return 0;
-      } else {
-         int count = 0;
+      }
 
-         for (int slot = 0; slot < 36; slot++) {
-            if (player.getInventory().getStack(slot).getItem() == Items.FILLED_MAP) {
-               count++;
-            }
+      int count = 0;
+
+      for (int slot = 0; slot < 36; slot++) {
+         if (player.getInventory().getStack(slot).getItem() == Items.FILLED_MAP) {
+            count++;
          }
+      }
 
-         return count;
+      return count;
+   }
+
+   public enum LabelMode {
+      Coords,
+      Index,
+      Both,
+      None;
+
+      LabelMode() {
       }
    }
 
-   public static enum LabelMode {
-      fStlZIvY9lS8,
-      QfZy2gWnKInxFPr,
-      TJImwK2,
-      wSJeYsJcmjNZf;
+   public enum RotateMode {
+      Packet,
+      Client,
+      None;
+
+      RotateMode() {
+      }
    }
 
-   public static enum RotateMode {
-      fStlZIvY9lS8,
-      QfZy2gWnKInxFPr,
-      TJImwK2;
-   }
+   public enum Status {
+      NoCanvas,
+      NoFrames,
+      Placing,
+      Aiming,
+      OutOfRange,
+      NoMaps,
+      Paused,
+      Done;
 
-   public static enum Status {
-      fStlZIvY9lS8,
-      QfZy2gWnKInxFPr,
-      TJImwK2,
-      wSJeYsJcmjNZf,
-      i2Nu6XHKic,
-      vGAMA89H,
-      qhulAUwd,
-      BrmKXSYhWhqoB1;
+      Status() {
+      }
    }
 }

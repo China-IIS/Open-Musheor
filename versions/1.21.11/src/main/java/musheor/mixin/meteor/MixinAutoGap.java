@@ -1,8 +1,8 @@
 package musheor.mixin.meteor;
 
-import meteordevelopment.meteorclient.settings.BoolSetting.Builder;
 import meteordevelopment.meteorclient.settings.Setting;
 import meteordevelopment.meteorclient.settings.SettingGroup;
+import meteordevelopment.meteorclient.settings.BoolSetting.Builder;
 import meteordevelopment.meteorclient.systems.modules.player.AutoGap;
 import musheor.utils.JhujBv5;
 import net.minecraft.entity.effect.StatusEffects;
@@ -14,20 +14,17 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-@Mixin(
-   value = {AutoGap.class},
-   remap = false
-)
+@Mixin(value = AutoGap.class, remap = false)
 public abstract class MixinAutoGap {
    @Shadow
    private SettingGroup sgPotions;
    @Unique
    private Setting<Boolean> burnEat;
 
-   @Inject(
-      method = {"<init>"},
-      at = {@At("TAIL")}
-   )
+   public MixinAutoGap() {
+   }
+
+   @Inject(method = "<init>", at = @At("TAIL"))
    private void onInit(CallbackInfo ci) {
       this.burnEat = this.sgPotions
          .add(
@@ -37,11 +34,7 @@ public abstract class MixinAutoGap {
          );
    }
 
-   @Inject(
-      method = {"shouldEatPotions"},
-      at = {@At("RETURN")},
-      cancellable = true
-   )
+   @Inject(method = "shouldEatPotions", at = @At("RETURN"), cancellable = true)
    private void onShouldEatPotions(CallbackInfoReturnable<Boolean> cir) {
       if (!(Boolean)cir.getReturnValue()) {
          if ((Boolean)this.burnEat.get()) {

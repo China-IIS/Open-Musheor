@@ -4,25 +4,24 @@ import baritone.api.pathing.goals.GoalBlock;
 import baritone.api.pathing.goals.GoalNear;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Map.Entry;
 import java.util.Random;
+import java.util.Map.Entry;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import meteordevelopment.meteorclient.events.game.ReceiveMessageEvent;
 import meteordevelopment.meteorclient.events.world.TickEvent.Pre;
-import meteordevelopment.meteorclient.settings.EnumSetting.Builder;
 import meteordevelopment.meteorclient.settings.Setting;
 import meteordevelopment.meteorclient.settings.SettingGroup;
+import meteordevelopment.meteorclient.settings.EnumSetting.Builder;
 import meteordevelopment.meteorclient.systems.modules.Module;
 import meteordevelopment.meteorclient.systems.modules.Modules;
 import meteordevelopment.meteorclient.utils.player.Rotations;
 import meteordevelopment.orbit.EventHandler;
 import musheor.compat.VersionHelper;
 import musheor.modules.features.MoreTags;
-import musheor.musheor;
 import musheor.utils.GyhoRo;
-import musheor.utils.manager.pvfA15fQSVM;
 import musheor.utils.oyDPiOVBGKG;
+import musheor.utils.manager.pvfA15fQSVM;
 import net.minecraft.block.TrapdoorBlock;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.projectile.thrown.EnderPearlEntity;
@@ -38,7 +37,7 @@ public class MessageInteract extends Module {
    private final Setting<MessageInteract.Action> i2Nu6XHKic = this.wSJeYsJcmjNZf
       .add(
          ((Builder)((Builder)((Builder)new Builder().name("action")).description("What kind of action to perform."))
-               .defaultValue(MessageInteract.Action.TJImwK2))
+               .defaultValue(MessageInteract.Action.LoadPearl))
             .build()
       );
    private final Setting<BlockPos> vGAMA89H = this.wSJeYsJcmjNZf
@@ -47,7 +46,7 @@ public class MessageInteract extends Module {
                         .name("position"))
                      .description("What block position the action is supposed to be for"))
                   .defaultValue(new BlockPos(0, 0, 0)))
-               .visible(() -> this.i2Nu6XHKic.get() != MessageInteract.Action.TJImwK2))
+               .visible(() -> this.i2Nu6XHKic.get() != MessageInteract.Action.LoadPearl))
             .build()
       );
    private final Setting<Boolean> qhulAUwd = this.wSJeYsJcmjNZf
@@ -56,7 +55,7 @@ public class MessageInteract extends Module {
                         .name("drop-pearl"))
                      .description("Drops a pearl after performing the interaction"))
                   .defaultValue(true))
-               .visible(() -> this.i2Nu6XHKic.get() == MessageInteract.Action.TJImwK2))
+               .visible(() -> this.i2Nu6XHKic.get() == MessageInteract.Action.LoadPearl))
             .build()
       );
    private final Setting<Boolean> BrmKXSYhWhqoB1 = this.wSJeYsJcmjNZf
@@ -65,7 +64,7 @@ public class MessageInteract extends Module {
                         .name("return-to-start-pos"))
                      .description("Pathfinds back to your starting position."))
                   .defaultValue(true))
-               .visible(() -> this.i2Nu6XHKic.get() == MessageInteract.Action.TJImwK2))
+               .visible(() -> this.i2Nu6XHKic.get() == MessageInteract.Action.LoadPearl))
             .build()
       );
    private final Setting<String> TXWyNb = this.wSJeYsJcmjNZf
@@ -85,7 +84,7 @@ public class MessageInteract extends Module {
    private static final Random voxTwgNzyrpaAnP = new Random();
 
    public MessageInteract() {
-      super(musheor.MAIN, "message-interact", "Performs a certain action upon receiving a message from a specific player.");
+      super(musheor.musheor.MAIN, "message-interact", "Performs a certain action upon receiving a message from a specific player.");
    }
 
    public void onDeactivate() {
@@ -98,7 +97,7 @@ public class MessageInteract extends Module {
    }
 
    public void onActivate() {
-      if (this.i2Nu6XHKic.get() == MessageInteract.Action.TJImwK2 && !((MoreTags)Modules.get().get(MoreTags.class)).isActive()) {
+      if (this.i2Nu6XHKic.get() == MessageInteract.Action.LoadPearl && !((MoreTags)Modules.get().get(MoreTags.class)).isActive()) {
          ((MoreTags)Modules.get().get(MoreTags.class)).toggle();
       }
    }
@@ -149,7 +148,7 @@ public class MessageInteract extends Module {
             String senderName = matcher.group(1);
             this.info("Received message from: " + senderName, new Object[0]);
             if (((String)this.TXWyNb.get()).isEmpty() || senderName.equalsIgnoreCase((String)this.TXWyNb.get())) {
-               if (this.i2Nu6XHKic.get() == MessageInteract.Action.TJImwK2) {
+               if (this.i2Nu6XHKic.get() == MessageInteract.Action.LoadPearl) {
                   this.duJ6sPeetAcBh6P = this.fStlZIvY9lS8(senderName);
                   if (this.duJ6sPeetAcBh6P == null) {
                      this.info("!tp from " + senderName + " but no tracked pearl with trapdoor found.", new Object[0]);
@@ -178,14 +177,14 @@ public class MessageInteract extends Module {
    @EventHandler
    private void fStlZIvY9lS8(Pre event) {
       if (TJImwK2.player != null && TJImwK2.world != null && this.fStlZIvY9lS8) {
-         BlockPos resolvedPos = this.i2Nu6XHKic.get() == MessageInteract.Action.TJImwK2 ? this.duJ6sPeetAcBh6P : (BlockPos)this.vGAMA89H.get();
+         BlockPos resolvedPos = this.i2Nu6XHKic.get() == MessageInteract.Action.LoadPearl ? this.duJ6sPeetAcBh6P : (BlockPos)this.vGAMA89H.get();
          if (resolvedPos == null) {
             this.fStlZIvY9lS8 = false;
          } else if (this.QfZy2gWnKInxFPr > 0) {
             this.QfZy2gWnKInxFPr--;
             if (this.QfZy2gWnKInxFPr == 0) {
                pvfA15fQSVM.fStlZIvY9lS8(new BlockHitResult(Vec3d.ofCenter(resolvedPos), Direction.UP, resolvedPos, false));
-               if (this.i2Nu6XHKic.get() == MessageInteract.Action.TJImwK2 && (Boolean)this.qhulAUwd.get()) {
+               if (this.i2Nu6XHKic.get() == MessageInteract.Action.LoadPearl && (Boolean)this.qhulAUwd.get()) {
                   int pearlSlot = pvfA15fQSVM.TJImwK2(Items.ENDER_PEARL);
                   if (pearlSlot != -1) {
                      pvfA15fQSVM.fStlZIvY9lS8(pearlSlot, false);
@@ -208,11 +207,11 @@ public class MessageInteract extends Module {
             Rotations.rotate(yaw, pitch);
             this.I3psabmOrOI++;
             if (this.I3psabmOrOI >= 3) {
-               if (this.i2Nu6XHKic.get() == MessageInteract.Action.QfZy2gWnKInxFPr) {
+               if (this.i2Nu6XHKic.get() == MessageInteract.Action.Hit) {
                   TJImwK2.interactionManager.attackBlock(resolvedPos, Direction.UP);
                   this.I3psabmOrOI = 0;
                   this.fStlZIvY9lS8 = false;
-               } else if (this.i2Nu6XHKic.get() == MessageInteract.Action.fStlZIvY9lS8) {
+               } else if (this.i2Nu6XHKic.get() == MessageInteract.Action.Interact) {
                   pvfA15fQSVM.fStlZIvY9lS8(new BlockHitResult(Vec3d.ofCenter(resolvedPos), Direction.UP, resolvedPos, false));
                   this.I3psabmOrOI = 0;
                   this.fStlZIvY9lS8 = false;
@@ -250,9 +249,12 @@ public class MessageInteract extends Module {
       return "[" + sb + "]";
    }
 
-   public static enum Action {
-      fStlZIvY9lS8,
-      QfZy2gWnKInxFPr,
-      TJImwK2;
+   public enum Action {
+      Interact,
+      Hit,
+      LoadPearl;
+
+      Action() {
+      }
    }
 }

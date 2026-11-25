@@ -29,20 +29,23 @@ import net.minecraft.fluid.Fluids;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
-import net.minecraft.network.packet.c2s.play.PlayerActionC2SPacket.Action;
 import net.minecraft.network.packet.c2s.play.PlayerActionC2SPacket;
 import net.minecraft.network.packet.c2s.play.PlayerInteractBlockC2SPacket;
+import net.minecraft.network.packet.c2s.play.PlayerActionC2SPacket.Action;
 import net.minecraft.util.Hand;
 import net.minecraft.util.hit.BlockHitResult;
-import net.minecraft.util.math.BlockPos.Mutable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.BlockPos.Mutable;
 import net.minecraft.world.World;
 
 public class oyDPiOVBGKG {
    private static final MinecraftClient QfZy2gWnKInxFPr = MinecraftClient.getInstance();
+
+   public oyDPiOVBGKG() {
+   }
 
    public static boolean fStlZIvY9lS8(Block block) {
       if (QfZy2gWnKInxFPr.player != null && QfZy2gWnKInxFPr.world != null) {
@@ -60,31 +63,31 @@ public class oyDPiOVBGKG {
       int dx = 0;
       int dz = 0;
       switch (dir) {
-         case fStlZIvY9lS8:
+         case SOUTH:
             dz = -2;
             break;
-         case QfZy2gWnKInxFPr:
+         case SOUTH_WEST:
             dx = 2;
             dz = -2;
             break;
-         case TJImwK2:
+         case WEST:
             dx = 2;
             break;
-         case wSJeYsJcmjNZf:
+         case NORTH_WEST:
             dx = 2;
             dz = 2;
             break;
-         case i2Nu6XHKic:
+         case NORTH:
             dz = 2;
             break;
-         case vGAMA89H:
+         case NORTH_EAST:
             dx = -2;
             dz = 2;
             break;
-         case qhulAUwd:
+         case EAST:
             dx = -2;
             break;
-         case BrmKXSYhWhqoB1:
+         case SOUTH_EAST:
             dx = -2;
             dz = -2;
       }
@@ -97,13 +100,11 @@ public class oyDPiOVBGKG {
          obf.pvfA15fQSVM.gVOhtBej1x detected = QfZy2gWnKInxFPr();
          if (detected != null) {
             return obf.pvfA15fQSVM.QfZy2gWnKInxFPr(QfZy2gWnKInxFPr.player.getBlockPos(), detected);
-         } else {
-            int py = obf.U6PQSXqW.fStlZIvY9lS8().BrmKXSYhWhqoB1() != null
-               ? obf.U6PQSXqW.fStlZIvY9lS8().BrmKXSYhWhqoB1()
-               : QfZy2gWnKInxFPr.player.getBlockY();
-            BlockPos below = new BlockPos(QfZy2gWnKInxFPr.player.getBlockX(), py - 1, QfZy2gWnKInxFPr.player.getBlockZ());
-            return QfZy2gWnKInxFPr.world.getBlockState(below).getBlock() == Blocks.OBSIDIAN;
          }
+
+         int py = obf.U6PQSXqW.fStlZIvY9lS8().BrmKXSYhWhqoB1() != null ? obf.U6PQSXqW.fStlZIvY9lS8().BrmKXSYhWhqoB1() : QfZy2gWnKInxFPr.player.getBlockY();
+         BlockPos below = new BlockPos(QfZy2gWnKInxFPr.player.getBlockX(), py - 1, QfZy2gWnKInxFPr.player.getBlockZ());
+         return QfZy2gWnKInxFPr.world.getBlockState(below).getBlock() == Blocks.OBSIDIAN;
       } else {
          return false;
       }
@@ -112,83 +113,79 @@ public class oyDPiOVBGKG {
    public static obf.pvfA15fQSVM.gVOhtBej1x QfZy2gWnKInxFPr() {
       if (QfZy2gWnKInxFPr.player == null) {
          return null;
-      } else {
-         obf.U6PQSXqW state = obf.U6PQSXqW.fStlZIvY9lS8();
-         obf.pvfA15fQSVM.gVOhtBej1x detected = state.npfimrDr0hky();
-         if (detected != null) {
-            return detected;
-         } else {
-            oyDPiOVBGKG.gVOhtBej1x dir = state.TJImwK2() != null ? state.TJImwK2() : duJ6sPeetAcBh6P();
-            if (dir == null) {
-               return null;
-            } else {
-               int py = state.BrmKXSYhWhqoB1() != null ? state.BrmKXSYhWhqoB1() : QfZy2gWnKInxFPr.player.getBlockY();
-               return obf.pvfA15fQSVM.fStlZIvY9lS8(QfZy2gWnKInxFPr.player.getBlockX(), QfZy2gWnKInxFPr.player.getBlockZ(), py, dir);
-            }
-         }
       }
+
+      obf.U6PQSXqW state = obf.U6PQSXqW.fStlZIvY9lS8();
+      obf.pvfA15fQSVM.gVOhtBej1x detected = state.npfimrDr0hky();
+      if (detected != null) {
+         return detected;
+      }
+
+      oyDPiOVBGKG.gVOhtBej1x dir = state.TJImwK2() != null ? state.TJImwK2() : duJ6sPeetAcBh6P();
+      if (dir == null) {
+         return null;
+      }
+
+      int py = state.BrmKXSYhWhqoB1() != null ? state.BrmKXSYhWhqoB1() : QfZy2gWnKInxFPr.player.getBlockY();
+      return obf.pvfA15fQSVM.fStlZIvY9lS8(QfZy2gWnKInxFPr.player.getBlockX(), QfZy2gWnKInxFPr.player.getBlockZ(), py, dir);
    }
 
    public static BlockPos TJImwK2() {
       obf.pvfA15fQSVM.gVOhtBej1x detected = QfZy2gWnKInxFPr();
       if (detected != null) {
          return fStlZIvY9lS8(detected);
-      } else if (QfZy2gWnKInxFPr.player == null) {
+      }
+
+      if (QfZy2gWnKInxFPr.player == null) {
          return null;
-      } else {
-         obf.U6PQSXqW state = obf.U6PQSXqW.fStlZIvY9lS8();
-         oyDPiOVBGKG.gVOhtBej1x dir = state.TJImwK2() != null ? state.TJImwK2() : duJ6sPeetAcBh6P();
-         if (dir == null) {
+      }
+
+      obf.U6PQSXqW state = obf.U6PQSXqW.fStlZIvY9lS8();
+      oyDPiOVBGKG.gVOhtBej1x dir = state.TJImwK2() != null ? state.TJImwK2() : duJ6sPeetAcBh6P();
+      if (dir == null) {
+         return null;
+      }
+
+      int ay = state.BrmKXSYhWhqoB1() != null ? state.BrmKXSYhWhqoB1() : QfZy2gWnKInxFPr.player.getBlockY();
+      if (dir != oyDPiOVBGKG.gVOhtBej1x.EAST && dir != oyDPiOVBGKG.gVOhtBej1x.WEST) {
+         if (dir != oyDPiOVBGKG.gVOhtBej1x.NORTH && dir != oyDPiOVBGKG.gVOhtBej1x.SOUTH) {
             return null;
          } else {
-            int ay = state.BrmKXSYhWhqoB1() != null ? state.BrmKXSYhWhqoB1() : QfZy2gWnKInxFPr.player.getBlockY();
-            if (dir != oyDPiOVBGKG.gVOhtBej1x.qhulAUwd && dir != oyDPiOVBGKG.gVOhtBej1x.TJImwK2) {
-               if (dir != oyDPiOVBGKG.gVOhtBej1x.i2Nu6XHKic && dir != oyDPiOVBGKG.gVOhtBej1x.fStlZIvY9lS8) {
-                  return null;
-               } else {
-                  return state.I3psabmOrOI() == null
-                     ? null
-                     : new BlockPos((int)Math.floor(state.I3psabmOrOI()), ay, QfZy2gWnKInxFPr.player.getBlockZ());
-               }
-            } else {
-               return state.duJ6sPeetAcBh6P() == null
-                  ? null
-                  : new BlockPos(QfZy2gWnKInxFPr.player.getBlockX(), ay, (int)Math.floor(state.duJ6sPeetAcBh6P()));
-            }
+            return state.I3psabmOrOI() == null ? null : new BlockPos((int)Math.floor(state.I3psabmOrOI()), ay, QfZy2gWnKInxFPr.player.getBlockZ());
          }
+      } else {
+         return state.duJ6sPeetAcBh6P() == null ? null : new BlockPos(QfZy2gWnKInxFPr.player.getBlockX(), ay, (int)Math.floor(state.duJ6sPeetAcBh6P()));
       }
    }
 
    public static BlockPos fStlZIvY9lS8(obf.pvfA15fQSVM.gVOhtBej1x detected) {
       if (QfZy2gWnKInxFPr.player != null && detected != null) {
-         int ay = obf.U6PQSXqW.fStlZIvY9lS8().BrmKXSYhWhqoB1() != null
-            ? obf.U6PQSXqW.fStlZIvY9lS8().BrmKXSYhWhqoB1()
-            : QfZy2gWnKInxFPr.player.getBlockY();
+         int ay = obf.U6PQSXqW.fStlZIvY9lS8().BrmKXSYhWhqoB1() != null ? obf.U6PQSXqW.fStlZIvY9lS8().BrmKXSYhWhqoB1() : QfZy2gWnKInxFPr.player.getBlockY();
          int px = QfZy2gWnKInxFPr.player.getBlockX();
          int pz = QfZy2gWnKInxFPr.player.getBlockZ();
-         boolean cardinal = detected.i2Nu6XHKic == oyDPiOVBGKG.gVOhtBej1x.i2Nu6XHKic
-            || detected.i2Nu6XHKic == oyDPiOVBGKG.gVOhtBej1x.fStlZIvY9lS8
-            || detected.i2Nu6XHKic == oyDPiOVBGKG.gVOhtBej1x.qhulAUwd
-            || detected.i2Nu6XHKic == oyDPiOVBGKG.gVOhtBej1x.TJImwK2;
+         boolean cardinal = detected.i2Nu6XHKic == oyDPiOVBGKG.gVOhtBej1x.NORTH
+            || detected.i2Nu6XHKic == oyDPiOVBGKG.gVOhtBej1x.SOUTH
+            || detected.i2Nu6XHKic == oyDPiOVBGKG.gVOhtBej1x.EAST
+            || detected.i2Nu6XHKic == oyDPiOVBGKG.gVOhtBej1x.WEST;
          if (cardinal) {
-            boolean travelX = detected.i2Nu6XHKic == oyDPiOVBGKG.gVOhtBej1x.qhulAUwd || detected.i2Nu6XHKic == oyDPiOVBGKG.gVOhtBej1x.TJImwK2;
+            boolean travelX = detected.i2Nu6XHKic == oyDPiOVBGKG.gVOhtBej1x.EAST || detected.i2Nu6XHKic == oyDPiOVBGKG.gVOhtBej1x.WEST;
             int axis = (int)detected.qhulAUwd;
             return travelX ? new BlockPos(px, ay, axis) : new BlockPos(axis, ay, pz);
-         } else {
-            boolean isNESW = detected.i2Nu6XHKic == oyDPiOVBGKG.gVOhtBej1x.vGAMA89H || detected.i2Nu6XHKic == oyDPiOVBGKG.gVOhtBej1x.QfZy2gWnKInxFPr;
-            int K = (int)detected.qhulAUwd;
-            int tx;
-            int tz;
-            if (isNESW) {
-               tx = (int)Math.round((px - pz + K) / 2.0);
-               tz = K - tx;
-            } else {
-               tx = (int)Math.round((px + pz + K) / 2.0);
-               tz = tx - K;
-            }
-
-            return new BlockPos(tx, ay, tz);
          }
+
+         boolean isNESW = detected.i2Nu6XHKic == oyDPiOVBGKG.gVOhtBej1x.NORTH_EAST || detected.i2Nu6XHKic == oyDPiOVBGKG.gVOhtBej1x.SOUTH_WEST;
+         int K = (int)detected.qhulAUwd;
+         int tx;
+         int tz;
+         if (isNESW) {
+            tx = (int)Math.round((px - pz + K) / 2.0);
+            tz = K - tx;
+         } else {
+            tx = (int)Math.round((px + pz + K) / 2.0);
+            tz = tx - K;
+         }
+
+         return new BlockPos(tx, ay, tz);
       } else {
          return null;
       }
@@ -246,7 +243,7 @@ public class oyDPiOVBGKG {
          if (obf.U6PQSXqW.fStlZIvY9lS8().zbN84Osn9p5lD() != null) {
             if (QfZy2gWnKInxFPr.world.getFluidState(obf.U6PQSXqW.fStlZIvY9lS8().zbN84Osn9p5lD()).getFluid() != Fluids.LAVA) {
                obf.GyhoRo.wSJeYsJcmjNZf();
-               obf.U6PQSXqW.fStlZIvY9lS8().TJImwK2(null);
+               obf.U6PQSXqW.fStlZIvY9lS8().TJImwK2((BlockPos)null);
             } else {
                obf.GyhoRo.fStlZIvY9lS8(obf.U6PQSXqW.fStlZIvY9lS8().zbN84Osn9p5lD().withY(obf.U6PQSXqW.fStlZIvY9lS8().BrmKXSYhWhqoB1()));
             }
@@ -258,7 +255,7 @@ public class oyDPiOVBGKG {
                obf.GyhoRo.fStlZIvY9lS8(obf.U6PQSXqW.fStlZIvY9lS8().ZlNrrNcv3Ylc());
             }
          } else {
-            if (HighwayBuilder.TXWyNb() == HighwayBuilder.HighwayType.fStlZIvY9lS8) {
+            if (HighwayBuilder.TXWyNb() == HighwayBuilder.HighwayType.Cardinal) {
                for (BlockPos pos : musheor.utils.gVOhtBej1x.TJImwK2()) {
                   if (obf.GyhoRo.fStlZIvY9lS8()) {
                      return;
@@ -275,7 +272,7 @@ public class oyDPiOVBGKG {
                }
             }
 
-            if (HighwayBuilder.TXWyNb() == HighwayBuilder.HighwayType.QfZy2gWnKInxFPr) {
+            if (HighwayBuilder.TXWyNb() == HighwayBuilder.HighwayType.Diagonal) {
                for (BlockPos pos : musheor.utils.gVOhtBej1x.wSJeYsJcmjNZf()) {
                   if (obf.GyhoRo.fStlZIvY9lS8()) {
                      return;
@@ -297,7 +294,6 @@ public class oyDPiOVBGKG {
 
    public static List<BlockPos> fStlZIvY9lS8(Entity entity) {
       assert QfZy2gWnKInxFPr.world != null;
-
       List<BlockPos> blocks = new ArrayList<>();
       Box box = entity.getBoundingBox();
       int y = (int)Math.floor(box.minY - 0.35);
@@ -305,7 +301,7 @@ public class oyDPiOVBGKG {
       int maxX = (int)Math.floor(box.maxX);
       int minZ = (int)Math.floor(box.minZ);
       int maxZ = (int)Math.floor(box.maxZ);
-      BlockPos.Mutable pos = new BlockPos.Mutable();
+      Mutable pos = new Mutable();
 
       for (int x = minX; x <= maxX; x++) {
          for (int z = minZ; z <= maxZ; z++) {
@@ -348,7 +344,7 @@ public class oyDPiOVBGKG {
    public static void vGAMA89H() {
       if (QfZy2gWnKInxFPr.player != null && QfZy2gWnKInxFPr.world != null) {
          QfZy2gWnKInxFPr.interactionManager
-            .sendSequencedPacket(QfZy2gWnKInxFPr.world, sequence -> new PlayerActionC2SPacket(PlayerActionC2SPacket.Action.SWAP_ITEM_WITH_OFFHAND, BlockPos.ORIGIN, Direction.DOWN));
+            .sendSequencedPacket(QfZy2gWnKInxFPr.world, sequence -> new PlayerActionC2SPacket(Action.SWAP_ITEM_WITH_OFFHAND, BlockPos.ORIGIN, Direction.DOWN));
          ItemStack mainHandStack = QfZy2gWnKInxFPr.player.getMainHandStack();
          ItemStack offHandStack = QfZy2gWnKInxFPr.player.getOffHandStack();
          QfZy2gWnKInxFPr.player.getInventory().setStack(QfZy2gWnKInxFPr.player.getInventory().selectedSlot, offHandStack);
@@ -359,16 +355,16 @@ public class oyDPiOVBGKG {
    public static boolean fStlZIvY9lS8(Item item, BlockPos pos, Direction direction) {
       if (!BlockUtils.canPlaceBlock(pos, true, Block.getBlockFromItem(item))) {
          return false;
-      } else {
-         boolean silent = (Boolean)MusheorSystem.Manager.silentPlace.get();
-         musheor.utils.manager.pvfA15fQSVM.fStlZIvY9lS8(item, silent);
-         boolean placed = fStlZIvY9lS8(pos, direction);
-         if (silent) {
-            InvUtils.swapBack();
-         }
-
-         return placed;
       }
+
+      boolean silent = (Boolean)MusheorSystem.Manager.silentPlace.get();
+      musheor.utils.manager.pvfA15fQSVM.fStlZIvY9lS8(item, silent);
+      boolean placed = fStlZIvY9lS8(pos, direction);
+      if (silent) {
+         InvUtils.swapBack();
+      }
+
+      return placed;
    }
 
    public static void QfZy2gWnKInxFPr(BlockPos blockPos) {
@@ -380,7 +376,6 @@ public class oyDPiOVBGKG {
       }
 
       assert QfZy2gWnKInxFPr.player != null;
-
       float[] rotation = fStlZIvY9lS8(QfZy2gWnKInxFPr.player, hitPos);
       QfZy2gWnKInxFPr.player.setYaw(rotation[0]);
       QfZy2gWnKInxFPr.player.setPitch(rotation[1]);
@@ -407,33 +402,32 @@ public class oyDPiOVBGKG {
    public static boolean fStlZIvY9lS8(List<BlockPos> locations) {
       if (locations.isEmpty()) {
          return false;
-      } else {
-         assert QfZy2gWnKInxFPr.player != null;
+      }
 
-         for (BlockPos pos : locations) {
-            boolean hasGroundBelow = false;
+      assert QfZy2gWnKInxFPr.player != null;
 
-            for (int x = -1; x <= 1 && !hasGroundBelow; x++) {
-               for (int z = -1; z <= 1 && !hasGroundBelow; z++) {
-                  BlockPos checkPos = pos.add(x, -1, z);
-                  if (!QfZy2gWnKInxFPr.world.getBlockState(checkPos).isAir()) {
-                     hasGroundBelow = true;
-                  }
+      for (BlockPos pos : locations) {
+         boolean hasGroundBelow = false;
+
+         for (int x = -1; x <= 1 && !hasGroundBelow; x++) {
+            for (int z = -1; z <= 1 && !hasGroundBelow; z++) {
+               BlockPos checkPos = pos.add(x, -1, z);
+               if (!QfZy2gWnKInxFPr.world.getBlockState(checkPos).isAir()) {
+                  hasGroundBelow = true;
                }
-            }
-
-            if (!hasGroundBelow) {
-               return false;
             }
          }
 
-         return true;
+         if (!hasGroundBelow) {
+            return false;
+         }
       }
+
+      return true;
    }
 
    public static boolean fStlZIvY9lS8(BlockPos pos, Block block) {
       assert QfZy2gWnKInxFPr.world != null;
-
       return !QfZy2gWnKInxFPr.world.getBlockState(pos).isAir()
          && (
             !QfZy2gWnKInxFPr.world.getBlockState(pos).isReplaceable()
@@ -500,7 +494,7 @@ public class oyDPiOVBGKG {
       obf.U6PQSXqW state = obf.U6PQSXqW.fStlZIvY9lS8();
       if (QfZy2gWnKInxFPr.player != null && QfZy2gWnKInxFPr.world != null && !state.nOwp0NYl() && !HighwayBuilder.wSJeYsJcmjNZf()) {
          boolean diagonal = switch (HighwayBuilder.i2Nu6XHKic()) {
-            case fStlZIvY9lS8, TJImwK2, i2Nu6XHKic, qhulAUwd -> false;
+            case SOUTH, WEST, NORTH, EAST -> false;
             default -> true;
          };
          double distance = QfZy2gWnKInxFPr(HighwayBuilder.V7zKJ4n6D());
@@ -522,9 +516,7 @@ public class oyDPiOVBGKG {
          }
 
          if (!KekNuker.fStlZIvY9lS8()) {
-            obf.irzXX.fStlZIvY9lS8(
-               positions, scaffold ? HighwayBuilder.umvNbb7iD9UpR() : HighwayBuilder.V7zKJ4n6D(), Direction.UP, state.QfZy2gWnKInxFPr()
-            );
+            obf.irzXX.fStlZIvY9lS8(positions, scaffold ? HighwayBuilder.umvNbb7iD9UpR() : HighwayBuilder.V7zKJ4n6D(), Direction.UP, state.QfZy2gWnKInxFPr());
          }
       }
    }
@@ -533,38 +525,38 @@ public class oyDPiOVBGKG {
       oyDPiOVBGKG.gVOhtBej1x dir = HighwayBuilder.i2Nu6XHKic();
       if (dir == null) {
          return false;
-      } else {
-         boolean leftRail = HighwayBuilder.xileXsbo();
-         boolean rightRail = HighwayBuilder.nOwp0NYl();
-         boolean cardinal = dir == oyDPiOVBGKG.gVOhtBej1x.i2Nu6XHKic
-            || dir == oyDPiOVBGKG.gVOhtBej1x.fStlZIvY9lS8
-            || dir == oyDPiOVBGKG.gVOhtBej1x.qhulAUwd
-            || dir == oyDPiOVBGKG.gVOhtBej1x.TJImwK2;
-         BlockPos[] zone = cardinal
-            ? musheor.utils.gVOhtBej1x.fStlZIvY9lS8(0, 1, leftRail, rightRail)
-            : musheor.utils.gVOhtBej1x.TJImwK2(0, 1, leftRail, rightRail);
-         if (HighwayBuilder.zXcO5rZ()) {
-            BlockPos[] ceiling = cardinal
-               ? musheor.utils.gVOhtBej1x.QfZy2gWnKInxFPr(0, 1, leftRail, rightRail)
-               : musheor.utils.gVOhtBej1x.wSJeYsJcmjNZf(0, 1, leftRail, rightRail);
-            BlockPos[] combined = new BlockPos[zone.length + ceiling.length];
-            System.arraycopy(zone, 0, combined, 0, zone.length);
-            System.arraycopy(ceiling, 0, combined, zone.length, ceiling.length);
-            zone = combined;
-         }
-
-         obf.U6PQSXqW state = obf.U6PQSXqW.fStlZIvY9lS8();
-         obf.pvfA15fQSVM.gVOhtBej1x detected = state.npfimrDr0hky();
-         int railY = state.BrmKXSYhWhqoB1() != null ? state.BrmKXSYhWhqoB1() : Integer.MIN_VALUE;
-
-         for (BlockPos pos : zone) {
-            if ((detected == null || pos.getY() != railY || !obf.pvfA15fQSVM.fStlZIvY9lS8(pos, detected)) && BlockUtils.canPlace(pos, true)) {
-               return true;
-            }
-         }
-
-         return false;
       }
+
+      boolean leftRail = HighwayBuilder.xileXsbo();
+      boolean rightRail = HighwayBuilder.nOwp0NYl();
+      boolean cardinal = dir == oyDPiOVBGKG.gVOhtBej1x.NORTH
+         || dir == oyDPiOVBGKG.gVOhtBej1x.SOUTH
+         || dir == oyDPiOVBGKG.gVOhtBej1x.EAST
+         || dir == oyDPiOVBGKG.gVOhtBej1x.WEST;
+      BlockPos[] zone = cardinal
+         ? musheor.utils.gVOhtBej1x.fStlZIvY9lS8(0, 1, leftRail, rightRail)
+         : musheor.utils.gVOhtBej1x.TJImwK2(0, 1, leftRail, rightRail);
+      if (HighwayBuilder.zXcO5rZ()) {
+         BlockPos[] ceiling = cardinal
+            ? musheor.utils.gVOhtBej1x.QfZy2gWnKInxFPr(0, 1, leftRail, rightRail)
+            : musheor.utils.gVOhtBej1x.wSJeYsJcmjNZf(0, 1, leftRail, rightRail);
+         BlockPos[] combined = new BlockPos[zone.length + ceiling.length];
+         System.arraycopy(zone, 0, combined, 0, zone.length);
+         System.arraycopy(ceiling, 0, combined, zone.length, ceiling.length);
+         zone = combined;
+      }
+
+      obf.U6PQSXqW state = obf.U6PQSXqW.fStlZIvY9lS8();
+      obf.pvfA15fQSVM.gVOhtBej1x detected = state.npfimrDr0hky();
+      int railY = state.BrmKXSYhWhqoB1() != null ? state.BrmKXSYhWhqoB1() : Integer.MIN_VALUE;
+
+      for (BlockPos pos : zone) {
+         if ((detected == null || pos.getY() != railY || !obf.pvfA15fQSVM.fStlZIvY9lS8(pos, detected)) && BlockUtils.canPlace(pos, true)) {
+            return true;
+         }
+      }
+
+      return false;
    }
 
    public static void fStlZIvY9lS8(List<BlockPos> list, Block block) {
@@ -594,14 +586,14 @@ public class oyDPiOVBGKG {
 
          for (int offset = 1; offset <= 4; offset++) {
             BlockPos targetPos = switch (HighwayBuilder.i2Nu6XHKic()) {
-               case fStlZIvY9lS8 -> playerPos.add(0, -1, offset);
-               case QfZy2gWnKInxFPr -> playerPos.add(-offset, -1, offset);
-               case TJImwK2 -> playerPos.add(-offset, -1, 0);
-               case wSJeYsJcmjNZf -> playerPos.add(-offset, -1, -offset);
-               case i2Nu6XHKic -> playerPos.add(0, -1, -offset);
-               case vGAMA89H -> playerPos.add(offset, -1, -offset);
-               case qhulAUwd -> playerPos.add(offset, -1, 0);
-               case BrmKXSYhWhqoB1 -> playerPos.add(offset, -1, offset);
+               case SOUTH -> playerPos.add(0, -1, offset);
+               case SOUTH_WEST -> playerPos.add(-offset, -1, offset);
+               case WEST -> playerPos.add(-offset, -1, 0);
+               case NORTH_WEST -> playerPos.add(-offset, -1, -offset);
+               case NORTH -> playerPos.add(0, -1, -offset);
+               case NORTH_EAST -> playerPos.add(offset, -1, -offset);
+               case EAST -> playerPos.add(offset, -1, 0);
+               case SOUTH_EAST -> playerPos.add(offset, -1, offset);
             };
             if (targetPos == null) {
                return;
@@ -627,39 +619,37 @@ public class oyDPiOVBGKG {
       int offsetZ = 0;
       oyDPiOVBGKG.gVOhtBej1x direction = HighwayBuilder.i2Nu6XHKic();
       switch (direction) {
-         case fStlZIvY9lS8:
+         case SOUTH:
             offsetZ = 1;
             break;
-         case QfZy2gWnKInxFPr:
+         case SOUTH_WEST:
             offsetX = -1;
             offsetZ = 1;
             break;
-         case TJImwK2:
+         case WEST:
             offsetX = -1;
             break;
-         case wSJeYsJcmjNZf:
+         case NORTH_WEST:
             offsetX = -1;
             offsetZ = -1;
             break;
-         case i2Nu6XHKic:
+         case NORTH:
             offsetZ = -1;
             break;
-         case vGAMA89H:
+         case NORTH_EAST:
             offsetX = 1;
             offsetZ = -1;
             break;
-         case qhulAUwd:
+         case EAST:
             offsetX = 1;
             break;
-         case BrmKXSYhWhqoB1:
+         case SOUTH_EAST:
             offsetX = 1;
             offsetZ = 1;
       }
 
       assert QfZy2gWnKInxFPr.player != null;
-
       assert QfZy2gWnKInxFPr.world != null;
-
       Vec3d playerPos = VersionHelper.get().getPlayerPos();
       Vec3d blockPos = null;
 
@@ -684,12 +674,11 @@ public class oyDPiOVBGKG {
 
    public static Block wSJeYsJcmjNZf(BlockPos pos) {
       assert QfZy2gWnKInxFPr.world != null && QfZy2gWnKInxFPr.player != null;
-
       return QfZy2gWnKInxFPr.world.getBlockState(pos).getBlock();
    }
 
    public static void wSJeYsJcmjNZf(BlockPos pos, Direction face) {
-      Objects.requireNonNull(QfZy2gWnKInxFPr.getNetworkHandler()).sendPacket(new PlayerActionC2SPacket(PlayerActionC2SPacket.Action.STOP_DESTROY_BLOCK, pos, face));
+      Objects.requireNonNull(QfZy2gWnKInxFPr.getNetworkHandler()).sendPacket(new PlayerActionC2SPacket(Action.STOP_DESTROY_BLOCK, pos, face));
    }
 
    public static double fStlZIvY9lS8(BlockPos bP, BlockPos pP) {
@@ -730,41 +719,40 @@ public class oyDPiOVBGKG {
 
    public static void TXWyNb() {
       assert QfZy2gWnKInxFPr.player != null && QfZy2gWnKInxFPr.world != null;
-
       int offset = 1;
       int offsetX = 0;
       int offsetZ = 0;
       boolean isDiagonal = false;
       oyDPiOVBGKG.gVOhtBej1x direction = HighwayBuilder.i2Nu6XHKic();
       switch (direction) {
-         case fStlZIvY9lS8:
+         case SOUTH:
             offsetZ = offset;
             break;
-         case QfZy2gWnKInxFPr:
+         case SOUTH_WEST:
             offsetX = -offset;
             offsetZ = offset;
             isDiagonal = true;
             break;
-         case TJImwK2:
+         case WEST:
             offsetX = -offset;
             break;
-         case wSJeYsJcmjNZf:
+         case NORTH_WEST:
             offsetX = -offset;
             offsetZ = -offset;
             isDiagonal = true;
             break;
-         case i2Nu6XHKic:
+         case NORTH:
             offsetZ = -offset;
             break;
-         case vGAMA89H:
+         case NORTH_EAST:
             offsetX = offset;
             offsetZ = -offset;
             isDiagonal = true;
             break;
-         case qhulAUwd:
+         case EAST:
             offsetX = offset;
             break;
-         case BrmKXSYhWhqoB1:
+         case SOUTH_EAST:
             offsetX = offset;
             offsetZ = offset;
             isDiagonal = true;
@@ -772,11 +760,11 @@ public class oyDPiOVBGKG {
 
       int[][] checks = isDiagonal ? new int[][]{{offsetX, offsetZ}, {offsetX, 0}, {0, offsetZ}} : new int[][]{{offsetX, offsetZ}};
       int height = 0;
-      if (HighwayBuilder.qhulAUwd() == HighwayBuilder.BuildMode.fStlZIvY9lS8) {
+      if (HighwayBuilder.qhulAUwd() == HighwayBuilder.BuildMode.Pave) {
          height = 3;
       }
 
-      if (HighwayBuilder.qhulAUwd() == HighwayBuilder.BuildMode.QfZy2gWnKInxFPr) {
+      if (HighwayBuilder.qhulAUwd() == HighwayBuilder.BuildMode.Tunnel) {
          height = 4;
       }
 
@@ -793,28 +781,27 @@ public class oyDPiOVBGKG {
 
    public static boolean I3psabmOrOI() {
       assert QfZy2gWnKInxFPr.player != null && QfZy2gWnKInxFPr.world != null;
-
       int offsetX = 0;
       int offsetZ = 0;
       oyDPiOVBGKG.gVOhtBej1x direction = HighwayBuilder.i2Nu6XHKic();
       switch (direction) {
-         case QfZy2gWnKInxFPr:
+         case SOUTH_WEST:
             offsetX = -1;
             offsetZ = 1;
-         case TJImwK2:
-         case i2Nu6XHKic:
-         case qhulAUwd:
+         case WEST:
+         case NORTH:
+         case EAST:
          default:
             break;
-         case wSJeYsJcmjNZf:
+         case NORTH_WEST:
             offsetX = -1;
             offsetZ = -1;
             break;
-         case vGAMA89H:
+         case NORTH_EAST:
             offsetX = 1;
             offsetZ = -1;
             break;
-         case BrmKXSYhWhqoB1:
+         case SOUTH_EAST:
             offsetX = 1;
             offsetZ = 1;
       }
@@ -881,39 +868,43 @@ public class oyDPiOVBGKG {
    public static Direction fStlZIvY9lS8(float yaw, float pitch) {
       if (pitch > 60.0F) {
          return Direction.DOWN;
-      } else if (pitch < -60.0F) {
-         return Direction.UP;
-      } else {
-         yaw %= 360.0F;
-         if (yaw < 0.0F) {
-            yaw += 360.0F;
-         }
+      }
 
-         if (yaw >= 315.0F || yaw < 45.0F) {
-            return Direction.SOUTH;
-         } else if (yaw >= 45.0F && yaw < 135.0F) {
-            return Direction.WEST;
-         } else {
-            return yaw >= 135.0F && yaw < 225.0F ? Direction.NORTH : Direction.EAST;
-         }
+      if (pitch < -60.0F) {
+         return Direction.UP;
+      }
+
+      yaw %= 360.0F;
+      if (yaw < 0.0F) {
+         yaw += 360.0F;
+      }
+
+      if (yaw >= 315.0F || yaw < 45.0F) {
+         return Direction.SOUTH;
+      } else if (yaw >= 45.0F && yaw < 135.0F) {
+         return Direction.WEST;
+      } else {
+         return yaw >= 135.0F && yaw < 225.0F ? Direction.NORTH : Direction.EAST;
       }
    }
 
    public static oyDPiOVBGKG.gVOhtBej1x duJ6sPeetAcBh6P() {
       assert QfZy2gWnKInxFPr.player != null;
-
       return oyDPiOVBGKG.gVOhtBej1x.fStlZIvY9lS8(QfZy2gWnKInxFPr.player.getYaw());
    }
 
-   public static enum gVOhtBej1x {
-      fStlZIvY9lS8,
-      QfZy2gWnKInxFPr,
-      TJImwK2,
-      wSJeYsJcmjNZf,
-      i2Nu6XHKic,
-      vGAMA89H,
-      qhulAUwd,
-      BrmKXSYhWhqoB1;
+   public enum gVOhtBej1x {
+      SOUTH,
+      SOUTH_WEST,
+      WEST,
+      NORTH_WEST,
+      NORTH,
+      NORTH_EAST,
+      EAST,
+      SOUTH_EAST;
+
+      gVOhtBej1x() {
+      }
 
       public static oyDPiOVBGKG.gVOhtBej1x fStlZIvY9lS8(float yaw) {
          float normalized = (yaw % 360.0F + 360.0F) % 360.0F;
@@ -936,5 +927,11 @@ public class oyDPiOVBGKG {
    }
 
    public record pvfA15fQSVM(double fStlZIvY9lS8, double QfZy2gWnKInxFPr) {
+
+
+      @Override
+      public final String toString() {
+         return "pvfA15fQSVM[x=" + this.fStlZIvY9lS8 + ", z=" + this.QfZy2gWnKInxFPr + "]";
+      }
    }
 }

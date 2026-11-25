@@ -1,16 +1,15 @@
 package musheor.modules.automation;
 
 import meteordevelopment.meteorclient.events.world.TickEvent.Post;
-import meteordevelopment.meteorclient.settings.ItemSetting.Builder;
 import meteordevelopment.meteorclient.settings.Setting;
 import meteordevelopment.meteorclient.settings.SettingGroup;
+import meteordevelopment.meteorclient.settings.ItemSetting.Builder;
 import meteordevelopment.meteorclient.systems.modules.Module;
 import meteordevelopment.meteorclient.utils.player.InvUtils;
 import meteordevelopment.meteorclient.utils.world.BlockUtils;
 import meteordevelopment.orbit.EventHandler;
-import musheor.musheor;
-import musheor.utils.manager.pvfA15fQSVM;
 import musheor.utils.oyDPiOVBGKG;
+import musheor.utils.manager.pvfA15fQSVM;
 import net.minecraft.block.ShulkerBoxBlock;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.item.Item;
@@ -68,7 +67,7 @@ public class Refill extends Module {
    Direction TXWyNb;
 
    public Refill() {
-      super(musheor.AUTOMATION, "refill", "Places a shulkerbox and refills the inventory with items.");
+      super(musheor.musheor.AUTOMATION, "refill", "Places a shulkerbox and refills the inventory with items.");
       INSTANCE = this;
    }
 
@@ -115,10 +114,7 @@ public class Refill extends Module {
 
             if (this.BrmKXSYhWhqoB1 == null) {
                if ((Boolean)this.voxTwgNzyrpaAnP.get()) {
-                  this.BrmKXSYhWhqoB1 = this.duJ6sPeetAcBh6P
-                     .player
-                     .getBlockPos()
-                     .withY(this.duJ6sPeetAcBh6P.player.getBlockPos().getY() - 2);
+                  this.BrmKXSYhWhqoB1 = this.duJ6sPeetAcBh6P.player.getBlockPos().withY(this.duJ6sPeetAcBh6P.player.getBlockPos().getY() - 2);
                } else if (this.duJ6sPeetAcBh6P.crosshairTarget instanceof BlockHitResult bhr) {
                   BlockPos adjacent = bhr.getBlockPos();
                   this.TXWyNb = bhr.getSide();
@@ -147,9 +143,7 @@ public class Refill extends Module {
                         .networkHandler
                         .sendPacket(
                            new PlayerInteractBlockC2SPacket(
-                              Hand.MAIN_HAND,
-                              new BlockHitResult(Vec3d.ofCenter(this.BrmKXSYhWhqoB1), Direction.UP, this.BrmKXSYhWhqoB1, false),
-                              0
+                              Hand.MAIN_HAND, new BlockHitResult(Vec3d.ofCenter(this.BrmKXSYhWhqoB1), Direction.UP, this.BrmKXSYhWhqoB1, false), 0
                            )
                         );
                   } else {
@@ -163,7 +157,7 @@ public class Refill extends Module {
                   }
 
                   if ((Boolean)this.j376sIQ.get()) {
-                     for (int ix = 0; ix < 27 && pvfA15fQSVM.duJ6sPeetAcBh6P() > 0; ix++) {
+                     for (int i = 0; i < 27 && pvfA15fQSVM.duJ6sPeetAcBh6P() > 0; i++) {
                         if (handler.getSlot(this.i2Nu6XHKic).getStack().getItem() == this.fStlZIvY9lS8.get()) {
                            InvUtils.shiftClick().slotId(this.i2Nu6XHKic);
                         }

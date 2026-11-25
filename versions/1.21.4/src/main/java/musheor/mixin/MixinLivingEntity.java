@@ -20,7 +20,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-@Mixin({LivingEntity.class})
+@Mixin(LivingEntity.class)
 public abstract class MixinLivingEntity extends Entity {
    @Shadow
    private int jumpingCooldown;
@@ -46,25 +46,18 @@ public abstract class MixinLivingEntity extends Entity {
 
    @Unique
    private boolean musheor$isLocalPlayer() {
-      return JhujBv5.fStlZIvY9lS8.player != null && this == JhujBv5.fStlZIvY9lS8.player;
+      return JhujBv5.fStlZIvY9lS8.player != null && (Object)this == JhujBv5.fStlZIvY9lS8.player;
    }
 
-   @Inject(
-      method = {"travel"},
-      at = {@At("HEAD")},
-      cancellable = true
-   )
+   @Inject(method = "travel", at = @At("HEAD"), cancellable = true)
    private void musheor$horseFlyTravel(Vec3d movementInput, CallbackInfo ci) {
       HorseFly horseFly = Modules.get() == null ? null : (HorseFly)Modules.get().get(HorseFly.class);
-      if (horseFly != null && horseFly.fStlZIvY9lS8((LivingEntity)this)) {
+      if (horseFly != null && horseFly.fStlZIvY9lS8((LivingEntity)(Object)this)) {
          ci.cancel();
       }
    }
 
-   @Inject(
-      method = {"travel"},
-      at = {@At("HEAD")}
-   )
+   @Inject(method = "travel", at = @At("HEAD"))
    private void musheor$travelHead(Vec3d movementInput, CallbackInfo ci) {
       this.musheor$travelSpoof = false;
       if (this.musheor$isLocalPlayer() && RotationManager.isActive()) {
@@ -76,10 +69,7 @@ public abstract class MixinLivingEntity extends Entity {
       }
    }
 
-   @Inject(
-      method = {"travel"},
-      at = {@At("RETURN")}
-   )
+   @Inject(method = "travel", at = @At("RETURN"))
    private void musheor$travelTail(Vec3d movementInput, CallbackInfo ci) {
       if (this.musheor$travelSpoof) {
          this.setYaw(this.musheor$travelYaw);
@@ -88,10 +78,7 @@ public abstract class MixinLivingEntity extends Entity {
       }
    }
 
-   @Inject(
-      method = {"jump"},
-      at = {@At("HEAD")}
-   )
+   @Inject(method = "jump", at = @At("HEAD"))
    private void musheor$jumpHead(CallbackInfo ci) {
       this.musheor$jumpSpoof = false;
       if (this.musheor$isLocalPlayer() && RotationManager.isActive()) {
@@ -103,10 +90,7 @@ public abstract class MixinLivingEntity extends Entity {
       }
    }
 
-   @Inject(
-      method = {"jump"},
-      at = {@At("RETURN")}
-   )
+   @Inject(method = "jump", at = @At("RETURN"))
    private void musheor$jumpTail(CallbackInfo ci) {
       if (this.musheor$jumpSpoof) {
          this.setYaw(this.musheor$jumpYaw);
@@ -115,10 +99,7 @@ public abstract class MixinLivingEntity extends Entity {
       }
    }
 
-   @Inject(
-      at = {@At("HEAD")},
-      method = {"tickMovement"}
-   )
+   @Inject(at = @At("HEAD"), method = "tickMovement")
    private void tickMovement(CallbackInfo ci) {
       NoMoreJumpDelay njd = (NoMoreJumpDelay)Modules.get().get(NoMoreJumpDelay.class);
       KekBounce bounce = (KekBounce)Modules.get().get(KekBounce.class);

@@ -9,6 +9,7 @@ import net.minecraft.client.gui.screen.ChatScreen;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.TextFieldWidget;
 import net.minecraft.client.input.KeyInput;
+import net.minecraft.screen.ScreenHandler;
 import net.minecraft.text.Text;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -17,7 +18,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-@Mixin({ChatScreen.class})
+@Mixin(ChatScreen.class)
 public abstract class ChatScreenMixin extends Screen {
    @Shadow
    protected TextFieldWidget chatField;
@@ -26,10 +27,7 @@ public abstract class ChatScreenMixin extends Screen {
       super(title);
    }
 
-   @Inject(
-      method = {"init"},
-      at = {@At("TAIL")}
-   )
+   @Inject(method = "init", at = @At("TAIL"))
    private void onInit(CallbackInfo info) {
       try {
          DraggableButtonWidget ircBtn = (DraggableButtonWidget)Class.forName("musheor.plus.PlusChatScreenInit")
@@ -42,26 +40,20 @@ public abstract class ChatScreenMixin extends Screen {
       }
 
       for (CustomHudButton btn : MusheorSystem.get().customButtons) {
-         if (btn.I3psabmOrOI.fStlZIvY9lS8(CustomHudButton.ScreenTarget.QfZy2gWnKInxFPr)) {
-            this.addDrawableChild(btn.fStlZIvY9lS8(null));
+         if (btn.I3psabmOrOI.fStlZIvY9lS8(CustomHudButton.ScreenTarget.Chat)) {
+            this.addDrawableChild(btn.fStlZIvY9lS8((ScreenHandler)null));
          }
       }
    }
 
-   @Inject(
-      method = {"mouseClicked"},
-      at = {@At("RETURN")}
-   )
+   @Inject(method = "mouseClicked", at = @At("RETURN"))
    private void onMouseClicked(Click click, boolean bl, CallbackInfoReturnable<Boolean> cir) {
       if (this.getFocused() instanceof DraggableButtonWidget && !VersionHelper.get().hasControlDown()) {
          this.setFocused(this.chatField);
       }
    }
 
-   @Inject(
-      method = {"keyPressed"},
-      at = {@At("RETURN")}
-   )
+   @Inject(method = "keyPressed", at = @At("RETURN"))
    private void onKeyPressed(KeyInput key, CallbackInfoReturnable<Boolean> cir) {
       if (this.getFocused() instanceof DraggableButtonWidget && !VersionHelper.get().hasControlDown()) {
          this.setFocused(this.chatField);

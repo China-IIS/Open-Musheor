@@ -1,8 +1,8 @@
 package musheor.mixin.meteor;
 
 import baritone.api.BaritoneAPI;
-import java.lang.invoke.MethodHandles.Lookup;
 import java.lang.invoke.VarHandle;
+import java.lang.invoke.MethodHandles.Lookup;
 import java.lang.reflect.Field;
 import meteordevelopment.meteorclient.pathing.BaritonePathManager;
 import org.spongepowered.asm.mixin.Mixin;
@@ -10,18 +10,15 @@ import org.spongepowered.asm.mixin.Overwrite;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
-@Mixin(
-   value = {BaritonePathManager.class},
-   remap = false
-)
+@Mixin(value = BaritonePathManager.class, remap = false)
 public class BaritonePathManagerMixin {
+   public BaritonePathManagerMixin() {
+   }
+
    @Redirect(
-      method = {"<init>"},
+      method = "<init>",
       require = 0,
-      at = @At(
-         value = "INVOKE",
-         target = "Ljava/lang/invoke/MethodHandles$Lookup;unreflectVarHandle(Ljava/lang/reflect/Field;)Ljava/lang/invoke/VarHandle;"
-      )
+      at = @At(value = "INVOKE", target = "Ljava/lang/invoke/MethodHandles$Lookup;unreflectVarHandle(Ljava/lang/reflect/Field;)Ljava/lang/invoke/VarHandle;")
    )
    private VarHandle redirectUnreflectVarHandle(Lookup lookup, Field field) {
       return null;

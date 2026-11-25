@@ -93,21 +93,21 @@ public class HighwayRouter {
 
       if (candidates.isEmpty()) {
          return null;
-      } else {
-         oyDPiOVBGKG.pvfA15fQSVM best = null;
-         double bestCost = Double.MAX_VALUE;
-
-         for (oyDPiOVBGKG.pvfA15fQSVM candidate : candidates) {
-            double cost = HighwayNetwork.fStlZIvY9lS8(player, candidate) + HighwayNetwork.fStlZIvY9lS8(candidate, goal);
-            double directDist = HighwayNetwork.fStlZIvY9lS8(player, goal);
-            if (!(cost > directDist * 1.5) && cost < bestCost) {
-               bestCost = cost;
-               best = candidate;
-            }
-         }
-
-         return best;
       }
+
+      oyDPiOVBGKG.pvfA15fQSVM best = null;
+      double bestCost = Double.MAX_VALUE;
+
+      for (oyDPiOVBGKG.pvfA15fQSVM candidate : candidates) {
+         double cost = HighwayNetwork.fStlZIvY9lS8(player, candidate) + HighwayNetwork.fStlZIvY9lS8(candidate, goal);
+         double directDist = HighwayNetwork.fStlZIvY9lS8(player, goal);
+         if (!(cost > directDist * 1.5) && cost < bestCost) {
+            bestCost = cost;
+            best = candidate;
+         }
+      }
+
+      return best;
    }
 
    private static HighwayRouter.Route fStlZIvY9lS8(
@@ -117,77 +117,79 @@ public class HighwayRouter {
       int goalNode = fStlZIvY9lS8(goalHighway, goal);
       if (startNode < 0 || goalNode < 0) {
          return null;
-      } else if (startNode == goalNode) {
+      }
+
+      if (startNode == goalNode) {
          return HighwayRouter.Route.fStlZIvY9lS8();
-      } else {
-         Map<Integer, List<HighwayNetwork.Edge>> adj = HighwayNetwork.TJImwK2();
-         int n = HighwayNetwork.QfZy2gWnKInxFPr.size();
-         double[] dist = new double[n];
-         int[] prev = new int[n];
-         HighwayNetwork.Edge[] prevEdge = new HighwayNetwork.Edge[n];
-         boolean[] visited = new boolean[n];
-         Arrays.fill(dist, Double.MAX_VALUE);
-         Arrays.fill(prev, -1);
-         dist[startNode] = 0.0;
-         PriorityQueue<long[]> pq = new PriorityQueue<>(Comparator.comparingDouble(a -> Double.longBitsToDouble(a[0])));
-         pq.offer(new long[]{Double.doubleToLongBits(0.0), startNode});
+      }
 
-         while (!pq.isEmpty()) {
-            long[] top = pq.poll();
-            int curr = (int)top[1];
-            double d = Double.longBitsToDouble(top[0]);
-            if (!visited[curr]) {
-               visited[curr] = true;
-               if (curr == goalNode) {
-                  break;
+      Map<Integer, List<HighwayNetwork.Edge>> adj = HighwayNetwork.TJImwK2();
+      int n = HighwayNetwork.QfZy2gWnKInxFPr.size();
+      double[] dist = new double[n];
+      int[] prev = new int[n];
+      HighwayNetwork.Edge[] prevEdge = new HighwayNetwork.Edge[n];
+      boolean[] visited = new boolean[n];
+      Arrays.fill(dist, Double.MAX_VALUE);
+      Arrays.fill(prev, -1);
+      dist[startNode] = 0.0;
+      PriorityQueue<long[]> pq = new PriorityQueue<>(Comparator.comparingDouble(a -> Double.longBitsToDouble(a[0])));
+      pq.offer(new long[]{Double.doubleToLongBits(0.0), startNode});
+
+      while (!pq.isEmpty()) {
+         long[] top = pq.poll();
+         int curr = (int)top[1];
+         double d = Double.longBitsToDouble(top[0]);
+         if (!visited[curr]) {
+            visited[curr] = true;
+            if (curr == goalNode) {
+               break;
+            }
+
+            for (HighwayNetwork.Edge edge : adj.getOrDefault(curr, List.of())) {
+               double nd = d + edge.TJImwK2();
+               if (nd < dist[edge.QfZy2gWnKInxFPr()]) {
+                  dist[edge.QfZy2gWnKInxFPr()] = nd;
+                  prev[edge.QfZy2gWnKInxFPr()] = curr;
+                  prevEdge[edge.QfZy2gWnKInxFPr()] = edge;
+                  pq.offer(new long[]{Double.doubleToLongBits(nd), edge.QfZy2gWnKInxFPr()});
                }
-
-               for (HighwayNetwork.Edge edge : adj.getOrDefault(curr, List.of())) {
-                  double nd = d + edge.TJImwK2();
-                  if (nd < dist[edge.QfZy2gWnKInxFPr()]) {
-                     dist[edge.QfZy2gWnKInxFPr()] = nd;
-                     prev[edge.QfZy2gWnKInxFPr()] = curr;
-                     prevEdge[edge.QfZy2gWnKInxFPr()] = edge;
-                     pq.offer(new long[]{Double.doubleToLongBits(nd), edge.QfZy2gWnKInxFPr()});
-                  }
-               }
             }
-         }
-
-         if (dist[goalNode] == Double.MAX_VALUE) {
-            return null;
-         } else {
-            List<HighwayRouter.Leg> legs = new ArrayList<>();
-            int cur = goalNode;
-
-            while (prev[cur] != -1) {
-               int from = prev[cur];
-               HighwayNetwork.Edge edgex = prevEdge[cur];
-               legs.add(
-                  new HighwayRouter.Leg(
-                     HighwayNetwork.QfZy2gWnKInxFPr.get(from).fStlZIvY9lS8(),
-                     HighwayNetwork.QfZy2gWnKInxFPr.get(cur).fStlZIvY9lS8(),
-                     edgex.wSJeYsJcmjNZf(),
-                     edgex.TJImwK2()
-                  )
-               );
-               cur = from;
-            }
-
-            Collections.reverse(legs);
-            oyDPiOVBGKG.pvfA15fQSVM startPos = HighwayNetwork.QfZy2gWnKInxFPr.get(startNode).fStlZIvY9lS8();
-            if (HighwayNetwork.fStlZIvY9lS8(player, startPos) > 10.0) {
-               legs.add(0, new HighwayRouter.Leg(player, startPos, playerHighway, HighwayNetwork.fStlZIvY9lS8(player, startPos)));
-            }
-
-            oyDPiOVBGKG.pvfA15fQSVM lastPos = legs.isEmpty() ? player : legs.get(legs.size() - 1).QfZy2gWnKInxFPr();
-            if (HighwayNetwork.fStlZIvY9lS8(lastPos, goal) > 10.0) {
-               legs.add(new HighwayRouter.Leg(lastPos, goal, goalHighway, HighwayNetwork.fStlZIvY9lS8(lastPos, goal)));
-            }
-
-            return new HighwayRouter.Route(legs);
          }
       }
+
+      if (dist[goalNode] == Double.MAX_VALUE) {
+         return null;
+      }
+
+      List<HighwayRouter.Leg> legs = new ArrayList<>();
+      int cur = goalNode;
+
+      while (prev[cur] != -1) {
+         int from = prev[cur];
+         HighwayNetwork.Edge edge = prevEdge[cur];
+         legs.add(
+            new HighwayRouter.Leg(
+               HighwayNetwork.QfZy2gWnKInxFPr.get(from).fStlZIvY9lS8(),
+               HighwayNetwork.QfZy2gWnKInxFPr.get(cur).fStlZIvY9lS8(),
+               edge.wSJeYsJcmjNZf(),
+               edge.TJImwK2()
+            )
+         );
+         cur = from;
+      }
+
+      Collections.reverse(legs);
+      oyDPiOVBGKG.pvfA15fQSVM startPos = HighwayNetwork.QfZy2gWnKInxFPr.get(startNode).fStlZIvY9lS8();
+      if (HighwayNetwork.fStlZIvY9lS8(player, startPos) > 10.0) {
+         legs.add(0, new HighwayRouter.Leg(player, startPos, playerHighway, HighwayNetwork.fStlZIvY9lS8(player, startPos)));
+      }
+
+      oyDPiOVBGKG.pvfA15fQSVM lastPos = legs.isEmpty() ? player : legs.get(legs.size() - 1).QfZy2gWnKInxFPr();
+      if (HighwayNetwork.fStlZIvY9lS8(lastPos, goal) > 10.0) {
+         legs.add(new HighwayRouter.Leg(lastPos, goal, goalHighway, HighwayNetwork.fStlZIvY9lS8(lastPos, goal)));
+      }
+
+      return new HighwayRouter.Route(legs);
    }
 
    private static int fStlZIvY9lS8(HighwayNetwork.Highway hw, oyDPiOVBGKG.pvfA15fQSVM from, oyDPiOVBGKG.pvfA15fQSVM goal) {
@@ -224,6 +226,12 @@ public class HighwayRouter {
    }
 
    public record Leg(oyDPiOVBGKG.pvfA15fQSVM fStlZIvY9lS8, oyDPiOVBGKG.pvfA15fQSVM QfZy2gWnKInxFPr, HighwayNetwork.Highway TJImwK2, double wSJeYsJcmjNZf) {
+
+
+      @Override
+      public final String toString() {
+         return "Leg[from=" + this.fStlZIvY9lS8 + ", to=" + this.QfZy2gWnKInxFPr + ", highway=" + this.TJImwK2 + ", distance=" + this.wSJeYsJcmjNZf + "]";
+      }
    }
 
    public static class Route {
@@ -253,23 +261,23 @@ public class HighwayRouter {
       private static List<HighwayRouter.Leg> fStlZIvY9lS8(List<HighwayRouter.Leg> legs) {
          if (legs.size() < 2) {
             return new ArrayList<>(legs);
-         } else {
-            List<HighwayRouter.Leg> out = new ArrayList<>();
-            HighwayRouter.Leg cur = legs.get(0);
-
-            for (int i = 1; i < legs.size(); i++) {
-               HighwayRouter.Leg next = legs.get(i);
-               if (cur.TJImwK2().equals(next.TJImwK2()) && fStlZIvY9lS8(cur, next)) {
-                  cur = new HighwayRouter.Leg(cur.fStlZIvY9lS8(), next.QfZy2gWnKInxFPr(), cur.TJImwK2(), cur.wSJeYsJcmjNZf() + next.wSJeYsJcmjNZf());
-               } else {
-                  out.add(cur);
-                  cur = next;
-               }
-            }
-
-            out.add(cur);
-            return out;
          }
+
+         List<HighwayRouter.Leg> out = new ArrayList<>();
+         HighwayRouter.Leg cur = legs.get(0);
+
+         for (int i = 1; i < legs.size(); i++) {
+            HighwayRouter.Leg next = legs.get(i);
+            if (cur.TJImwK2().equals(next.TJImwK2()) && fStlZIvY9lS8(cur, next)) {
+               cur = new HighwayRouter.Leg(cur.fStlZIvY9lS8(), next.QfZy2gWnKInxFPr(), cur.TJImwK2(), cur.wSJeYsJcmjNZf() + next.wSJeYsJcmjNZf());
+            } else {
+               out.add(cur);
+               cur = next;
+            }
+         }
+
+         out.add(cur);
+         return out;
       }
 
       private static boolean fStlZIvY9lS8(HighwayRouter.Leg a, HighwayRouter.Leg b) {
@@ -282,5 +290,11 @@ public class HighwayRouter {
    }
 
    private record SnapResult(oyDPiOVBGKG.pvfA15fQSVM fStlZIvY9lS8, HighwayNetwork.Highway QfZy2gWnKInxFPr) {
+
+
+      @Override
+      public final String toString() {
+         return "SnapResult[point=" + this.fStlZIvY9lS8 + ", highway=" + this.QfZy2gWnKInxFPr + "]";
+      }
    }
 }

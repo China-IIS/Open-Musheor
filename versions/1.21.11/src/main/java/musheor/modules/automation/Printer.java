@@ -17,19 +17,19 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map.Entry;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
+import java.util.Map.Entry;
 import meteordevelopment.meteorclient.events.render.Render3DEvent;
 import meteordevelopment.meteorclient.events.world.TickEvent.Pre;
 import meteordevelopment.meteorclient.gui.GuiTheme;
 import meteordevelopment.meteorclient.gui.widgets.WWidget;
 import meteordevelopment.meteorclient.gui.widgets.containers.WVerticalList;
 import meteordevelopment.meteorclient.gui.widgets.pressable.WButton;
-import meteordevelopment.meteorclient.settings.EnumSetting.Builder;
 import meteordevelopment.meteorclient.settings.Setting;
 import meteordevelopment.meteorclient.settings.SettingGroup;
+import meteordevelopment.meteorclient.settings.EnumSetting.Builder;
 import meteordevelopment.meteorclient.systems.modules.Module;
 import meteordevelopment.meteorclient.systems.modules.Modules;
 import meteordevelopment.meteorclient.systems.modules.combat.AutoTotem;
@@ -40,11 +40,10 @@ import meteordevelopment.orbit.EventHandler;
 import musheor.commands.RestockConfig;
 import musheor.compat.LitematicaHelper;
 import musheor.compat.VersionHelper;
-import musheor.musheor;
 import musheor.utils.irzXX;
+import musheor.utils.oyDPiOVBGKG;
 import musheor.utils.manager.RotationManager;
 import musheor.utils.manager.pvfA15fQSVM;
-import musheor.utils.oyDPiOVBGKG;
 import musheor.utils.system.MusheorSystem;
 import net.minecraft.block.AirBlock;
 import net.minecraft.block.Block;
@@ -69,9 +68,9 @@ import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.ChunkPos;
-import net.minecraft.util.math.Direction.Axis;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.Direction.Axis;
 import net.minecraft.util.shape.VoxelShape;
 import obf.GyhoRo;
 import obf.U6PQSXqW;
@@ -115,14 +114,10 @@ public class Printer extends Module {
    private final Map<BlockPos, Integer> cO1FU7fW = new HashMap<>();
    private final Set<BlockPos> g0iiTDJzfIGXdui = new HashSet<>();
    private int VIbihOaIVyhvJw = 0;
-   private static final Set<net.minecraft.state.property.Property<?>> RE8q1TMDRWx = new HashSet<>(
-      Arrays.asList(
-         Properties.FACING, Properties.HORIZONTAL_FACING, Properties.BLOCK_HALF, Properties.SLAB_TYPE, Properties.AXIS, Properties.HOPPER_FACING
-      )
+   private static final Set<Property<?>> RE8q1TMDRWx = new HashSet<>(
+      Arrays.asList(Properties.FACING, Properties.HORIZONTAL_FACING, Properties.BLOCK_HALF, Properties.SLAB_TYPE, Properties.AXIS, Properties.HOPPER_FACING)
    );
-   private static final Direction[] vLRVDxlh = new Direction[]{
-      Direction.NORTH, Direction.SOUTH, Direction.EAST, Direction.WEST
-   };
+   private static final Direction[] vLRVDxlh = new Direction[]{Direction.NORTH, Direction.SOUTH, Direction.EAST, Direction.WEST};
    private static final float[] HomZ7BbhM7wB = new float[]{-90.0F, 0.0F, 90.0F};
    private static final double[] lVX1t0MC = new double[]{0.25, 0.75};
    private final Map<BlockState, Printer.PlacementStrategy> xarqg2oUiwotDG4 = new HashMap<>();
@@ -130,7 +125,7 @@ public class Printer extends Module {
    private final Setting<Printer.SelectionType> F4hivB = this.fStlZIvY9lS8
       .add(
          ((Builder)((Builder)((Builder)new Builder().name("selection-type")).description("Get selection from litematica or baritone"))
-               .defaultValue(Printer.SelectionType.QfZy2gWnKInxFPr))
+               .defaultValue(Printer.SelectionType.Litematica))
             .build()
       );
    private final Setting<Boolean> bDU9FLOzvL = this.fStlZIvY9lS8
@@ -160,7 +155,7 @@ public class Printer extends Module {
    private final Setting<Printer.LayerType> PVlYDeNipUe = this.QfZy2gWnKInxFPr
       .add(
          ((Builder)((Builder)((Builder)new Builder().name("layer-type")).description("Choose how layering is handled when printing"))
-               .defaultValue(Printer.LayerType.fStlZIvY9lS8))
+               .defaultValue(Printer.LayerType.All))
             .build()
       );
    private final Setting<List<Block>> npfimrDr0hky = this.QfZy2gWnKInxFPr
@@ -177,7 +172,7 @@ public class Printer extends Module {
                         .name("block"))
                      .description("What block to place (used for Baritone mode)."))
                   .defaultValue(Blocks.OBSIDIAN))
-               .visible(() -> this.F4hivB.get() == Printer.SelectionType.fStlZIvY9lS8))
+               .visible(() -> this.F4hivB.get() == Printer.SelectionType.Baritone))
             .build()
       );
    private final Setting<Boolean> UsQcxwgBUuV = this.QfZy2gWnKInxFPr
@@ -227,7 +222,7 @@ public class Printer extends Module {
       .add(
          ((Builder)((Builder)((Builder)new Builder().name("rotation-type"))
                   .description("Automatically rotate the camera to the correct direction when placing directional blocks."))
-               .defaultValue(Printer.RotationType.QfZy2gWnKInxFPr))
+               .defaultValue(Printer.RotationType.Forced))
             .build()
       );
    private final Setting<Integer> ez9qLff15LVy = this.TJImwK2
@@ -238,7 +233,7 @@ public class Printer extends Module {
                   .defaultValue(0))
                .min(0)
                .sliderMax(10)
-               .visible(() -> this.Kl8YPWLVNx7VE.get() == Printer.RotationType.QfZy2gWnKInxFPr))
+               .visible(() -> this.Kl8YPWLVNx7VE.get() == Printer.RotationType.Forced))
             .build()
       );
    private final Setting<Boolean> pAwSMtP8 = this.wSJeYsJcmjNZf
@@ -262,7 +257,7 @@ public class Printer extends Module {
       .add(
          ((Builder)((Builder)((Builder)((Builder)new Builder().name("auto-restock"))
                      .description("Automatically restock more materials from either configured containers or from shulkers you have on you"))
-                  .defaultValue(Printer.RestockType.fStlZIvY9lS8))
+                  .defaultValue(Printer.RestockType.Disabled))
                .visible(this.pAwSMtP8::get))
             .build()
       );
@@ -325,7 +320,7 @@ public class Printer extends Module {
          ((meteordevelopment.meteorclient.settings.StringSetting.Builder)((meteordevelopment.meteorclient.settings.StringSetting.Builder)((meteordevelopment.meteorclient.settings.StringSetting.Builder)((meteordevelopment.meteorclient.settings.StringSetting.Builder)new meteordevelopment.meteorclient.settings.StringSetting.Builder()
                         .name("schematic-name"))
                      .description("The name of the schematic you want to place"))
-                  .visible(() -> LitematicaHelper.isLoaded() && this.F4hivB.get() == Printer.SelectionType.QfZy2gWnKInxFPr))
+                  .visible(() -> LitematicaHelper.isLoaded() && this.F4hivB.get() == Printer.SelectionType.Litematica))
                .defaultValue(""))
             .build()
       );
@@ -334,7 +329,7 @@ public class Printer extends Module {
          ((meteordevelopment.meteorclient.settings.BlockPosSetting.Builder)((meteordevelopment.meteorclient.settings.BlockPosSetting.Builder)((meteordevelopment.meteorclient.settings.BlockPosSetting.Builder)((meteordevelopment.meteorclient.settings.BlockPosSetting.Builder)new meteordevelopment.meteorclient.settings.BlockPosSetting.Builder()
                         .name("schematic-pos"))
                      .description("The position of the schematic you want to place"))
-                  .visible(() -> LitematicaHelper.isLoaded() && this.F4hivB.get() == Printer.SelectionType.QfZy2gWnKInxFPr && this.Nt3xeF))
+                  .visible(() -> LitematicaHelper.isLoaded() && this.F4hivB.get() == Printer.SelectionType.Litematica && this.Nt3xeF))
                .defaultValue(new BlockPos(0, 0, 0)))
             .build()
       );
@@ -353,12 +348,12 @@ public class Printer extends Module {
 
             if (RFflNsLXot == null) {
                for (Class<?> clazz = Block.class; clazz != null && clazz != Object.class; clazz = clazz.getSuperclass()) {
-                  for (Method mx : clazz.getDeclaredMethods()) {
-                     if (mx.getParameterCount() == 1
-                        && BlockState.class.isAssignableFrom(mx.getReturnType())
-                        && mx.getParameterTypes()[0].isAssignableFrom(ItemPlacementContext.class)) {
-                        mx.setAccessible(true);
-                        RFflNsLXot = mx;
+                  for (Method m : clazz.getDeclaredMethods()) {
+                     if (m.getParameterCount() == 1
+                        && BlockState.class.isAssignableFrom(m.getReturnType())
+                        && m.getParameterTypes()[0].isAssignableFrom(ItemPlacementContext.class)) {
+                        m.setAccessible(true);
+                        RFflNsLXot = m;
                         return RFflNsLXot != null ? (BlockState)RFflNsLXot.invoke(block, ctx) : null;
                      }
                   }
@@ -367,13 +362,13 @@ public class Printer extends Module {
          }
 
          return RFflNsLXot != null ? (BlockState)RFflNsLXot.invoke(block, ctx) : null;
-      } catch (Exception var7) {
+      } catch (Exception e) {
          return null;
       }
    }
 
    public Printer() {
-      super(musheor.AUTOMATION, "kek-printer", "Places blocks from schematics or fills baritone selections pretty damn fast");
+      super(musheor.musheor.AUTOMATION, "kek-printer", "Places blocks from schematics or fills baritone selections pretty damn fast");
    }
 
    public WWidget getWidget(GuiTheme theme) {
@@ -425,9 +420,7 @@ public class Printer extends Module {
             for (int y = min.getY(); y <= max.getY(); y++) {
                for (int z = min.getZ(); z <= max.getZ(); z++) {
                   BlockPos pos = new BlockPos(x, y, z);
-                  if (this.UsQcxwgBUuV.get() ? this.qhulAUwd.world.getBlockState(pos).getBlock() instanceof AirBlock : BlockUtils.canPlace(pos, false)
-                     )
-                   {
+                  if (this.UsQcxwgBUuV.get() ? this.qhulAUwd.world.getBlockState(pos).getBlock() instanceof AirBlock : BlockUtils.canPlace(pos, false)) {
                      this.fStlZIvY9lS8(pos, ((Block)this.UPNmQKi0eiVUue.get()).getDefaultState());
                   }
                }
@@ -437,7 +430,7 @@ public class Printer extends Module {
    }
 
    private boolean fStlZIvY9lS8() {
-      return this.Kl8YPWLVNx7VE.get() == Printer.RotationType.QfZy2gWnKInxFPr;
+      return this.Kl8YPWLVNx7VE.get() == Printer.RotationType.Forced;
    }
 
    public void onActivate() {
@@ -461,7 +454,7 @@ public class Printer extends Module {
       this.JAj4YwE2MVx = false;
       this.JPp6VyZP9f = false;
       this.QfZy2gWnKInxFPr();
-      if (this.F4hivB.get() == Printer.SelectionType.fStlZIvY9lS8) {
+      if (this.F4hivB.get() == Printer.SelectionType.Baritone) {
          IBaritone baritone = BaritoneAPI.getProvider().getPrimaryBaritone();
          ISelectionManager selectionManager = baritone.getSelectionManager();
          if (selectionManager.getSelections() == null) {
@@ -475,7 +468,7 @@ public class Printer extends Module {
          }
       }
 
-      if (this.F4hivB.get() == Printer.SelectionType.QfZy2gWnKInxFPr) {
+      if (this.F4hivB.get() == Printer.SelectionType.Litematica) {
          if (!LitematicaHelper.isLoaded()) {
             this.error("Litematica is not installed. Install Litematica or switch to Baritone mode.", new Object[0]);
             this.toggle();
@@ -526,7 +519,7 @@ public class Printer extends Module {
          U6PQSXqW state = U6PQSXqW.fStlZIvY9lS8();
          this.duJ6sPeetAcBh6P++;
          RotationManager.release(10);
-         if (this.F4hivB.get() == Printer.SelectionType.QfZy2gWnKInxFPr && (Boolean)this.pAwSMtP8.get() && ++this.ZlNrrNcv3Ylc >= 200) {
+         if (this.F4hivB.get() == Printer.SelectionType.Litematica && (Boolean)this.pAwSMtP8.get() && ++this.ZlNrrNcv3Ylc >= 200) {
             this.ZlNrrNcv3Ylc = 0;
             this.wSJeYsJcmjNZf();
          }
@@ -552,7 +545,7 @@ public class Printer extends Module {
                }
 
                this.TXWyNb.clear();
-               if (this.F4hivB.get() == Printer.SelectionType.QfZy2gWnKInxFPr) {
+               if (this.F4hivB.get() == Printer.SelectionType.Litematica) {
                   BlockPos playerPos = this.qhulAUwd.player.getBlockPos();
                   int pRange = (int)Math.ceil((Double)MusheorSystem.Manager.placementRange.get()) + 1;
                   Map<BlockPos, BlockState> placementCandidates = LitematicaHelper.get()
@@ -586,12 +579,11 @@ public class Printer extends Module {
                         if (doDebug) {
                            this.info("[DBG] %s @ %s — skip: BlockUtils.canPlace=false", new Object[]{blockName, pos.toShortString()});
                         }
-                     } else if (this.PVlYDeNipUe.get() == Printer.LayerType.QfZy2gWnKInxFPr
-                        && pos.getY() >= Math.floor(this.qhulAUwd.player.getY())) {
+                     } else if (this.PVlYDeNipUe.get() == Printer.LayerType.OnlyBelowFeet && pos.getY() >= Math.floor(this.qhulAUwd.player.getY())) {
                         if (doDebug) {
                            this.info("[DBG] %s @ %s — skip: above feet layer", new Object[]{blockName, pos.toShortString()});
                         }
-                     } else if (this.PVlYDeNipUe.get() == Printer.LayerType.TJImwK2 && !LitematicaHelper.get().isPositionInRenderLayer(pos)) {
+                     } else if (this.PVlYDeNipUe.get() == Printer.LayerType.LitematicaLayer && !LitematicaHelper.get().isPositionInRenderLayer(pos)) {
                         if (doDebug) {
                            this.info("[DBG] %s @ %s — skip: not in render layer", new Object[]{blockName, pos.toShortString()});
                         }
@@ -611,9 +603,7 @@ public class Printer extends Module {
                                  new Object[]{
                                     blockName,
                                     pos.toShortString(),
-                                    Math.sqrt(
-                                       this.qhulAUwd.player.getEyePos().squaredDistanceTo(this.fStlZIvY9lS8(pos, strat, this.TJImwK2(strat)).getPos())
-                                    ),
+                                    Math.sqrt(this.qhulAUwd.player.getEyePos().squaredDistanceTo(this.fStlZIvY9lS8(pos, strat, this.TJImwK2(strat)).getPos())),
                                     MusheorSystem.Manager.placementRange.get()
                                  }
                               );
@@ -642,15 +632,15 @@ public class Printer extends Module {
                         );
                      this.I3psabmOrOI.clear();
 
-                     for (Entry<BlockPos, BlockState> entryx : renderCandidates.entrySet()) {
-                        if (pvfA15fQSVM.i2Nu6XHKic(entryx.getValue().getBlock().asItem()) > 0
+                     for (Entry<BlockPos, BlockState> entry : renderCandidates.entrySet()) {
+                        if (pvfA15fQSVM.i2Nu6XHKic(entry.getValue().getBlock().asItem()) > 0
                            && (
-                              this.PVlYDeNipUe.get() != Printer.LayerType.QfZy2gWnKInxFPr
-                                 || !(entryx.getKey().getY() >= Math.floor(this.qhulAUwd.player.getY()))
+                              this.PVlYDeNipUe.get() != Printer.LayerType.OnlyBelowFeet
+                                 || !(entry.getKey().getY() >= Math.floor(this.qhulAUwd.player.getY()))
                            )
-                           && (this.PVlYDeNipUe.get() != Printer.LayerType.TJImwK2 || LitematicaHelper.get().isPositionInRenderLayer(entryx.getKey()))
-                           && oyDPiOVBGKG.fStlZIvY9lS8(entryx.getKey(), rRange)) {
-                           this.I3psabmOrOI.add(Pair.of(entryx.getKey(), entryx.getValue()));
+                           && (this.PVlYDeNipUe.get() != Printer.LayerType.LitematicaLayer || LitematicaHelper.get().isPositionInRenderLayer(entry.getKey()))
+                           && oyDPiOVBGKG.fStlZIvY9lS8(entry.getKey(), rRange)) {
+                           this.I3psabmOrOI.add(Pair.of(entry.getKey(), entry.getValue()));
                         }
                      }
                   }
@@ -664,18 +654,15 @@ public class Printer extends Module {
                         long key = ChunkPos.toLong(cx, cz);
                         Map<BlockPos, BlockState> posMap = (Map<BlockPos, BlockState>)this.BrmKXSYhWhqoB1.get(key);
                         if (posMap != null && !posMap.isEmpty()) {
-                           for (Entry<BlockPos, BlockState> entryxx : posMap.entrySet()) {
-                              BlockPos pos = entryxx.getKey();
+                           for (Entry<BlockPos, BlockState> entry : posMap.entrySet()) {
+                              BlockPos pos = entry.getKey();
                               BlockState currentState = this.qhulAUwd.world.getBlockState(pos);
-                              BlockState targetState = entryxx.getValue();
+                              BlockState targetState = entry.getValue();
                               if (pvfA15fQSVM.i2Nu6XHKic(targetState.getBlock().asItem()) > 0
                                  && BlockUtils.canPlace(pos, true)
+                                 && (this.PVlYDeNipUe.get() != Printer.LayerType.OnlyBelowFeet || !(pos.getY() >= Math.floor(this.qhulAUwd.player.getY())))
                                  && (
-                                    this.PVlYDeNipUe.get() != Printer.LayerType.QfZy2gWnKInxFPr
-                                       || !(pos.getY() >= Math.floor(this.qhulAUwd.player.getY()))
-                                 )
-                                 && (
-                                    this.PVlYDeNipUe.get() != Printer.LayerType.TJImwK2
+                                    this.PVlYDeNipUe.get() != Printer.LayerType.LitematicaLayer
                                        || LitematicaHelper.isLoaded() && LitematicaHelper.get().isPositionInRenderLayer(pos)
                                  )
                                  && (currentState.getBlock() instanceof AirBlock || !(Boolean)this.UsQcxwgBUuV.get())) {
@@ -704,18 +691,14 @@ public class Printer extends Module {
                      Comparator.comparingDouble(
                         pairx -> this.qhulAUwd
                            .player
-                           .squaredDistanceTo(
-                              ((BlockPos)pairx.first()).getX(),
-                              ((BlockPos)pairx.first()).getY(),
-                              ((BlockPos)pairx.first()).getZ()
-                           )
+                           .squaredDistanceTo(((BlockPos)pairx.first()).getX(), ((BlockPos)pairx.first()).getY(), ((BlockPos)pairx.first()).getZ())
                      )
                   );
                this.i2Nu6XHKic();
-               if (this.dje1llF2o.get() != Printer.RestockType.fStlZIvY9lS8 && (Boolean)this.pAwSMtP8.get()) {
+               if (this.dje1llF2o.get() != Printer.RestockType.Disabled && (Boolean)this.pAwSMtP8.get()) {
                   Block neededBlock = this.TJImwK2();
                   if (neededBlock == null) {
-                     boolean nothingLeft = this.F4hivB.get() == Printer.SelectionType.QfZy2gWnKInxFPr
+                     boolean nothingLeft = this.F4hivB.get() == Printer.SelectionType.Litematica
                         ? this.TXWyNb.isEmpty()
                         : this.TXWyNb.isEmpty() && this.BrmKXSYhWhqoB1.isEmpty();
                      if (nothingLeft) {
@@ -728,7 +711,7 @@ public class Printer extends Module {
                         return;
                      }
 
-                     if (this.F4hivB.get() == Printer.SelectionType.fStlZIvY9lS8) {
+                     if (this.F4hivB.get() == Printer.SelectionType.Baritone) {
                         this.info("Cannot reach or find more blocks to place", new Object[0]);
                         if ((Boolean)this.VLEShZ5mkNBQ4PS0.get()) {
                            VersionHelper.get().playSoundPlayer(SoundEvents.ENTITY_VILLAGER_NO);
@@ -740,7 +723,7 @@ public class Printer extends Module {
                   }
 
                   if (pvfA15fQSVM.i2Nu6XHKic(neededBlock.asItem()) <= 0 && this.FVjbhYkk53UT.isEmpty()) {
-                     if (this.F4hivB.get() == Printer.SelectionType.QfZy2gWnKInxFPr && this.zbN84Osn9p5lD.getOrDefault(neededBlock, 0) == 0) {
+                     if (this.F4hivB.get() == Printer.SelectionType.Litematica && this.zbN84Osn9p5lD.getOrDefault(neededBlock, 0) == 0) {
                         this.zbN84Osn9p5lD.remove(neededBlock);
                         return;
                      }
@@ -748,7 +731,7 @@ public class Printer extends Module {
                      this.fStlZIvY9lS8(neededBlock);
                   }
 
-                  if (this.dje1llF2o.get() == Printer.RestockType.TJImwK2) {
+                  if (this.dje1llF2o.get() == Printer.RestockType.Refill) {
                      if (!this.FVjbhYkk53UT.isEmpty()) {
                         if (GyhoRo.fStlZIvY9lS8()) {
                            GyhoRo.wSJeYsJcmjNZf();
@@ -911,7 +894,7 @@ public class Printer extends Module {
                         this.JAj4YwE2MVx = false;
                      }
 
-                     if (this.F4hivB.get() == Printer.SelectionType.QfZy2gWnKInxFPr) {
+                     if (this.F4hivB.get() == Printer.SelectionType.Litematica) {
                         if (this.WGmfQKK != null) {
                            double distToGoal = this.qhulAUwd
                               .player
@@ -996,16 +979,10 @@ public class Printer extends Module {
                            if (candidate != null
                               && (
                                  this.icQ738dpWr7W == null
-                                    || this.qhulAUwd
-                                          .player
-                                          .squaredDistanceTo(candidate.getX() + 0.5, candidate.getY() + 0.5, candidate.getZ() + 0.5)
+                                    || this.qhulAUwd.player.squaredDistanceTo(candidate.getX() + 0.5, candidate.getY() + 0.5, candidate.getZ() + 0.5)
                                        < this.qhulAUwd
                                           .player
-                                          .squaredDistanceTo(
-                                             this.icQ738dpWr7W.getX() + 0.5,
-                                             this.icQ738dpWr7W.getY() + 0.5,
-                                             this.icQ738dpWr7W.getZ() + 0.5
-                                          )
+                                          .squaredDistanceTo(this.icQ738dpWr7W.getX() + 0.5, this.icQ738dpWr7W.getY() + 0.5, this.icQ738dpWr7W.getZ() + 0.5)
                               )) {
                               this.icQ738dpWr7W = candidate;
                            }
@@ -1027,9 +1004,7 @@ public class Printer extends Module {
                                           Math.sqrt(
                                              this.qhulAUwd
                                                 .player
-                                                .squaredDistanceTo(
-                                                   this.WGmfQKK.getX() + 0.5, this.WGmfQKK.getY() + 0.5, this.WGmfQKK.getZ() + 0.5
-                                                )
+                                                .squaredDistanceTo(this.WGmfQKK.getX() + 0.5, this.WGmfQKK.getY() + 0.5, this.WGmfQKK.getZ() + 0.5)
                                           )
                                        }
                                     );
@@ -1068,9 +1043,9 @@ public class Printer extends Module {
                   if (!this.TXWyNb.isEmpty()) {
                      Pair<BlockPos, BlockState> firstPair = null;
 
-                     for (Pair<BlockPos, BlockState> candidatex : this.TXWyNb) {
-                        if (this.QfZy2gWnKInxFPr((BlockPos)candidatex.first(), (BlockState)candidatex.second())) {
-                           firstPair = candidatex;
+                     for (Pair<BlockPos, BlockState> candidate : this.TXWyNb) {
+                        if (this.QfZy2gWnKInxFPr((BlockPos)candidate.first(), (BlockState)candidate.second())) {
+                           firstPair = candidate;
                            break;
                         }
                      }
@@ -1127,9 +1102,7 @@ public class Printer extends Module {
                               if ((Boolean)this.vijg33HMhCnyX.get()) {
                                  this.info(
                                     "[DBG] Wrong facing for %s — waiting (yaw=%s pitch=%s)",
-                                    new Object[]{
-                                       Registries.BLOCK.getId(firstBlock).getPath(), firstStrat.TJImwK2(), firstStrat.wSJeYsJcmjNZf()
-                                    }
+                                    new Object[]{Registries.BLOCK.getId(firstBlock).getPath(), firstStrat.TJImwK2(), firstStrat.wSJeYsJcmjNZf()}
                                  );
                               }
 
@@ -1146,8 +1119,7 @@ public class Printer extends Module {
                                        this.info(
                                           "[DBG] %s @ %s — inner skip: canPlace=false",
                                           new Object[]{
-                                             Registries.BLOCK.getId(((BlockState)pair.second()).getBlock()).getPath(),
-                                             ((BlockPos)pair.first()).toShortString()
+                                             Registries.BLOCK.getId(((BlockState)pair.second()).getBlock()).getPath(), ((BlockPos)pair.first()).toShortString()
                                           }
                                        );
                                     }
@@ -1164,9 +1136,7 @@ public class Printer extends Module {
                                                    this.qhulAUwd
                                                       .player
                                                       .getEyePos()
-                                                      .squaredDistanceTo(
-                                                         this.fStlZIvY9lS8((BlockPos)pair.first(), pairStrat, this.TJImwK2(pairStrat)).getPos()
-                                                      )
+                                                      .squaredDistanceTo(this.fStlZIvY9lS8((BlockPos)pair.first(), pairStrat, this.TJImwK2(pairStrat)).getPos())
                                                 ),
                                                 MusheorSystem.Manager.placementRange.get()
                                              }
@@ -1187,9 +1157,7 @@ public class Printer extends Module {
                                        if ((Boolean)this.vijg33HMhCnyX.get()) {
                                           this.info(
                                              "[DBG] %s @ %s — inner skip: canPlaceSafely=false",
-                                             new Object[]{
-                                                Registries.BLOCK.getId(firstBlock).getPath(), ((BlockPos)pair.first()).toShortString()
-                                             }
+                                             new Object[]{Registries.BLOCK.getId(firstBlock).getPath(), ((BlockPos)pair.first()).toShortString()}
                                           );
                                        }
                                     } else {
@@ -1231,7 +1199,7 @@ public class Printer extends Module {
                                        }
 
                                        state.PVlYDeNipUe().put((BlockPos)pair.first(), this.duJ6sPeetAcBh6P);
-                                       if (this.F4hivB.get() == Printer.SelectionType.QfZy2gWnKInxFPr) {
+                                       if (this.F4hivB.get() == Printer.SelectionType.Litematica) {
                                           this.zbN84Osn9p5lD.computeIfPresent(((BlockState)pair.second()).getBlock(), (k, v) -> v <= 1 ? null : v - 1);
                                        }
                                     }
@@ -1265,7 +1233,7 @@ public class Printer extends Module {
       Set<Item> seen = new HashSet<>();
       seen.add(primaryBlock.asItem());
       List<Entry<Item, Integer>> others = new ArrayList<>();
-      if (this.F4hivB.get() == Printer.SelectionType.QfZy2gWnKInxFPr) {
+      if (this.F4hivB.get() == Printer.SelectionType.Litematica) {
          for (Entry<Block, Integer> entry : this.zbN84Osn9p5lD.entrySet()) {
             if (entry.getValue() > 0) {
                Item item = entry.getKey().asItem();
@@ -1297,8 +1265,8 @@ public class Printer extends Module {
 
       others.sort((a, b) -> Integer.compare(b.getValue(), a.getValue()));
 
-      for (Entry<Item, Integer> entryx : others) {
-         this.FVjbhYkk53UT.add(entryx.getKey());
+      for (Entry<Item, Integer> entry : others) {
+         this.FVjbhYkk53UT.add(entry.getKey());
       }
    }
 
@@ -1322,24 +1290,24 @@ public class Printer extends Module {
    }
 
    private int QfZy2gWnKInxFPr(Block block) {
-      if (this.F4hivB.get() == Printer.SelectionType.QfZy2gWnKInxFPr) {
+      if (this.F4hivB.get() == Printer.SelectionType.Litematica) {
          return this.zbN84Osn9p5lD.getOrDefault(block, 0);
-      } else {
-         int count = 0;
-         ObjectIterator var3 = this.BrmKXSYhWhqoB1.values().iterator();
+      }
 
-         while (var3.hasNext()) {
-            Map<BlockPos, BlockState> posMap = (Map<BlockPos, BlockState>)var3.next();
+      int count = 0;
+      ObjectIterator var3 = this.BrmKXSYhWhqoB1.values().iterator();
 
-            for (BlockState blockState : posMap.values()) {
-               if (blockState.getBlock() == block) {
-                  count++;
-               }
+      while (var3.hasNext()) {
+         Map<BlockPos, BlockState> posMap = (Map<BlockPos, BlockState>)var3.next();
+
+         for (BlockState blockState : posMap.values()) {
+            if (blockState.getBlock() == block) {
+               count++;
             }
          }
-
-         return count;
       }
+
+      return count;
    }
 
    private Block TJImwK2() {
@@ -1348,7 +1316,7 @@ public class Printer extends Module {
       Block firstOverall = null;
       String firstOverallName = null;
       Iterable<Block> blockSource;
-      if (this.F4hivB.get() == Printer.SelectionType.QfZy2gWnKInxFPr) {
+      if (this.F4hivB.get() == Printer.SelectionType.Litematica) {
          blockSource = this.zbN84Osn9p5lD.keySet();
       } else {
          Set<Block> fromMap = new HashSet<>();
@@ -1383,14 +1351,13 @@ public class Printer extends Module {
       } else if (firstOverall != null) {
          return firstOverall;
       } else {
-         return this.F4hivB.get() == Printer.SelectionType.fStlZIvY9lS8 ? (Block)this.UPNmQKi0eiVUue.get() : null;
+         return this.F4hivB.get() == Printer.SelectionType.Baritone ? (Block)this.UPNmQKi0eiVUue.get() : null;
       }
    }
 
    private void wSJeYsJcmjNZf() {
-      if (LitematicaHelper.isLoaded() && this.F4hivB.get() == Printer.SelectionType.QfZy2gWnKInxFPr) {
-         Map<Block, Integer> fresh = LitematicaHelper.get()
-            .getRemainingMaterialCounts((List<Block>)this.npfimrDr0hky.get(), (Boolean)this.UsQcxwgBUuV.get());
+      if (LitematicaHelper.isLoaded() && this.F4hivB.get() == Printer.SelectionType.Litematica) {
+         Map<Block, Integer> fresh = LitematicaHelper.get().getRemainingMaterialCounts((List<Block>)this.npfimrDr0hky.get(), (Boolean)this.UsQcxwgBUuV.get());
          fresh.entrySet().removeIf(e -> e.getValue() <= 0);
          this.zbN84Osn9p5lD = fresh;
       }
@@ -1405,108 +1372,103 @@ public class Printer extends Module {
          boolean hasOrientation = RE8q1TMDRWx.stream().anyMatch(targetState::contains);
          if (!hasOrientation) {
             return new Printer.PlacementStrategy(Direction.DOWN, 0.5, null, null, true);
-         } else {
-            Item item = targetState.getBlock().asItem();
-            if (item == Items.AIR) {
-               return new Printer.PlacementStrategy(Direction.DOWN, 0.5, null, null, true);
-            } else {
-               ItemStack stack = new ItemStack(item);
-               BlockPos simPos = this.qhulAUwd.player.getBlockPos();
-               float savedYaw = this.qhulAUwd.player.getYaw();
-               float savedPitch = this.qhulAUwd.player.getPitch();
+         }
 
-               try {
-                  for (Direction hitDir : Direction.values()) {
-                     double[] yFracs = hitDir.getAxis() == Direction.Axis.Y ? new double[]{hitDir == Direction.UP ? 1.0 : 0.0} : lVX1t0MC;
+         Item item = targetState.getBlock().asItem();
+         if (item == Items.AIR) {
+            return new Printer.PlacementStrategy(Direction.DOWN, 0.5, null, null, true);
+         }
 
-                     for (double hitFracY : yFracs) {
-                        Vec3d hitVec = new Vec3d(
-                           simPos.getX() + 0.5 + hitDir.getOffsetX() * 0.5,
-                           simPos.getY() + hitFracY,
-                           simPos.getZ() + 0.5 + hitDir.getOffsetZ() * 0.5
-                        );
-                        BlockHitResult hit = new BlockHitResult(hitVec, hitDir, simPos, false);
-                        boolean anyMatch = false;
-                        boolean mismatchFound = false;
+         ItemStack stack = new ItemStack(item);
+         BlockPos simPos = this.qhulAUwd.player.getBlockPos();
+         float savedYaw = this.qhulAUwd.player.getYaw();
+         float savedPitch = this.qhulAUwd.player.getPitch();
 
-                        label292:
-                        for (Direction yawDir : vLRVDxlh) {
-                           this.qhulAUwd.player.setYaw(this.fStlZIvY9lS8(yawDir));
+         try {
+            for (Direction hitDir : Direction.values()) {
+               double[] yFracs = hitDir.getAxis() == Axis.Y ? new double[]{hitDir == Direction.UP ? 1.0 : 0.0} : lVX1t0MC;
 
-                           for (float pitch : HomZ7BbhM7wB) {
-                              this.qhulAUwd.player.setPitch(pitch);
-                              ItemPlacementContext ctx = new ItemPlacementContext(this.qhulAUwd.world, this.qhulAUwd.player, Hand.MAIN_HAND, stack, hit) {};
-                              BlockState placed = fStlZIvY9lS8(targetState.getBlock(), ctx);
-                              if (placed != null) {
-                                 if (!this.fStlZIvY9lS8(placed, targetState)) {
-                                    mismatchFound = true;
-                                    break label292;
-                                 }
+               for (double hitFracY : yFracs) {
+                  Vec3d hitVec = new Vec3d(
+                     simPos.getX() + 0.5 + hitDir.getOffsetX() * 0.5, simPos.getY() + hitFracY, simPos.getZ() + 0.5 + hitDir.getOffsetZ() * 0.5
+                  );
+                  BlockHitResult hit = new BlockHitResult(hitVec, hitDir, simPos, false);
+                  boolean anyMatch = false;
+                  boolean mismatchFound = false;
 
-                                 anyMatch = true;
-                              }
+                  label288:
+                  for (Direction yawDir : vLRVDxlh) {
+                     this.qhulAUwd.player.setYaw(this.fStlZIvY9lS8(yawDir));
+
+                     for (float pitch : HomZ7BbhM7wB) {
+                        this.qhulAUwd.player.setPitch(pitch);
+                        ItemPlacementContext ctx = new ItemPlacementContext(this.qhulAUwd.world, this.qhulAUwd.player, Hand.MAIN_HAND, stack, hit) {};
+                        BlockState placed = fStlZIvY9lS8(targetState.getBlock(), ctx);
+                        if (placed != null) {
+                           if (!this.fStlZIvY9lS8(placed, targetState)) {
+                              mismatchFound = true;
+                              break label288;
                            }
-                        }
 
-                        if (anyMatch && !mismatchFound) {
-                           return new Printer.PlacementStrategy(hitDir, hitFracY, null, null, false);
+                           anyMatch = true;
                         }
                      }
                   }
 
-                  for (Direction hitDir : Direction.values()) {
-                     double[] yFracs = hitDir.getAxis() == Direction.Axis.Y ? new double[]{hitDir == Direction.UP ? 1.0 : 0.0} : lVX1t0MC;
-
-                     for (double hitFracY : yFracs) {
-                        Vec3d hitVec = new Vec3d(
-                           simPos.getX() + 0.5 + hitDir.getOffsetX() * 0.5,
-                           simPos.getY() + hitFracY,
-                           simPos.getZ() + 0.5 + hitDir.getOffsetZ() * 0.5
-                        );
-                        BlockHitResult hit = new BlockHitResult(hitVec, hitDir, simPos, false);
-
-                        for (Direction yawDir : vLRVDxlh) {
-                           this.qhulAUwd.player.setYaw(this.fStlZIvY9lS8(yawDir));
-
-                           for (float pitchx : HomZ7BbhM7wB) {
-                              this.qhulAUwd.player.setPitch(pitchx);
-                              ItemPlacementContext ctx = new ItemPlacementContext(this.qhulAUwd.world, this.qhulAUwd.player, Hand.MAIN_HAND, stack, hit) {};
-                              BlockState placed = fStlZIvY9lS8(targetState.getBlock(), ctx);
-                              if (placed != null && this.fStlZIvY9lS8(placed, targetState)) {
-                                 boolean needsH = targetState.contains(Properties.HORIZONTAL_FACING)
-                                    || targetState.contains(Properties.FACING)
-                                       && ((Direction)targetState.get(Properties.FACING)).getAxis().isHorizontal();
-                                 boolean pitchMatters = false;
-
-                                 for (float otherPitch : HomZ7BbhM7wB) {
-                                    if (otherPitch != pitchx) {
-                                       this.qhulAUwd.player.setPitch(otherPitch);
-                                       ItemPlacementContext ctx2 = new ItemPlacementContext(this.qhulAUwd.world, this.qhulAUwd.player, Hand.MAIN_HAND, stack, hit) {};
-                                       BlockState placed2 = fStlZIvY9lS8(targetState.getBlock(), ctx2);
-                                       if (placed2 == null || !this.fStlZIvY9lS8(placed2, targetState)) {
-                                          pitchMatters = true;
-                                          break;
-                                       }
-                                    }
-                                 }
-
-                                 this.qhulAUwd.player.setPitch(pitchx);
-                                 Direction reqYaw = needsH ? yawDir : null;
-                                 Float reqPitch = pitchMatters ? pitchx : null;
-                                 return new Printer.PlacementStrategy(hitDir, hitFracY, reqYaw, reqPitch, false);
-                              }
-                           }
-                        }
-                     }
+                  if (anyMatch && !mismatchFound) {
+                     return new Printer.PlacementStrategy(hitDir, hitFracY, null, null, false);
                   }
-
-                  return new Printer.PlacementStrategy(Direction.DOWN, 0.5, null, null, false);
-               } finally {
-                  this.qhulAUwd.player.setYaw(savedYaw);
-                  this.qhulAUwd.player.setPitch(savedPitch);
                }
             }
+
+            for (Direction hitDir : Direction.values()) {
+               double[] yFracs = hitDir.getAxis() == Axis.Y ? new double[]{hitDir == Direction.UP ? 1.0 : 0.0} : lVX1t0MC;
+
+               for (double hitFracY : yFracs) {
+                  Vec3d hitVec = new Vec3d(
+                     simPos.getX() + 0.5 + hitDir.getOffsetX() * 0.5, simPos.getY() + hitFracY, simPos.getZ() + 0.5 + hitDir.getOffsetZ() * 0.5
+                  );
+                  BlockHitResult hit = new BlockHitResult(hitVec, hitDir, simPos, false);
+
+                  for (Direction yawDir : vLRVDxlh) {
+                     this.qhulAUwd.player.setYaw(this.fStlZIvY9lS8(yawDir));
+
+                     for (float pitch : HomZ7BbhM7wB) {
+                        this.qhulAUwd.player.setPitch(pitch);
+                        ItemPlacementContext ctx = new ItemPlacementContext(this.qhulAUwd.world, this.qhulAUwd.player, Hand.MAIN_HAND, stack, hit) {};
+                        BlockState placed = fStlZIvY9lS8(targetState.getBlock(), ctx);
+                        if (placed != null && this.fStlZIvY9lS8(placed, targetState)) {
+                           boolean needsH = targetState.contains(Properties.HORIZONTAL_FACING)
+                              || targetState.contains(Properties.FACING) && ((Direction)targetState.get(Properties.FACING)).getAxis().isHorizontal();
+                           boolean pitchMatters = false;
+
+                           for (float otherPitch : HomZ7BbhM7wB) {
+                              if (otherPitch != pitch) {
+                                 this.qhulAUwd.player.setPitch(otherPitch);
+                                 ItemPlacementContext ctx2 = new ItemPlacementContext(this.qhulAUwd.world, this.qhulAUwd.player, Hand.MAIN_HAND, stack, hit) {};
+                                 BlockState placed2 = fStlZIvY9lS8(targetState.getBlock(), ctx2);
+                                 if (placed2 == null || !this.fStlZIvY9lS8(placed2, targetState)) {
+                                    pitchMatters = true;
+                                    break;
+                                 }
+                              }
+                           }
+
+                           this.qhulAUwd.player.setPitch(pitch);
+                           Direction reqYaw = needsH ? yawDir : null;
+                           Float reqPitch = pitchMatters ? pitch : null;
+                           return new Printer.PlacementStrategy(hitDir, hitFracY, reqYaw, reqPitch, false);
+                        }
+                     }
+                  }
+               }
+            }
+         } finally {
+            this.qhulAUwd.player.setYaw(savedYaw);
+            this.qhulAUwd.player.setPitch(savedPitch);
          }
+
+         return new Printer.PlacementStrategy(Direction.DOWN, 0.5, null, null, false);
       } else {
          return new Printer.PlacementStrategy(Direction.DOWN, 0.5, null, null, true);
       }
@@ -1515,48 +1477,49 @@ public class Printer extends Module {
    private boolean fStlZIvY9lS8(BlockState placed, BlockState target) {
       if (placed.getBlock() != target.getBlock()) {
          return false;
-      } else {
-         for (net.minecraft.state.property.Property<?> prop : RE8q1TMDRWx) {
-            if (placed.contains(prop) && target.contains(prop) && !placed.get(prop).equals(target.get(prop))) {
-               return false;
-            }
-         }
-
-         return true;
       }
+
+      for (Property<?> prop : RE8q1TMDRWx) {
+         if (placed.contains(prop) && target.contains(prop) && !placed.get(prop).equals(target.get(prop))) {
+            return false;
+         }
+      }
+
+      return true;
    }
 
    private boolean fStlZIvY9lS8(Printer.PlacementStrategy strat) {
       if (this.qhulAUwd.player == null) {
          return false;
-      } else {
-         float effYaw = RotationManager.yawOr(this.qhulAUwd.player.getYaw());
-         float effPitch = RotationManager.pitchOr(this.qhulAUwd.player.getPitch());
-         if (strat.TJImwK2() != null && fStlZIvY9lS8(effYaw) != strat.TJImwK2()) {
+      }
+
+      float effYaw = RotationManager.yawOr(this.qhulAUwd.player.getYaw());
+      float effPitch = RotationManager.pitchOr(this.qhulAUwd.player.getPitch());
+      if (strat.TJImwK2() != null && fStlZIvY9lS8(effYaw) != strat.TJImwK2()) {
+         return false;
+      }
+
+      if (strat.wSJeYsJcmjNZf() != null) {
+         float actual = effPitch;
+         float required = strat.wSJeYsJcmjNZf();
+         boolean reqUp = required < -45.0F;
+         boolean reqDown = required > 45.0F;
+         boolean isUp = actual < -45.0F;
+         boolean isDown = actual > 45.0F;
+         if (reqUp && !isUp) {
             return false;
-         } else {
-            if (strat.wSJeYsJcmjNZf() != null) {
-               float required = strat.wSJeYsJcmjNZf();
-               boolean reqUp = required < -45.0F;
-               boolean reqDown = required > 45.0F;
-               boolean isUp = effPitch < -45.0F;
-               boolean isDown = effPitch > 45.0F;
-               if (reqUp && !isUp) {
-                  return false;
-               }
+         }
 
-               if (reqDown && !isDown) {
-                  return false;
-               }
+         if (reqDown && !isDown) {
+            return false;
+         }
 
-               if (!reqUp && !reqDown && (isUp || isDown)) {
-                  return false;
-               }
-            }
-
-            return true;
+         if (!reqUp && !reqDown && (isUp || isDown)) {
+            return false;
          }
       }
+
+      return true;
    }
 
    private float fStlZIvY9lS8(Direction facing) {
@@ -1592,7 +1555,7 @@ public class Printer extends Module {
 
    private void i2Nu6XHKic() {
       if ((Boolean)this.X9ysJTxpWn2.get()) {
-         if (this.F4hivB.get() == Printer.SelectionType.QfZy2gWnKInxFPr && LitematicaHelper.isLoaded()) {
+         if (this.F4hivB.get() == Printer.SelectionType.Litematica && LitematicaHelper.isLoaded()) {
             if (this.qhulAUwd.player != null && this.qhulAUwd.world != null) {
                if (!this.qhulAUwd.player.isSneaking() && this.qhulAUwd.currentScreen == null) {
                   if (this.duJ6sPeetAcBh6P % 200 == 0) {
@@ -1608,18 +1571,13 @@ public class Printer extends Module {
                      int range = (int)Math.ceil(this.vGAMA89H()) + 1;
                      Map<BlockPos, BlockState> mismatched = LitematicaHelper.get()
                         .getMismatchedStatesInBox(
-                           playerPos.add(-range, -range, -range),
-                           playerPos.add(range, range, range),
-                           (List<Block>)this.npfimrDr0hky.get(),
-                           512
+                           playerPos.add(-range, -range, -range), playerPos.add(range, range, range), (List<Block>)this.npfimrDr0hky.get(), 512
                         );
                      if (!mismatched.isEmpty()) {
                         List<Entry<BlockPos, BlockState>> targets = new ArrayList<>(mismatched.entrySet());
                         targets.sort(
                            Comparator.comparingDouble(
-                              e -> this.qhulAUwd
-                                 .player
-                                 .squaredDistanceTo(e.getKey().getX() + 0.5, e.getKey().getY() + 0.5, e.getKey().getZ() + 0.5)
+                              e -> this.qhulAUwd.player.squaredDistanceTo(e.getKey().getX() + 0.5, e.getKey().getY() + 0.5, e.getKey().getZ() + 0.5)
                            )
                         );
                         boolean batched = (Integer)this.H7J5bawM.get() == 0;
@@ -1629,11 +1587,8 @@ public class Printer extends Module {
                            BlockState target = entry.getValue();
                            if (!this.g0iiTDJzfIGXdui.contains(pos)
                               && !((List)this.Uag2UiCQCqA.get()).contains(target.getBlock())
-                              && (
-                                 this.PVlYDeNipUe.get() != Printer.LayerType.QfZy2gWnKInxFPr
-                                    || !(pos.getY() >= Math.floor(this.qhulAUwd.player.getY()))
-                              )
-                              && (this.PVlYDeNipUe.get() != Printer.LayerType.TJImwK2 || LitematicaHelper.get().isPositionInRenderLayer(pos))) {
+                              && (this.PVlYDeNipUe.get() != Printer.LayerType.OnlyBelowFeet || !(pos.getY() >= Math.floor(this.qhulAUwd.player.getY())))
+                              && (this.PVlYDeNipUe.get() != Printer.LayerType.LitematicaLayer || LitematicaHelper.get().isPositionInRenderLayer(pos))) {
                               Integer waitUntil = this.MR1DKzw.get(pos);
                               if (waitUntil != null) {
                                  if (this.duJ6sPeetAcBh6P < waitUntil) {
@@ -1686,9 +1641,7 @@ public class Printer extends Module {
                                     if ((Boolean)this.vijg33HMhCnyX.get()) {
                                        this.info(
                                           "[DBG-STATE] %s @ %s — sent %d/%d interactions",
-                                          new Object[]{
-                                             Registries.BLOCK.getId(target.getBlock()).getPath(), pos.toShortString(), sent, needed
-                                          }
+                                          new Object[]{Registries.BLOCK.getId(target.getBlock()).getPath(), pos.toShortString(), sent, needed}
                                        );
                                     }
 
@@ -1743,9 +1696,7 @@ public class Printer extends Module {
          maxZ = pos.getZ() + box.maxZ;
       }
 
-      Vec3d hit = new Vec3d(
-         Math.max(minX, Math.min(eye.x, maxX)), Math.max(minY, Math.min(eye.y, maxY)), Math.max(minZ, Math.min(eye.z, maxZ))
-      );
+      Vec3d hit = new Vec3d(Math.max(minX, Math.min(eye.x, maxX)), Math.max(minY, Math.min(eye.y, maxY)), Math.max(minZ, Math.min(eye.z, maxZ)));
       return new BlockHitResult(hit, KekNuker.QfZy2gWnKInxFPr(eye, pos), pos, false);
    }
 
@@ -1756,25 +1707,25 @@ public class Printer extends Module {
    private BlockHitResult fStlZIvY9lS8(BlockPos pos, Printer.PlacementStrategy strat, boolean freeHit) {
       Vec3d eye = this.qhulAUwd.player.getEyePos();
       if (freeHit) {
-         double hx = Math.max((double)pos.getX(), Math.min(eye.x, pos.getX() + 1.0));
-         double hy = Math.max((double)pos.getY(), Math.min(eye.y, pos.getY() + 1.0));
-         double hz = Math.max((double)pos.getZ(), Math.min(eye.z, pos.getZ() + 1.0));
+         double hx = Math.max(pos.getX(), Math.min(eye.x, pos.getX() + 1.0));
+         double hy = Math.max(pos.getY(), Math.min(eye.y, pos.getY() + 1.0));
+         double hz = Math.max(pos.getZ(), Math.min(eye.z, pos.getZ() + 1.0));
          return new BlockHitResult(new Vec3d(hx, hy, hz), KekNuker.QfZy2gWnKInxFPr(eye, pos), pos, false);
-      } else {
-         Direction dir = strat.fStlZIvY9lS8();
-         double hx = pos.getX() + 0.5 + dir.getOffsetX() * 0.5;
-         double hy = pos.getY() + strat.QfZy2gWnKInxFPr();
-         double hz = pos.getZ() + 0.5 + dir.getOffsetZ() * 0.5;
-         if (dir.getAxis() != Direction.Axis.X) {
-            hx = Math.max(pos.getX() + 0.05, Math.min(eye.x, pos.getX() + 0.95));
-         }
-
-         if (dir.getAxis() != Direction.Axis.Z) {
-            hz = Math.max(pos.getZ() + 0.05, Math.min(eye.z, pos.getZ() + 0.95));
-         }
-
-         return new BlockHitResult(new Vec3d(hx, hy, hz), dir, pos, false);
       }
+
+      Direction dir = strat.fStlZIvY9lS8();
+      double hx = pos.getX() + 0.5 + dir.getOffsetX() * 0.5;
+      double hy = pos.getY() + strat.QfZy2gWnKInxFPr();
+      double hz = pos.getZ() + 0.5 + dir.getOffsetZ() * 0.5;
+      if (dir.getAxis() != Axis.X) {
+         hx = Math.max(pos.getX() + 0.05, Math.min(eye.x, pos.getX() + 0.95));
+      }
+
+      if (dir.getAxis() != Axis.Z) {
+         hz = Math.max(pos.getZ() + 0.05, Math.min(eye.z, pos.getZ() + 0.95));
+      }
+
+      return new BlockHitResult(new Vec3d(hx, hy, hz), dir, pos, false);
    }
 
    private boolean fStlZIvY9lS8(BlockPos pos, Printer.PlacementStrategy strat) {
@@ -1792,85 +1743,76 @@ public class Printer extends Module {
       } else if (targetState.getBlock() instanceof RedstoneWireBlock) {
          return !this.qhulAUwd.world.getBlockState(pos.down()).isAir();
       } else {
-         return this.yYqDk4cMM0.get() && targetState.getBlock() instanceof FallingBlock
-            ? !this.qhulAUwd.world.getBlockState(pos.down()).isAir()
-            : true;
+         return this.yYqDk4cMM0.get() && targetState.getBlock() instanceof FallingBlock ? !this.qhulAUwd.world.getBlockState(pos.down()).isAir() : true;
       }
    }
 
    private ChunkPos fStlZIvY9lS8(ChunkPos center, int radius, int index) {
       if (radius == 0) {
          return center;
-      } else {
-         int cx = center.x;
-         int cz = center.z;
-         if (index < 2 * radius + 1) {
-            return new ChunkPos(cx - radius + index, cz - radius);
-         } else {
-            index -= 2 * radius + 1;
-            if (index < 2 * radius) {
-               return new ChunkPos(cx + radius, cz - radius + 1 + index);
-            } else {
-               index -= 2 * radius;
-               if (index < 2 * radius) {
-                  return new ChunkPos(cx + radius - 1 - index, cz + radius);
-               } else {
-                  index -= 2 * radius;
-                  return new ChunkPos(cx - radius, cz + radius - 1 - index);
-               }
-            }
-         }
       }
+
+      int cx = center.x;
+      int cz = center.z;
+      if (index < 2 * radius + 1) {
+         return new ChunkPos(cx - radius + index, cz - radius);
+      }
+
+      index -= 2 * radius + 1;
+      if (index < 2 * radius) {
+         return new ChunkPos(cx + radius, cz - radius + 1 + index);
+      }
+
+      index -= 2 * radius;
+      if (index < 2 * radius) {
+         return new ChunkPos(cx + radius - 1 - index, cz + radius);
+      }
+
+      index -= 2 * radius;
+      return new ChunkPos(cx - radius, cz + radius - 1 - index);
    }
 
    private BlockPos fStlZIvY9lS8(ChunkPos chunk) {
       if (this.qhulAUwd.world != null && this.qhulAUwd.player != null) {
          if (!this.qhulAUwd.world.isChunkLoaded(chunk.x, chunk.z)) {
             return null;
-         } else {
-            int minX = chunk.getStartX();
-            int minZ = chunk.getStartZ();
-            int maxX = chunk.getEndX();
-            int maxZ = chunk.getEndZ();
-            int minY = this.qhulAUwd.world.getBottomY();
-            int maxY = this.qhulAUwd.world.getBottomY() + this.qhulAUwd.world.getHeight() - 1;
-            Map<BlockPos, BlockState> candidates = LitematicaHelper.get()
-               .getBlocksInBox(
-                  new BlockPos(minX, minY, minZ),
-                  new BlockPos(maxX, maxY, maxZ),
-                  (Boolean)this.UsQcxwgBUuV.get(),
-                  (List<Block>)this.npfimrDr0hky.get(),
-                  512
-               );
-            if (candidates.isEmpty()) {
-               return null;
-            } else {
-               BlockPos playerFeet = this.qhulAUwd.player.getBlockPos();
-               BlockPos closest = null;
-               double closestDist = Double.MAX_VALUE;
+         }
 
-               for (Entry<BlockPos, BlockState> entry : candidates.entrySet()) {
-                  BlockPos pos = entry.getKey();
-                  BlockState targetState = entry.getValue();
-                  if (pvfA15fQSVM.i2Nu6XHKic(targetState.getBlock().asItem()) > 0
-                     && (
-                        this.PVlYDeNipUe.get() != Printer.LayerType.QfZy2gWnKInxFPr
-                           || !(pos.getY() >= Math.floor(this.qhulAUwd.player.getY()))
-                     )
-                     && (this.PVlYDeNipUe.get() != Printer.LayerType.TJImwK2 || LitematicaHelper.get().isPositionInRenderLayer(pos))
-                     && !pos.equals(playerFeet)
-                     && !pos.equals(playerFeet.up())) {
-                     double dist = this.qhulAUwd.player.squaredDistanceTo(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5);
-                     if (dist < closestDist) {
-                        closestDist = dist;
-                        closest = pos;
-                     }
-                  }
+         int minX = chunk.getStartX();
+         int minZ = chunk.getStartZ();
+         int maxX = chunk.getEndX();
+         int maxZ = chunk.getEndZ();
+         int minY = this.qhulAUwd.world.getBottomY();
+         int maxY = this.qhulAUwd.world.getBottomY() + this.qhulAUwd.world.getHeight() - 1;
+         Map<BlockPos, BlockState> candidates = LitematicaHelper.get()
+            .getBlocksInBox(
+               new BlockPos(minX, minY, minZ), new BlockPos(maxX, maxY, maxZ), (Boolean)this.UsQcxwgBUuV.get(), (List<Block>)this.npfimrDr0hky.get(), 512
+            );
+         if (candidates.isEmpty()) {
+            return null;
+         }
+
+         BlockPos playerFeet = this.qhulAUwd.player.getBlockPos();
+         BlockPos closest = null;
+         double closestDist = Double.MAX_VALUE;
+
+         for (Entry<BlockPos, BlockState> entry : candidates.entrySet()) {
+            BlockPos pos = entry.getKey();
+            BlockState targetState = entry.getValue();
+            if (pvfA15fQSVM.i2Nu6XHKic(targetState.getBlock().asItem()) > 0
+               && (this.PVlYDeNipUe.get() != Printer.LayerType.OnlyBelowFeet || !(pos.getY() >= Math.floor(this.qhulAUwd.player.getY())))
+               && (this.PVlYDeNipUe.get() != Printer.LayerType.LitematicaLayer || LitematicaHelper.get().isPositionInRenderLayer(pos))
+               && !pos.equals(playerFeet)
+               && !pos.equals(playerFeet.up())) {
+               double dist = this.qhulAUwd.player.squaredDistanceTo(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5);
+               if (dist < closestDist) {
+                  closestDist = dist;
+                  closest = pos;
                }
-
-               return closest;
             }
          }
+
+         return closest;
       } else {
          return null;
       }
@@ -1952,28 +1894,46 @@ public class Printer extends Module {
       }
    }
 
-   public static enum LayerType {
-      fStlZIvY9lS8,
-      QfZy2gWnKInxFPr,
-      TJImwK2;
+   public enum LayerType {
+      All,
+      OnlyBelowFeet,
+      LitematicaLayer;
+
+      LayerType() {
+      }
    }
 
    private record PlacementStrategy(Direction fStlZIvY9lS8, double QfZy2gWnKInxFPr, Direction TJImwK2, Float wSJeYsJcmjNZf, boolean i2Nu6XHKic) {
+
+
+      @Override
+      public final String toString() {
+         return "PlacementStrategy[hitDir=" + this.fStlZIvY9lS8 + ", hitFracY=" + this.QfZy2gWnKInxFPr + ", yawRequired=" + this.TJImwK2 + ", pitchRequired=" + this.wSJeYsJcmjNZf + ", orientationFree=" + this.i2Nu6XHKic + "]";
+      }
    }
 
-   private static enum RestockType {
-      fStlZIvY9lS8,
-      QfZy2gWnKInxFPr,
-      TJImwK2;
+   private enum RestockType {
+      Disabled,
+      RestockConfig,
+      Refill;
+
+      RestockType() {
+      }
    }
 
-   private static enum RotationType {
-      fStlZIvY9lS8,
-      QfZy2gWnKInxFPr;
+   private enum RotationType {
+      Ignored,
+      Forced;
+
+      RotationType() {
+      }
    }
 
-   private static enum SelectionType {
-      fStlZIvY9lS8,
-      QfZy2gWnKInxFPr;
+   private enum SelectionType {
+      Baritone,
+      Litematica;
+
+      SelectionType() {
+      }
    }
 }

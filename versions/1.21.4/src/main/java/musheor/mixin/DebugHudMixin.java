@@ -11,13 +11,12 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-@Mixin({DebugHud.class})
+@Mixin(DebugHud.class)
 public class DebugHudMixin {
-   @Inject(
-      method = {"getLeftText"},
-      at = {@At("RETURN")},
-      cancellable = true
-   )
+   public DebugHudMixin() {
+   }
+
+   @Inject(method = "getLeftText", at = @At("RETURN"), cancellable = true)
    private void hideLeft(CallbackInfoReturnable<List<String>> cir) {
       CoordHider ch = (CoordHider)Modules.get().get(CoordHider.class);
       if (ch != null && ch.isActive()) {
@@ -35,11 +34,7 @@ public class DebugHudMixin {
       }
    }
 
-   @Inject(
-      method = {"getRightText"},
-      at = {@At("RETURN")},
-      cancellable = true
-   )
+   @Inject(method = "getRightText", at = @At("RETURN"), cancellable = true)
    private void hideRight(CallbackInfoReturnable<List<String>> cir) {
       CoordHider ch = (CoordHider)Modules.get().get(CoordHider.class);
       if (ch != null && ch.isActive()) {

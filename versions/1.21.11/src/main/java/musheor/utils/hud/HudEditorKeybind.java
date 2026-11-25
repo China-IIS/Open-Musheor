@@ -10,6 +10,9 @@ import net.minecraft.client.MinecraftClient;
 public class HudEditorKeybind {
    private final MinecraftClient fStlZIvY9lS8 = MinecraftClient.getInstance();
 
+   public HudEditorKeybind() {
+   }
+
    @EventHandler
    private void fStlZIvY9lS8(Pre event) {
       if (this.fStlZIvY9lS8.currentScreen == null) {

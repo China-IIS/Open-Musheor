@@ -1,0 +1,80 @@
+[
+  {
+    "project": "litematica",
+    "version": "0.21.7",
+    "id": "Z7jnVo9V",
+    "file": "litematica-fabric-1.21.4-0.21.7.jar",
+    "url": "https://cdn.modrinth.com/data/bEpr0Arc/versions/Z7jnVo9V/litematica-fabric-1.21.4-0.21.7.jar",
+    "bytes": 1643965,
+    "sha256": "19fbf46ddc0776c2ff2a1be4cac627b3a236cc4682ce93d01c858e1437e93d4d",
+    "sha512": "a4931c649fb21d52be1f12abd1a31950b63429e0e083974347b2e7bab3da8edb19930906790de70ef3b2803ea17059d2ef188c5e0ac13dfdb8272f1a1bb16f4d"
+  },
+  {
+    "project": "malilib",
+    "version": "0.23.5",
+    "id": "ifi4uRpL",
+    "file": "malilib-fabric-1.21.4-0.23.5.jar",
+    "url": "https://cdn.modrinth.com/data/GcWjdA9I/versions/ifi4uRpL/malilib-fabric-1.21.4-0.23.5.jar",
+    "bytes": 1429193,
+    "sha256": "07e2c7569378e37059b35c0cf7a6530554f756737c8e341e1a8c2312dc2d4548",
+    "sha512": "03d0a554a2a6a069e9a1b624d9bb72c7e1f17a1e29f2c62e5c29284912829ba9a476cc34dec1a7ee8409ca08b46deb60527363659b4fa16d8a71d8110b67a18b"
+  },
+  {
+    "project": "xaeros-minimap",
+    "version": "fabric-1.21.4-25.3.5",
+    "id": "t6pzXfZa",
+    "file": "xaerominimap-fabric-1.21.4-25.3.5.jar",
+    "url": "https://cdn.modrinth.com/data/1bokaNcj/versions/t6pzXfZa/xaerominimap-fabric-1.21.4-25.3.5.jar",
+    "bytes": 2149337,
+    "sha256": "72ae5c704fa27c47a406ddf725e3ad04019f4df715b813ae22195e0fb426a7a6",
+    "sha512": "08ba1d96276eb21f5c0cd56351cd38fb30bbc21906a485d3ef5c34bce61b7047cb3c230f8d525e1c0736bcdf7783ad3583c075347a175d59f4480485a7ceb341"
+  },
+  {
+    "project": "xaeros-world-map",
+    "version": "fabric-1.21.4-1.40.6",
+    "id": "L0UpL1lw",
+    "file": "xaeroworldmap-fabric-1.21.4-1.40.6.jar",
+    "url": "https://cdn.modrinth.com/data/NcUtCpym/versions/L0UpL1lw/xaeroworldmap-fabric-1.21.4-1.40.6.jar",
+    "bytes": 1401983,
+    "sha256": "4da6575648fa1c9a434b1553ca1bf8b751f67eb490ba25350bfc41d5ac353d90",
+    "sha512": "6b6486306b66b37f219ba35ecf6126d6eeb0a906130c721db1c222e135ece1137c06f8f4d29cef1f70490fd535d9319f748bdaa13afd63f2e6dc3fe109fc3c41"
+  },
+  {
+    "project": "xaeroplus",
+    "version": "2.30.3+fabric-1.21.4",
+    "id": "FwgDBz3H",
+    "file": "XaeroPlus-2.30.3+fabric-1.21.4-WM1.40.6-MM25.3.5.jar",
+    "url": "https://cdn.modrinth.com/data/EnPUzSTg/versions/FwgDBz3H/XaeroPlus-2.30.3%2Bfabric-1.21.4-WM1.40.6-MM25.3.5.jar",
+    "bytes": 7796569,
+    "sha256": "2bcccf1e5557f46c62924987639a3c135911e65ead2e90064f10c38ca15d42fc",
+    "sha512": "07e3b901622522a2d5d4a95c39b02b7ce7c7b9a5fa136a90a89519970ff26e1ff0e6a9af487e30d1c6cc5f5b698d9280d8af6780b6208e8de69791661c875cad"
+  },
+  {
+    "project": "viafabricplus",
+    "version": "4.0.5-BACKPORT",
+    "id": "8sPJsNcy",
+    "file": "ViaFabricPlus-4.0.5-BACKPORT.jar",
+    "url": "https://cdn.modrinth.com/data/rIC2XJV4/versions/8sPJsNcy/ViaFabricPlus-4.0.5-BACKPORT.jar",
+    "bytes": 12648084,
+    "sha256": "5da895ea6ada2288dc1eae35496e4bc64e44335c2e8bdaf54e97e76db4dfb5b2",
+    "sha512": "12ec6461070b50124c0fec2173ca2b170eab0ff2bfbfd384185a5c661ec512bd670675dd88c42aa929f8db9306f3c09f9e8564f0f3e5f55d8f2921a8d3bb3597"
+  },
+  {
+    "project": "viaversion",
+    "file": "viaversion-common-5.3.3-20250426.143637-8.jar",
+    "embeddedIn": "ViaFabricPlus-4.0.5-BACKPORT.jar",
+    "url": "https://cdn.modrinth.com/data/rIC2XJV4/versions/8sPJsNcy/ViaFabricPlus-4.0.5-BACKPORT.jar!/META-INF/jars/viaversion-common-5.3.3-20250426.143637-8.jar",
+    "bytes": 5334296,
+    "sha256": "3cb58b789884c2d75565bba668d133e89a0a1105b5d90c76d3c7d5e19e7ffeef",
+    "sha512": "f4eb0610fca6eb58a1824243047dcec2f374ee12720d2abbb4e4e5c335623674094eb194a85ed00ed73c7f6d61c46d837475f81eef1f9be061ffb4fbe192727c"
+  },
+  {
+    "project": "xaerolib",
+    "file": "xaerolib-fabric-1.21.4-1.0.45.jar",
+    "embeddedIn": "xaerominimap-fabric-1.21.4-25.3.5.jar",
+    "url": "https://cdn.modrinth.com/data/1bokaNcj/versions/t6pzXfZa/xaerominimap-fabric-1.21.4-25.3.5.jar!/META-INF/jars/xaerolib-fabric-1.21.4-1.0.45.jar",
+    "bytes": 543101,
+    "sha256": "9369968670ce1be9bee792468d91e1575a55b70acb1ee8a7303da02dbbf659f8",
+    "sha512": "ece2c9c2581719def1f5f73e27bf911b58aa3d11e9224048f949dd20634a465eac52c6d69e32629df2ff35d6791617f5bc4fadbea55f539bfba7978b6b592631"
+  }
+]

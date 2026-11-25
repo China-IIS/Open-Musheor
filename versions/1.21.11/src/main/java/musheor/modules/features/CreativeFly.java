@@ -3,16 +3,15 @@ package musheor.modules.features;
 import meteordevelopment.meteorclient.events.game.GameLeftEvent;
 import meteordevelopment.meteorclient.events.packets.PacketEvent.Receive;
 import meteordevelopment.meteorclient.events.world.TickEvent.Pre;
-import meteordevelopment.meteorclient.settings.EnumSetting.Builder;
 import meteordevelopment.meteorclient.settings.Setting;
 import meteordevelopment.meteorclient.settings.SettingGroup;
+import meteordevelopment.meteorclient.settings.EnumSetting.Builder;
 import meteordevelopment.meteorclient.systems.modules.Module;
 import meteordevelopment.meteorclient.systems.modules.Modules;
 import meteordevelopment.meteorclient.systems.modules.player.ChestSwap;
 import meteordevelopment.meteorclient.utils.player.ChatUtils;
 import meteordevelopment.orbit.EventHandler;
 import musheor.compat.VersionHelper;
-import musheor.musheor;
 import musheor.utils.manager.RotationManager;
 import musheor.utils.manager.gVOhtBej1x;
 import net.minecraft.entity.EquipmentSlot;
@@ -23,7 +22,7 @@ public class CreativeFly extends Module {
    private final SettingGroup QfZy2gWnKInxFPr = this.settings.getDefaultGroup();
    private final SettingGroup TJImwK2 = this.settings.createGroup("Grim");
    private final Setting<CreativeFly.HoverMode> wSJeYsJcmjNZf = this.QfZy2gWnKInxFPr
-      .add(((Builder)((Builder)new Builder().name("hover")).defaultValue(CreativeFly.HoverMode.fStlZIvY9lS8)).build());
+      .add(((Builder)((Builder)new Builder().name("hover")).defaultValue(CreativeFly.HoverMode.FullStop)).build());
    private final Setting<Boolean> i2Nu6XHKic = this.QfZy2gWnKInxFPr
       .add(
          ((meteordevelopment.meteorclient.settings.BoolSetting.Builder)((meteordevelopment.meteorclient.settings.BoolSetting.Builder)((meteordevelopment.meteorclient.settings.BoolSetting.Builder)new meteordevelopment.meteorclient.settings.BoolSetting.Builder()
@@ -64,7 +63,7 @@ public class CreativeFly extends Module {
    private int j376sIQ;
 
    public CreativeFly() {
-      super(musheor.MAIN, "creative-fly", "Creative flight, but in survival, optimized for GrimAC");
+      super(musheor.musheor.MAIN, "creative-fly", "Creative flight, but in survival, optimized for GrimAC");
       fStlZIvY9lS8 = this;
    }
 
@@ -149,19 +148,19 @@ public class CreativeFly extends Module {
 
                float flightYaw = cameraYaw;
                if (w && a) {
-                  flightYaw = cameraYaw - 45.0F;
+                  flightYaw -= 45.0F;
                } else if (w && d) {
-                  flightYaw = cameraYaw + 45.0F;
+                  flightYaw += 45.0F;
                } else if (s && a) {
-                  flightYaw = cameraYaw - 135.0F;
+                  flightYaw -= 135.0F;
                } else if (s && d) {
-                  flightYaw = cameraYaw + 135.0F;
+                  flightYaw += 135.0F;
                } else if (a) {
-                  flightYaw = cameraYaw - 90.0F;
+                  flightYaw -= 90.0F;
                } else if (d) {
-                  flightYaw = cameraYaw + 90.0F;
+                  flightYaw += 90.0F;
                } else if (s) {
-                  flightYaw = cameraYaw + 180.0F;
+                  flightYaw += 180.0F;
                }
 
                float flightPitch = -1.0F;
@@ -181,7 +180,7 @@ public class CreativeFly extends Module {
 
                RotationManager.setServerYaw(flightYaw);
                RotationManager.setServerPitch(flightPitch);
-               RotationManager.setMoveMode(RotationManager.gVOhtBej1x.QfZy2gWnKInxFPr, 0);
+               RotationManager.setMoveMode(RotationManager.gVOhtBej1x.Forward, 0);
             }
 
             if (this.I3psabmOrOI == null || (Boolean)this.BrmKXSYhWhqoB1.get()) {
@@ -189,20 +188,20 @@ public class CreativeFly extends Module {
             }
 
             if (!any) {
-               if (this.wSJeYsJcmjNZf.get() != CreativeFly.HoverMode.fStlZIvY9lS8) {
+               if (this.wSJeYsJcmjNZf.get() != CreativeFly.HoverMode.FullStop) {
                   if (gVOhtBej1x.V7zKJ4n6D()) {
-                     float flightYawx = cameraYaw;
+                     float flightYaw = cameraYaw;
                      float flightPitch = -1.0F;
-                     if (this.wSJeYsJcmjNZf.get() == CreativeFly.HoverMode.QfZy2gWnKInxFPr) {
+                     if (this.wSJeYsJcmjNZf.get() == CreativeFly.HoverMode.FlipHorizontal) {
                         if (this.TXWyNb) {
-                           flightYawx = cameraYaw + 180.0F;
+                           flightYaw += 180.0F;
                         }
-                     } else if (this.wSJeYsJcmjNZf.get() == CreativeFly.HoverMode.TJImwK2) {
+                     } else if (this.wSJeYsJcmjNZf.get() == CreativeFly.HoverMode.FlipVertical) {
                         flightPitch = this.TXWyNb ? -90.0F : 90.0F;
                      }
 
                      this.TXWyNb = !this.TXWyNb;
-                     RotationManager.setServerYaw(flightYawx);
+                     RotationManager.setServerYaw(flightYaw);
                      RotationManager.setServerPitch(flightPitch);
                   } else {
                      gVOhtBej1x.voxTwgNzyrpaAnP();
@@ -234,9 +233,12 @@ public class CreativeFly extends Module {
       gVOhtBej1x.voxTwgNzyrpaAnP();
    }
 
-   public static enum HoverMode {
-      fStlZIvY9lS8,
-      QfZy2gWnKInxFPr,
-      TJImwK2;
+   public enum HoverMode {
+      FullStop,
+      FlipHorizontal,
+      FlipVertical;
+
+      HoverMode() {
+      }
    }
 }

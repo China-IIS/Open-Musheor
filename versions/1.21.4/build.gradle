@@ -1,5 +1,5 @@
 plugins {
-    id 'fabric-loom' version '1.10.5'
+    id 'fabric-loom' version '1.14.10'
     id 'java'
 }
 
@@ -21,8 +21,18 @@ dependencies {
     mappings "net.fabricmc:yarn:1.21.4+build.8:v2"
     modImplementation "net.fabricmc:fabric-loader:0.16.9"
     modImplementation "meteordevelopment:meteor-client:1.21.4-SNAPSHOT"
-    compileOnly files("libs/baritone.jar")
-    include files('libs/Java-WebSocket-1.5.4.jar')
+    modCompileOnly files("libs/baritone.jar")
+    // Production Fabric jars are intermediary; Loom remaps them to Yarn for compilation.
+    modCompileOnly files("libs/litematica-fabric-1.21.4-0.21.7.jar")
+    modCompileOnly files("libs/malilib-fabric-1.21.4-0.23.5.jar")
+    modCompileOnly files("libs/xaerominimap-fabric-1.21.4-25.3.5.jar")
+    modCompileOnly files("libs/xaeroworldmap-fabric-1.21.4-1.40.6.jar")
+    modCompileOnly files("libs/XaeroPlus-2.30.3+fabric-1.21.4-WM1.40.6-MM25.3.5.jar")
+    modCompileOnly files("libs/ViaFabricPlus-4.0.5-BACKPORT.jar")
+    modCompileOnly files("libs/xaerolib-fabric-1.21.4-1.0.45.jar")
+    // ViaVersion has no Minecraft namespace; use the authentic jar nested by ViaFabricPlus.
+    compileOnly files("libs/viaversion-common-5.3.3-20250426.143637-8.jar")
+    implementation files('libs/Java-WebSocket-1.5.4.jar')
 }
 
 loom {
@@ -40,19 +50,12 @@ tasks.withType(JavaCompile).configureEach {
     options.compilerArgs += ['-Xlint:none', '-nowarn', '-Xmaxerrs', '2000']
 }
 
-sourceSets {
-    main {
-        java {
-            exclude 'musheor/compat/LitematicaHelperImpl.java'
-            exclude 'musheor/compat/XearoHelperImpl.java'
-            exclude 'musheor/compat/XearoMapHooks.java'
-            exclude 'musheor/mixin/MixinXaeroGuiMapCoords.java'
-            exclude 'musheor/mixin/MixinXearoGuiMap.java'
-            exclude 'musheor/mixin/MixinXaeroInfoDisplayCompiler.java'
-        }
+// Preserve the original Fabric nested dependency without Loom's module-component resolver.
+jar {
+    into('META-INF/jars') {
+        from('libs/Java-WebSocket-1.5.4.jar')
     }
 }
-
 
 processResources {
     inputs.property 'version', project.version

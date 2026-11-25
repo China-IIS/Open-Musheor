@@ -12,16 +12,12 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-@Mixin(
-   value = {BlockUtils.class},
-   remap = false
-)
+@Mixin(value = BlockUtils.class, remap = false)
 public class MixinBlockUtilsBypass {
-   @Inject(
-      method = {"place(Lnet/minecraft/BlockPos;Lmeteordevelopment/meteorclient/utils/player/FindItemResult;ZIZZ)Z"},
-      at = {@At("HEAD")},
-      cancellable = true
-   )
+   public MixinBlockUtilsBypass() {
+   }
+
+   @Inject(method = "place(Lnet/minecraft/util/math/BlockPos;Lmeteordevelopment/meteorclient/utils/player/FindItemResult;ZIZZ)Z", at = @At("HEAD"), cancellable = true)
    private static void onPlace(
       BlockPos blockPos,
       FindItemResult findItemResult,

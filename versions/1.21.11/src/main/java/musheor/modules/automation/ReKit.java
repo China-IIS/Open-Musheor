@@ -2,22 +2,22 @@ package musheor.modules.automation;
 
 import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
-import com.mojang.blaze3d.vertex.VertexFormatElement.Type;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Reader;
 import java.io.Writer;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map.Entry;
 import java.util.Map;
 import java.util.Set;
+import java.util.Map.Entry;
 import meteordevelopment.meteorclient.MeteorClient;
 import meteordevelopment.meteorclient.events.game.OpenScreenEvent;
 import meteordevelopment.meteorclient.events.world.TickEvent.Pre;
@@ -25,9 +25,9 @@ import meteordevelopment.meteorclient.gui.GuiTheme;
 import meteordevelopment.meteorclient.gui.widgets.WWidget;
 import meteordevelopment.meteorclient.gui.widgets.containers.WVerticalList;
 import meteordevelopment.meteorclient.gui.widgets.pressable.WButton;
-import meteordevelopment.meteorclient.settings.EnumSetting.Builder;
 import meteordevelopment.meteorclient.settings.Setting;
 import meteordevelopment.meteorclient.settings.SettingGroup;
+import meteordevelopment.meteorclient.settings.EnumSetting.Builder;
 import meteordevelopment.meteorclient.systems.modules.Module;
 import meteordevelopment.meteorclient.utils.misc.Keybind;
 import meteordevelopment.orbit.EventHandler;
@@ -50,7 +50,7 @@ public class ReKit extends Module {
    public final Setting<ReKit.RekitMode> fStlZIvY9lS8 = this.wSJeYsJcmjNZf
       .add(
          ((Builder)((Builder)((Builder)new Builder().name("mode")).description("Auto = triggers on container open. OnKey = triggers on keybind."))
-               .defaultValue(ReKit.RekitMode.fStlZIvY9lS8))
+               .defaultValue(ReKit.RekitMode.Auto))
             .build()
       );
    public final Setting<Keybind> QfZy2gWnKInxFPr = this.wSJeYsJcmjNZf
@@ -59,7 +59,7 @@ public class ReKit extends Module {
                         .name("key"))
                      .description("Keybind to trigger rekit."))
                   .defaultValue(Keybind.none()))
-               .visible(() -> this.fStlZIvY9lS8.get() == ReKit.RekitMode.QfZy2gWnKInxFPr))
+               .visible(() -> this.fStlZIvY9lS8.get() == ReKit.RekitMode.OnKey))
             .build()
       );
    public final Setting<String> TJImwK2 = this.wSJeYsJcmjNZf
@@ -105,7 +105,7 @@ public class ReKit extends Module {
 
    @EventHandler
    private void fStlZIvY9lS8(OpenScreenEvent event) {
-      if (this.fStlZIvY9lS8.get() == ReKit.RekitMode.fStlZIvY9lS8) {
+      if (this.fStlZIvY9lS8.get() == ReKit.RekitMode.Auto) {
          if (this.i2Nu6XHKic.player != null) {
             if (event.screen instanceof HandledScreen) {
                if (!(event.screen instanceof InventoryScreen)) {
@@ -132,7 +132,7 @@ public class ReKit extends Module {
             this.TXWyNb = null;
          }
 
-         if (this.fStlZIvY9lS8.get() == ReKit.RekitMode.QfZy2gWnKInxFPr) {
+         if (this.fStlZIvY9lS8.get() == ReKit.RekitMode.OnKey) {
             boolean pressed = ((Keybind)this.QfZy2gWnKInxFPr.get()).isPressed();
             if (pressed && !this.qhulAUwd) {
                this.qhulAUwd = true;
@@ -156,7 +156,13 @@ public class ReKit extends Module {
       if (this.i2Nu6XHKic.player != null) {
          String name = (String)this.TJImwK2.get();
          if (!name.isEmpty()) {
-            record _MoveOp(int fStlZIvY9lS8, int QfZy2gWnKInxFPr, int TJImwK2) {
+            record MoveOp(int fStlZIvY9lS8, int QfZy2gWnKInxFPr, int TJImwK2) {
+
+
+               @Override
+               public final String toString() {
+                  return "MoveOp[from=" + this.fStlZIvY9lS8 + ", to=" + this.QfZy2gWnKInxFPr + ", returnTo=" + this.TJImwK2 + "]";
+               }
             }
 
             HashMap<Integer, Item> kit = this.vGAMA89H.computeIfAbsent(name, this::QfZy2gWnKInxFPr);
@@ -186,7 +192,7 @@ public class ReKit extends Module {
                   conCount[i] = s.getCount();
                }
 
-               List<_MoveOp> plan = new ArrayList<>();
+               List<MoveOp> plan = new ArrayList<>();
                Iterator var27 = kit.entrySet().iterator();
 
                while (true) {
@@ -197,7 +203,7 @@ public class ReKit extends Module {
                   int current;
                   while (true) {
                      if (!var27.hasNext()) {
-                        for (_MoveOp op : plan) {
+                        for (MoveOp op : plan) {
                            if (!jU8xXhmkg.QfZy2gWnKInxFPr()) {
                               return;
                            }
@@ -229,7 +235,7 @@ public class ReKit extends Module {
 
                         int freeSlot = this.fStlZIvY9lS8(invCount, kitSlots, targetInv);
                         if (freeSlot != -1) {
-                           plan.add(new _MoveOp(targetScreen, this.fStlZIvY9lS8(freeSlot, containerHandler), -1));
+                           plan.add(new MoveOp(targetScreen, this.fStlZIvY9lS8(freeSlot, containerHandler), -1));
                            invItem[freeSlot] = invItem[targetInv];
                            invCount[freeSlot] = invCount[targetInv];
                         } else {
@@ -237,7 +243,7 @@ public class ReKit extends Module {
                               continue;
                            }
 
-                           plan.add(new _MoveOp(targetScreen, -1, -1));
+                           plan.add(new MoveOp(targetScreen, -1, -1));
                         }
 
                         invItem[targetInv] = Items.AIR;
@@ -255,7 +261,7 @@ public class ReKit extends Module {
                         if (kitAtI == null || kitAtI != targetItem) {
                            int fromScreen = this.fStlZIvY9lS8(i, containerHandler);
                            int moved = Math.min(invCount[i], remaining);
-                           plan.add(new _MoveOp(fromScreen, targetScreen, invCount[i] > remaining ? fromScreen : -1));
+                           plan.add(new MoveOp(fromScreen, targetScreen, invCount[i] > remaining ? fromScreen : -1));
                            invCount[i] -= moved;
                            if (invCount[i] == 0) {
                               invItem[i] = Items.AIR;
@@ -268,13 +274,13 @@ public class ReKit extends Module {
                      }
                   }
 
-                  for (int ix = 0; ix < containerSize && remaining > 0; ix++) {
-                     if (conItem[ix] == targetItem && conCount[ix] != 0) {
-                        int moved = Math.min(conCount[ix], remaining);
-                        plan.add(new _MoveOp(ix, targetScreen, conCount[ix] > remaining ? ix : -1));
-                        conCount[ix] -= moved;
-                        if (conCount[ix] == 0) {
-                           conItem[ix] = Items.AIR;
+                  for (int i = 0; i < containerSize && remaining > 0; i++) {
+                     if (conItem[i] == targetItem && conCount[i] != 0) {
+                        int moved = Math.min(conCount[i], remaining);
+                        plan.add(new MoveOp(i, targetScreen, conCount[i] > remaining ? i : -1));
+                        conCount[i] -= moved;
+                        if (conCount[i] == 0) {
+                           conItem[i] = Items.AIR;
                         }
 
                         invCount[targetInv] += moved;
@@ -310,9 +316,9 @@ public class ReKit extends Module {
          }
       }
 
-      for (int ix = 8; ix >= 0; ix--) {
-         if (ix != exclude && !kitSlots.contains(ix) && invCount[ix] == 0) {
-            return ix;
+      for (int i = 8; i >= 0; i--) {
+         if (i != exclude && !kitSlots.contains(i) && invCount[i] == 0) {
+            return i;
          }
       }
 
@@ -337,8 +343,8 @@ public class ReKit extends Module {
 
                try (Writer writer = new FileWriter(file)) {
                   new Gson().toJson(kitData, writer);
-               } catch (IOException var9) {
-                  this.error("Failed to save kit: %s", new Object[]{var9.getMessage()});
+               } catch (IOException e) {
+                  this.error("Failed to save kit: %s", new Object[]{e.getMessage()});
                   return;
                }
 
@@ -355,21 +361,12 @@ public class ReKit extends Module {
    public HashMap<Integer, Item> QfZy2gWnKInxFPr(String kitName) {
       File file = this.TJImwK2(kitName);
       if (file != null && file.exists()) {
-         try {
-            HashMap var6;
-            try (Reader reader = new FileReader(file)) {
-               Type type = (new TypeToken<HashMap<String, String>>() {}).getType();
-               HashMap<String, String> raw = (HashMap<String, String>)new Gson().fromJson(reader, type);
-               if (raw == null) {
-                  return null;
-               }
-
-               var6 = this.fStlZIvY9lS8(raw);
-            }
-
-            return var6;
-         } catch (Exception var9) {
-            this.error("Failed to load kit '§b%s§r': %s", new Object[]{kitName, var9.getMessage()});
+         try (Reader reader = new FileReader(file)) {
+            Type type = (new TypeToken<HashMap<String, String>>() {}).getType();
+            HashMap<String, String> raw = (HashMap<String, String>)new Gson().fromJson(reader, type);
+            return raw == null ? null : this.fStlZIvY9lS8(raw);
+         } catch (Exception e) {
+            this.error("Failed to load kit '§b%s§r': %s", new Object[]{kitName, e.getMessage()});
             return null;
          }
       } else {
@@ -400,7 +397,7 @@ public class ReKit extends Module {
       if (kitName != null && !kitName.isEmpty()) {
          try {
             return new File(new File(new File(MeteorClient.FOLDER, "musheor"), "kits"), kitName + ".json");
-         } catch (NullPointerException var3) {
+         } catch (NullPointerException e) {
             return null;
          }
       } else {
@@ -424,34 +421,37 @@ public class ReKit extends Module {
    public boolean i2Nu6XHKic(String name) {
       if (this.vGAMA89H.containsKey(name)) {
          return true;
-      } else {
-         File file = this.TJImwK2(name);
-         return file != null && file.exists();
       }
+
+      File file = this.TJImwK2(name);
+      return file != null && file.exists();
    }
 
    public List<String> QfZy2gWnKInxFPr() {
       File kitsDir = new File(new File(MeteorClient.FOLDER, "musheor"), "kits");
       if (!kitsDir.exists()) {
          return Collections.emptyList();
-      } else {
-         File[] files = kitsDir.listFiles((d, n) -> n.endsWith(".json"));
-         if (files == null) {
-            return Collections.emptyList();
-         } else {
-            List<String> names = new ArrayList<>();
-
-            for (File f : files) {
-               names.add(f.getName().replace(".json", ""));
-            }
-
-            return names;
-         }
       }
+
+      File[] files = kitsDir.listFiles((d, n) -> n.endsWith(".json"));
+      if (files == null) {
+         return Collections.emptyList();
+      }
+
+      List<String> names = new ArrayList<>();
+
+      for (File f : files) {
+         names.add(f.getName().replace(".json", ""));
+      }
+
+      return names;
    }
 
-   public static enum RekitMode {
-      fStlZIvY9lS8,
-      QfZy2gWnKInxFPr;
+   public enum RekitMode {
+      Auto,
+      OnKey;
+
+      RekitMode() {
+      }
    }
 }

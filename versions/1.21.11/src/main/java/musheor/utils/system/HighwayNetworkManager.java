@@ -12,8 +12,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map.Entry;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.atomic.AtomicReference;
@@ -100,13 +100,13 @@ public class HighwayNetworkManager {
             for (Runnable cb : this.onLoadedCallbacks) {
                try {
                   cb.run();
-               } catch (Exception var12) {
-                  System.err.println("[HighwayNetworkManager] Callback error: " + var12.getMessage());
+               } catch (Exception e) {
+                  System.err.println("[HighwayNetworkManager] Callback error: " + e.getMessage());
                }
             }
-         } catch (Exception var13) {
+         } catch (Exception e) {
             System.err.println("[HighwayNetworkManager] Error fetching remote data, using fallback.");
-            var13.printStackTrace();
+            e.printStackTrace();
          }
       });
    }
@@ -114,22 +114,22 @@ public class HighwayNetworkManager {
    private double[] parseDoubleArray(JsonObject root, String key) {
       if (!root.has(key)) {
          return null;
-      } else {
-         JsonArray array = root.getAsJsonArray(key);
-         double[] result = new double[array.size()];
-
-         for (int i = 0; i < array.size(); i++) {
-            JsonElement el = array.get(i);
-
-            try {
-               result[i] = el.getAsDouble();
-            } catch (NumberFormatException var8) {
-               System.err.println("[HighwayNetworkManager] Skipping invalid number in '" + key + "': " + el);
-            }
-         }
-
-         return result;
       }
+
+      JsonArray array = root.getAsJsonArray(key);
+      double[] result = new double[array.size()];
+
+      for (int i = 0; i < array.size(); i++) {
+         JsonElement el = array.get(i);
+
+         try {
+            result[i] = el.getAsDouble();
+         } catch (NumberFormatException e) {
+            System.err.println("[HighwayNetworkManager] Skipping invalid number in '" + key + "': " + el);
+         }
+      }
+
+      return result;
    }
 
    public static HighwayNetworkManager getInstance() {
@@ -175,7 +175,5 @@ public class HighwayNetworkManager {
 
    public record HighwayServerConfig(double[] ringDistances, double[] diamondDistances) {
       public static final HighwayNetworkManager.HighwayServerConfig EMPTY = new HighwayNetworkManager.HighwayServerConfig(new double[0], new double[0]);
-
-   
    }
 }

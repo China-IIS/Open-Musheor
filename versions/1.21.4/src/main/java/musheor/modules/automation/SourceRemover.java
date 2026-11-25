@@ -6,17 +6,16 @@ import java.util.List;
 import meteordevelopment.meteorclient.events.render.Render3DEvent;
 import meteordevelopment.meteorclient.events.world.TickEvent.Pre;
 import meteordevelopment.meteorclient.renderer.ShapeMode;
-import meteordevelopment.meteorclient.settings.BoolSetting.Builder;
 import meteordevelopment.meteorclient.settings.Setting;
 import meteordevelopment.meteorclient.settings.SettingGroup;
+import meteordevelopment.meteorclient.settings.BoolSetting.Builder;
 import meteordevelopment.meteorclient.systems.modules.Module;
 import meteordevelopment.meteorclient.utils.render.RenderUtils;
 import meteordevelopment.meteorclient.utils.render.color.Color;
 import meteordevelopment.meteorclient.utils.world.BlockUtils;
 import meteordevelopment.orbit.EventHandler;
-import musheor.musheor;
-import musheor.utils.manager.pvfA15fQSVM;
 import musheor.utils.oyDPiOVBGKG;
+import musheor.utils.manager.pvfA15fQSVM;
 import musheor.utils.system.MusheorSystem;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -56,7 +55,7 @@ public class SourceRemover extends Module {
          ((meteordevelopment.meteorclient.settings.EnumSetting.Builder)((meteordevelopment.meteorclient.settings.EnumSetting.Builder)((meteordevelopment.meteorclient.settings.EnumSetting.Builder)new meteordevelopment.meteorclient.settings.EnumSetting.Builder()
                      .name("list-mode"))
                   .description("Selection mode."))
-               .defaultValue(SourceRemover.ListMode.fStlZIvY9lS8))
+               .defaultValue(SourceRemover.ListMode.None))
             .build()
       );
    private final Setting<List<Block>> BrmKXSYhWhqoB1 = this.QfZy2gWnKInxFPr
@@ -64,10 +63,8 @@ public class SourceRemover extends Module {
          ((meteordevelopment.meteorclient.settings.BlockListSetting.Builder)((meteordevelopment.meteorclient.settings.BlockListSetting.Builder)((meteordevelopment.meteorclient.settings.BlockListSetting.Builder)new meteordevelopment.meteorclient.settings.BlockListSetting.Builder()
                      .name("whitelist"))
                   .description("The allowed blocks that it will use to fill up the lava."))
-               .defaultValue(
-                  new Block[]{Blocks.NETHERRACK, Blocks.COBBLESTONE, Blocks.DIRT, Blocks.BLACKSTONE, Blocks.OBSIDIAN}
-               )
-               .visible(() -> this.qhulAUwd.get() == SourceRemover.ListMode.QfZy2gWnKInxFPr))
+               .defaultValue(new Block[]{Blocks.NETHERRACK, Blocks.COBBLESTONE, Blocks.DIRT, Blocks.BLACKSTONE, Blocks.OBSIDIAN})
+               .visible(() -> this.qhulAUwd.get() == SourceRemover.ListMode.Whitelist))
             .build()
       );
    private final Setting<List<Block>> TXWyNb = this.QfZy2gWnKInxFPr
@@ -75,7 +72,7 @@ public class SourceRemover extends Module {
          ((meteordevelopment.meteorclient.settings.BlockListSetting.Builder)((meteordevelopment.meteorclient.settings.BlockListSetting.Builder)((meteordevelopment.meteorclient.settings.BlockListSetting.Builder)new meteordevelopment.meteorclient.settings.BlockListSetting.Builder()
                      .name("blacklist"))
                   .description("The denied blocks that it not will use to fill up the lava."))
-               .visible(() -> this.qhulAUwd.get() == SourceRemover.ListMode.TJImwK2))
+               .visible(() -> this.qhulAUwd.get() == SourceRemover.ListMode.Blacklist))
             .build()
       );
    private final Setting<Boolean> I3psabmOrOI = this.QfZy2gWnKInxFPr
@@ -101,7 +98,7 @@ public class SourceRemover extends Module {
    }
 
    public SourceRemover() {
-      super(musheor.AUTOMATION, "source-filler", "Fill up lava and or water source blocks");
+      super(musheor.musheor.AUTOMATION, "source-filler", "Fill up lava and or water source blocks");
    }
 
    public void onActivate() {
@@ -132,8 +129,8 @@ public class SourceRemover extends Module {
             }
 
             if (bestItem == null) {
-               for (int ix = 9; ix < this.mc.player.getInventory().main.size(); ix++) {
-                  ItemStack itemStack = this.mc.player.getInventory().getStack(ix);
+               for (int i = 9; i < this.mc.player.getInventory().main.size(); i++) {
+                  ItemStack itemStack = this.mc.player.getInventory().getStack(i);
                   if (this.fStlZIvY9lS8(itemStack)) {
                      pvfA15fQSVM.fStlZIvY9lS8(itemStack.getItem());
                      return;
@@ -161,21 +158,21 @@ public class SourceRemover extends Module {
                         return;
                      }
 
-                     for (BlockPos posx : positions) {
-                        if (BlockUtils.canPlace(posx, true)) {
-                           Direction side = KekNuker.QfZy2gWnKInxFPr(this.mc.player.getEyePos(), posx);
+                     for (BlockPos pos : positions) {
+                        if (BlockUtils.canPlace(pos, true)) {
+                           Direction side = KekNuker.QfZy2gWnKInxFPr(this.mc.player.getEyePos(), pos);
                            if (!jU8xXhmkg.fStlZIvY9lS8()) {
                               break;
                            }
 
-                           irzXX.fStlZIvY9lS8(posx, side, U6PQSXqW.fStlZIvY9lS8().QfZy2gWnKInxFPr(), (Boolean)MusheorSystem.Manager.silentPlace.get());
-                           U6PQSXqW.fStlZIvY9lS8().PVlYDeNipUe().put(posx, this.V7zKJ4n6D);
+                           irzXX.fStlZIvY9lS8(pos, side, U6PQSXqW.fStlZIvY9lS8().QfZy2gWnKInxFPr(), (Boolean)MusheorSystem.Manager.silentPlace.get());
+                           U6PQSXqW.fStlZIvY9lS8().PVlYDeNipUe().put(pos, this.V7zKJ4n6D);
                            MusheorSystem.debug(
                               "Filled liquid at %d, %d, %d with a distance of: %s",
-                              posx.getX(),
-                              posx.getY(),
-                              posx.getZ(),
-                              Math.sqrt(KekNuker.fStlZIvY9lS8(this.mc.player.getEyePos(), posx))
+                              pos.getX(),
+                              pos.getY(),
+                              pos.getZ(),
+                              Math.sqrt(KekNuker.fStlZIvY9lS8(this.mc.player.getEyePos(), pos))
                            );
                         }
                      }
@@ -187,10 +184,10 @@ public class SourceRemover extends Module {
    }
 
    private boolean fStlZIvY9lS8(ItemStack stack) {
-      return this.qhulAUwd.get() == SourceRemover.ListMode.TJImwK2 && !((List)this.TXWyNb.get()).contains(Block.getBlockFromItem(stack.getItem()))
-         || this.qhulAUwd.get() == SourceRemover.ListMode.QfZy2gWnKInxFPr
+      return this.qhulAUwd.get() == SourceRemover.ListMode.Blacklist && !((List)this.TXWyNb.get()).contains(Block.getBlockFromItem(stack.getItem()))
+         || this.qhulAUwd.get() == SourceRemover.ListMode.Whitelist
             && ((List)this.BrmKXSYhWhqoB1.get()).contains(Block.getBlockFromItem(stack.getItem()))
-         || this.qhulAUwd.get() == SourceRemover.ListMode.fStlZIvY9lS8
+         || this.qhulAUwd.get() == SourceRemover.ListMode.None
             && stack.getItem() instanceof BlockItem blockItem
             && blockItem.getBlock().getDefaultState().isSolid();
    }
@@ -205,16 +202,11 @@ public class SourceRemover extends Module {
             for (int y = -dist; y <= dist; y++) {
                for (int z = -dist; z <= dist; z++) {
                   BlockPos pos = playerPos.add(x, y, z);
-                  if (this.mc
-                        .player
-                        .getEyePos()
-                        .distanceTo(new Vec3d(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5))
-                     <= dist) {
+                  if (this.mc.player.getEyePos().distanceTo(new Vec3d(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5)) <= dist) {
                      BlockState state = this.mc.world.getBlockState(pos);
                      FluidState fluid = state.getFluidState();
                      if (!(Boolean)this.TJImwK2.get() || fluid.isStill()) {
-                        if ((Boolean)this.wSJeYsJcmjNZf.get()
-                           && (fluid.getFluid() == Fluids.LAVA || fluid.getFluid() == Fluids.FLOWING_LAVA)) {
+                        if ((Boolean)this.wSJeYsJcmjNZf.get() && (fluid.getFluid() == Fluids.LAVA || fluid.getFluid() == Fluids.FLOWING_LAVA)) {
                            this.j376sIQ.add(pos);
                         }
 
@@ -247,8 +239,7 @@ public class SourceRemover extends Module {
                      if (!(blockState.getBlock() instanceof BubbleColumnBlock) || (Boolean)this.vGAMA89H.get()) {
                         positions.add(pos);
                      }
-                  } else if ((Boolean)this.wSJeYsJcmjNZf.get()
-                     && (fluid.getFluid() == Fluids.LAVA || fluid.getFluid() == Fluids.FLOWING_LAVA)) {
+                  } else if ((Boolean)this.wSJeYsJcmjNZf.get() && (fluid.getFluid() == Fluids.LAVA || fluid.getFluid() == Fluids.FLOWING_LAVA)) {
                      positions.add(pos);
                   }
                }
@@ -266,9 +257,12 @@ public class SourceRemover extends Module {
       }
    }
 
-   public static enum ListMode {
-      fStlZIvY9lS8,
-      QfZy2gWnKInxFPr,
-      TJImwK2;
+   public enum ListMode {
+      None,
+      Whitelist,
+      Blacklist;
+
+      ListMode() {
+      }
    }
 }

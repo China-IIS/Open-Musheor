@@ -42,7 +42,7 @@ public class CustomHudButton {
    public int qhulAUwd;
    public int BrmKXSYhWhqoB1 = 40;
    public int TXWyNb = 20;
-   public CustomHudButton.ScreenTarget I3psabmOrOI = CustomHudButton.ScreenTarget.fStlZIvY9lS8;
+   public CustomHudButton.ScreenTarget I3psabmOrOI = CustomHudButton.ScreenTarget.Inventory;
    public int duJ6sPeetAcBh6P = Integer.MIN_VALUE;
    public int j376sIQ = Integer.MIN_VALUE;
    public final List<ButtonAction> V7zKJ4n6D = new ArrayList<>();
@@ -144,8 +144,8 @@ public class CustomHudButton {
       if (tag.contains("screenTarget")) {
          try {
             btn.I3psabmOrOI = CustomHudButton.ScreenTarget.valueOf(VersionHelper.get().getString(tag, "screenTarget"));
-         } catch (IllegalArgumentException var6) {
-            btn.I3psabmOrOI = CustomHudButton.ScreenTarget.fStlZIvY9lS8;
+         } catch (IllegalArgumentException ignored) {
+            btn.I3psabmOrOI = CustomHudButton.ScreenTarget.Inventory;
          }
       }
 
@@ -159,13 +159,16 @@ public class CustomHudButton {
       return btn;
    }
 
-   public static enum ScreenTarget {
-      fStlZIvY9lS8,
-      QfZy2gWnKInxFPr,
-      TJImwK2;
+   public enum ScreenTarget {
+      Inventory,
+      Chat,
+      Both;
+
+      ScreenTarget() {
+      }
 
       public boolean fStlZIvY9lS8(CustomHudButton.ScreenTarget context) {
-         return this == TJImwK2 || this == context;
+         return this == Both || this == context;
       }
    }
 }

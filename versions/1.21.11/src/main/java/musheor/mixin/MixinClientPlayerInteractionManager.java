@@ -12,13 +12,12 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-@Mixin({ClientPlayerInteractionManager.class})
+@Mixin(ClientPlayerInteractionManager.class)
 public class MixinClientPlayerInteractionManager {
-   @Inject(
-      method = {"attackBlock"},
-      at = {@At("HEAD")},
-      cancellable = true
-   )
+   public MixinClientPlayerInteractionManager() {
+   }
+
+   @Inject(method = "attackBlock", at = @At("HEAD"), cancellable = true)
    private void onAttackBlock(BlockPos pos, Direction direction, CallbackInfoReturnable<Boolean> cir) {
       KekMine kekMine = (KekMine)Modules.get().get(KekMine.class);
       if (kekMine.isActive() && !MinecraftClient.getInstance().player.isCreative()) {
@@ -32,11 +31,7 @@ public class MixinClientPlayerInteractionManager {
       }
    }
 
-   @Inject(
-      method = {"updateBlockBreakingProgress"},
-      at = {@At("HEAD")},
-      cancellable = true
-   )
+   @Inject(method = "updateBlockBreakingProgress", at = @At("HEAD"), cancellable = true)
    private void onUpdateBlockBreakingProgress(BlockPos pos, Direction direction, CallbackInfoReturnable<Boolean> cir) {
       KekMine kekMine = (KekMine)Modules.get().get(KekMine.class);
       if (kekMine.isActive() && !MinecraftClient.getInstance().player.isCreative()) {

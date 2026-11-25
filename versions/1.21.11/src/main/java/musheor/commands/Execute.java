@@ -77,9 +77,9 @@ public class Execute extends Command {
          target.setAccessible(true);
          Object result = target.invoke(instance, converted);
          this.info("Executed " + tokens[0] + (result != null ? " -> " + result : ""), new Object[0]);
-      } catch (Exception var13) {
-         this.error("Error: " + var13.getClass().getSimpleName() + " - " + var13.getMessage(), new Object[0]);
-         var13.printStackTrace();
+      } catch (Exception e) {
+         this.error("Error: " + e.getClass().getSimpleName() + " - " + e.getMessage(), new Object[0]);
+         e.printStackTrace();
       }
 
       return 1;
@@ -109,21 +109,37 @@ public class Execute extends Command {
       try {
          if (type == String.class) {
             return s;
-         } else if (type == int.class || type == Integer.class) {
+         }
+
+         if (type == int.class || type == Integer.class) {
             return Integer.parseInt(s);
-         } else if (type == double.class || type == Double.class) {
+         }
+
+         if (type == double.class || type == Double.class) {
             return Double.parseDouble(s);
-         } else if (type == float.class || type == Float.class) {
+         }
+
+         if (type == float.class || type == Float.class) {
             return Float.parseFloat(s);
-         } else if (type == boolean.class || type == Boolean.class) {
+         }
+
+         if (type == boolean.class || type == Boolean.class) {
             return Boolean.parseBoolean(s);
-         } else if (type == long.class || type == Long.class) {
+         }
+
+         if (type == long.class || type == Long.class) {
             return Long.parseLong(s);
-         } else if (type == Identifier.class) {
+         }
+
+         if (type == Identifier.class) {
             return Identifier.of(s);
-         } else if (type == Item.class) {
+         }
+
+         if (type == Item.class) {
             return Registries.ITEM.get(Identifier.of(s));
-         } else if (type == ItemStack.class) {
+         }
+
+         if (type == ItemStack.class) {
             String[] parts = s.split(":");
             int count = 1;
             Item item;
@@ -152,8 +168,8 @@ public class Execute extends Command {
 
             return s;
          }
-      } catch (Exception var8) {
-         System.err.println("[Execute] Failed to convert '" + s + "' to " + type.getSimpleName() + ": " + var8);
+      } catch (Exception e) {
+         System.err.println("[Execute] Failed to convert '" + s + "' to " + type.getSimpleName() + ": " + e);
          return null;
       }
    }
@@ -189,8 +205,8 @@ public class Execute extends Command {
                      String rel = root.relativize(p).toString().replace('/', '.').replace('\\', '.').replace(".class", "");
                      this.QfZy2gWnKInxFPr(rel);
                   });
-               } catch (Exception var12) {
-                  System.err.println("[Execute] Scan failed on " + root + ": " + var12);
+               } catch (Exception e) {
+                  System.err.println("[Execute] Scan failed on " + root + ": " + e);
                }
             }
          }

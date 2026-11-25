@@ -28,6 +28,8 @@
     "MixinPearlOutline",
     "MixinPlayerOutline",
     "MixinProjectileEntity",
+    "MixinXaeroGuiMapCoords",
+    "MixinXaeroInfoDisplayCompiler",
     "MixinXearoGuiMap",
     "meteor.AutoEatMixin",
     "meteor.FriendsCommandMixin",

@@ -28,33 +28,29 @@ public class CustomButtonManagerScreen extends Screen {
       int y = 40;
 
       for (CustomHudButton btn : this.QfZy2gWnKInxFPr) {
+         CustomHudButton b = btn;
          this.addDrawableChild(
-            ButtonWidget.builder(
-                  Text.literal("✎ Edit"), button -> this.client.setScreen(new EditButtonScreen(this, btn, this.QfZy2gWnKInxFPr))
-               )
+            ButtonWidget.builder(Text.literal("✎ Edit"), button -> this.client.setScreen(new EditButtonScreen(this, b, this.QfZy2gWnKInxFPr)))
                .position(cx + 188, y)
                .size(50, 20)
                .build()
          );
          this.addDrawableChild(ButtonWidget.builder(Text.literal("✗ Delete"), button -> {
-            this.QfZy2gWnKInxFPr.remove(btn);
+            this.QfZy2gWnKInxFPr.remove(b);
             MusheorSystem.get().save();
             this.init();
          }).position(cx + 240, y).size(50, 20).build());
          y += 26;
       }
 
-      this.addDrawableChild(ButtonWidget.builder(Text.literal("+ New Button"), b -> {
+      this.addDrawableChild(ButtonWidget.builder(Text.literal("+ New Button"), bx -> {
          CustomHudButton newBtn = CustomHudButton.fStlZIvY9lS8("New", this.width / 2 - 20, 40);
          this.QfZy2gWnKInxFPr.add(newBtn);
          MusheorSystem.get().save();
          this.client.setScreen(new EditButtonScreen(this, newBtn, this.QfZy2gWnKInxFPr));
       }).position(cx - 50, this.height - 48).size(100, 20).build());
       this.addDrawableChild(
-         ButtonWidget.builder(Text.literal("← Back"), b -> this.client.setScreen(this.fStlZIvY9lS8))
-            .position(cx - 25, this.height - 24)
-            .size(50, 16)
-            .build()
+         ButtonWidget.builder(Text.literal("← Back"), bx -> this.client.setScreen(this.fStlZIvY9lS8)).position(cx - 25, this.height - 24).size(50, 16).build()
       );
    }
 

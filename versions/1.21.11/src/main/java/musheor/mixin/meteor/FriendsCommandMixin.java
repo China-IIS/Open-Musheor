@@ -15,20 +15,13 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-@Mixin(
-   value = {FriendsCommand.class},
-   remap = false
-)
+@Mixin(value = FriendsCommand.class, remap = false)
 public abstract class FriendsCommandMixin extends Command {
    protected FriendsCommandMixin(String name, String description, String... aliases) {
       super(name, description, aliases);
    }
 
-   @Inject(
-      method = {"build"},
-      at = {@At("HEAD")},
-      cancellable = true
-   )
+   @Inject(method = "build", at = @At("HEAD"), cancellable = true)
    private void build(LiteralArgumentBuilder<CommandSource> builder, CallbackInfo ci) {
       builder.then(literal("add").then(argument("player", StringArgumentType.word()).executes(context -> {
          String name = StringArgumentType.getString(context, "player");
@@ -41,34 +34,21 @@ public abstract class FriendsCommandMixin extends Command {
 
          return 1;
       })));
-      builder.then(
-         literal("remove")
-            .then(
-               argument("friend", FriendArgumentType.create())
-                  .executes(
-                     context -> {
-                        Friend friend = FriendArgumentType.get(context);
-                        if (friend == null) {
-                           this.error("Not friends with that player.", new Object[0]);
-                           return 1;
-                        } else {
-                           if (Friends.get().remove(friend)) {
-                              ChatUtils.sendMsg(
-                                 friend.hashCode(),
-                                 Formatting.GRAY,
-                                 "Removed (highlight)%s (default)from friends.".formatted(friend.getName()),
-                                 new Object[0]
-                              );
-                           } else {
-                              this.error("Failed to remove that friend.", new Object[0]);
-                           }
+      builder.then(literal("remove").then(argument("friend", FriendArgumentType.create()).executes(context -> {
+         Friend friend = FriendArgumentType.get(context);
+         if (friend == null) {
+            this.error("Not friends with that player.", new Object[0]);
+            return 1;
+         }
 
-                           return 1;
-                        }
-                     }
-                  )
-            )
-      );
+         if (Friends.get().remove(friend)) {
+            ChatUtils.sendMsg(friend.hashCode(), Formatting.GRAY, "Removed (highlight)%s (default)from friends.".formatted(friend.getName()), new Object[0]);
+         } else {
+            this.error("Failed to remove that friend.", new Object[0]);
+         }
+
+         return 1;
+      })));
       builder.then(literal("list").executes(context -> {
          this.info("--- Friends ((highlight)%s(default)) ---", new Object[]{Friends.get().count()});
          Friends.get().forEach(f -> ChatUtils.info("(highlight)%s".formatted(f.getName()), new Object[0]));

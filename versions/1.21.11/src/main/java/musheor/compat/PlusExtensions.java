@@ -22,7 +22,7 @@ public final class PlusExtensions {
    public static PlusExtensions.Ext attach(Module module, Settings settings) {
       List<PlusExtensions.Ext> exts = REGISTRY.get(module.getClass());
       if (exts != null && !exts.isEmpty()) {
-         PlusExtensions.Ext ext = (PlusExtensions.Ext)(exts.size() == 1 ? exts.get(0) : new PlusExtensions.Composite(List.copyOf(exts)));
+         PlusExtensions.Ext ext = exts.size() == 1 ? exts.get(0) : new PlusExtensions.Composite(List.copyOf(exts));
          ext.onInit(module, settings.createGroup("Musheor+"));
          return ext;
       } else {
@@ -31,6 +31,7 @@ public final class PlusExtensions {
    }
 
    private record Composite(List<PlusExtensions.Ext> delegates) implements PlusExtensions.Ext {
+
       @Override
       public void onInit(Module module, SettingGroup group) {
          for (PlusExtensions.Ext ext : this.delegates) {
@@ -69,7 +70,6 @@ public final class PlusExtensions {
 
          return false;
       }
-   
    }
 
    public interface Ext {

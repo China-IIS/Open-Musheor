@@ -4,9 +4,9 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import meteordevelopment.meteorclient.events.world.TickEvent.Pre;
-import meteordevelopment.meteorclient.settings.EnumSetting.Builder;
 import meteordevelopment.meteorclient.settings.Setting;
 import meteordevelopment.meteorclient.settings.SettingGroup;
+import meteordevelopment.meteorclient.settings.EnumSetting.Builder;
 import meteordevelopment.meteorclient.systems.modules.Module;
 import meteordevelopment.meteorclient.systems.modules.Modules;
 import meteordevelopment.meteorclient.utils.player.ChatUtils;
@@ -15,7 +15,6 @@ import meteordevelopment.meteorclient.utils.world.Dimension;
 import meteordevelopment.orbit.EventHandler;
 import musheor.compat.XearoHelper;
 import musheor.modules.features.KekFly;
-import musheor.musheor;
 import musheor.utils.irzXX;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.util.Formatting;
@@ -27,7 +26,7 @@ public class WaypointFollower extends Module {
    private final Setting<WaypointFollower.FlightMode> TJImwK2 = this.QfZy2gWnKInxFPr
       .add(
          ((Builder)((Builder)((Builder)new Builder().name("flight-mode")).description("Which type of flight mode to use"))
-               .defaultValue(WaypointFollower.FlightMode.QfZy2gWnKInxFPr))
+               .defaultValue(WaypointFollower.FlightMode.RocketFly))
             .build()
       );
    private final Setting<Boolean> wSJeYsJcmjNZf = this.QfZy2gWnKInxFPr
@@ -36,7 +35,7 @@ public class WaypointFollower extends Module {
                         .name("draw-path"))
                      .description("Draws a path between waypoints on Xearo's map"))
                   .defaultValue(true))
-               .visible(() -> XearoHelper.isLoaded() && this.TJImwK2.get() != WaypointFollower.FlightMode.fStlZIvY9lS8))
+               .visible(() -> XearoHelper.isLoaded() && this.TJImwK2.get() != WaypointFollower.FlightMode.Baritone))
             .build()
       );
    private final Setting<Integer> i2Nu6XHKic = this.QfZy2gWnKInxFPr
@@ -56,22 +55,22 @@ public class WaypointFollower extends Module {
                .defaultValue(3.0)
                .sliderRange(0.5, 20.0)
                .decimalPlaces(1)
-               .visible(() -> this.TJImwK2.get() == WaypointFollower.FlightMode.QfZy2gWnKInxFPr || this.TJImwK2.get() == WaypointFollower.FlightMode.TJImwK2))
+               .visible(() -> this.TJImwK2.get() == WaypointFollower.FlightMode.RocketFly || this.TJImwK2.get() == WaypointFollower.FlightMode.Custom))
             .build()
       );
    private XearoHelper.WaypointData qhulAUwd = null;
    private int BrmKXSYhWhqoB1 = -1;
 
    public WaypointFollower() {
-      super(musheor.AUTOMATION, "waypoint-follower", "Automatically follow waypoints in all dimensions using different flight modes.");
+      super(musheor.musheor.AUTOMATION, "waypoint-follower", "Automatically follow waypoints in all dimensions using different flight modes.");
    }
 
    public void onActivate() {
       if (this.fStlZIvY9lS8.player != null && this.fStlZIvY9lS8.world != null) {
          Dimension currentDim = PlayerUtils.getDimension();
-         if (this.TJImwK2.get() == WaypointFollower.FlightMode.fStlZIvY9lS8 && (currentDim == Dimension.End || currentDim == Dimension.Overworld)) {
+         if (this.TJImwK2.get() == WaypointFollower.FlightMode.Baritone && (currentDim == Dimension.End || currentDim == Dimension.Overworld)) {
             Formatting format = currentDim == Dimension.End ? Formatting.DARK_PURPLE : Formatting.RED;
-            irzXX.fStlZIvY9lS8(WaypointFollower.class, "flight-mode", WaypointFollower.FlightMode.QfZy2gWnKInxFPr);
+            irzXX.fStlZIvY9lS8(WaypointFollower.class, "flight-mode", WaypointFollower.FlightMode.RocketFly);
             ChatUtils.info(
                Formatting.GOLD
                   + "[WaypointFollower] "
@@ -100,7 +99,7 @@ public class WaypointFollower extends Module {
 
       this.BrmKXSYhWhqoB1 = -1;
       KekFly fly = (KekFly)Modules.get().get(KekFly.class);
-      if (fly.isActive() && this.TJImwK2.get() == WaypointFollower.FlightMode.QfZy2gWnKInxFPr) {
+      if (fly.isActive() && this.TJImwK2.get() == WaypointFollower.FlightMode.RocketFly) {
          fly.toggle();
       }
    }
@@ -109,17 +108,17 @@ public class WaypointFollower extends Module {
    private void fStlZIvY9lS8(Pre event) {
       if (this.fStlZIvY9lS8.player != null && this.fStlZIvY9lS8.world != null) {
          switch ((WaypointFollower.FlightMode)this.TJImwK2.get()) {
-            case fStlZIvY9lS8:
+            case Baritone:
                this.fStlZIvY9lS8();
                break;
-            case QfZy2gWnKInxFPr:
+            case RocketFly:
                this.QfZy2gWnKInxFPr();
                break;
-            case TJImwK2:
+            case Custom:
                this.TJImwK2();
          }
 
-         if ((Boolean)this.wSJeYsJcmjNZf.get() && this.TJImwK2.get() != WaypointFollower.FlightMode.fStlZIvY9lS8) {
+         if ((Boolean)this.wSJeYsJcmjNZf.get() && this.TJImwK2.get() != WaypointFollower.FlightMode.Baritone) {
             this.wSJeYsJcmjNZf();
          }
       }
@@ -151,9 +150,7 @@ public class WaypointFollower extends Module {
                return;
             }
 
-            ChatUtils.info(
-               Formatting.GOLD + "[WaypointFollower] " + Formatting.WHITE + "Flying to: " + Formatting.YELLOW + this.qhulAUwd.name(), new Object[0]
-            );
+            ChatUtils.info(Formatting.GOLD + "[WaypointFollower] " + Formatting.WHITE + "Flying to: " + Formatting.YELLOW + this.qhulAUwd.name(), new Object[0]);
          }
 
          float desiredYaw = this.QfZy2gWnKInxFPr(this.qhulAUwd);
@@ -190,9 +187,7 @@ public class WaypointFollower extends Module {
             return;
          }
 
-         ChatUtils.info(
-            Formatting.GOLD + "[WaypointFollower] " + Formatting.WHITE + "Flying to: " + Formatting.YELLOW + this.qhulAUwd.name(), new Object[0]
-         );
+         ChatUtils.info(Formatting.GOLD + "[WaypointFollower] " + Formatting.WHITE + "Flying to: " + Formatting.YELLOW + this.qhulAUwd.name(), new Object[0]);
       }
 
       float desiredYaw = this.QfZy2gWnKInxFPr(this.qhulAUwd);
@@ -250,9 +245,7 @@ public class WaypointFollower extends Module {
    }
 
    private void fStlZIvY9lS8(XearoHelper.WaypointData wp) {
-      ChatUtils.info(
-         Formatting.GOLD + "[WaypointFollower] " + Formatting.WHITE + "Flying to next waypoint: " + Formatting.GRAY + wp.name(), new Object[0]
-      );
+      ChatUtils.info(Formatting.GOLD + "[WaypointFollower] " + Formatting.WHITE + "Flying to next waypoint: " + Formatting.GRAY + wp.name(), new Object[0]);
       GyhoRo.fStlZIvY9lS8(wp.x(), wp.z());
    }
 
@@ -275,9 +268,12 @@ public class WaypointFollower extends Module {
       return d;
    }
 
-   public static enum FlightMode {
-      fStlZIvY9lS8,
-      QfZy2gWnKInxFPr,
-      TJImwK2;
+   public enum FlightMode {
+      Baritone,
+      RocketFly,
+      Custom;
+
+      FlightMode() {
+      }
    }
 }

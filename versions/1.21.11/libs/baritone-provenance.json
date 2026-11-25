@@ -1,0 +1,9 @@
+{
+  "project": "baritone",
+  "version": "1.21.11-20260103.131549-1",
+  "file": "baritone.jar",
+  "url": "https://maven.meteordev.org/snapshots/meteordevelopment/baritone/1.21.11-SNAPSHOT/baritone-1.21.11-20260103.131549-1.jar",
+  "bytes": 1610665,
+  "sha256": "3e8c7ab86b7c0148f8711ca2e7cb608712dbc2a97253de0f131ec3db41a2bd3c",
+  "sha512": "3e4c2ce953564223bead8b5c3a0e1b40600cc72d6579f185466986ebc31d775eee009206aa44d33ded9e8187a9611cedf20004e8b20a8bed142174f6aa30330f"
+}

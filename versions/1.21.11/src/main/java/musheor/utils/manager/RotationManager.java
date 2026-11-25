@@ -12,7 +12,7 @@ public class RotationManager {
    private static Float pitch = null;
    private static int priority;
    private static int stampAge = Integer.MIN_VALUE;
-   private static RotationManager.gVOhtBej1x moveMode = RotationManager.gVOhtBej1x.fStlZIvY9lS8;
+   private static RotationManager.gVOhtBej1x moveMode = RotationManager.gVOhtBej1x.Preserve;
    private static boolean inputManaged;
    private static final Vec2f[] INPUTS = new Vec2f[]{
       new Vec2f(0.0F, 1.0F),
@@ -27,6 +27,9 @@ public class RotationManager {
    private static Field headYawField;
    private static boolean headYawResolved;
 
+   public RotationManager() {
+   }
+
    public static void setServerYaw(float y) {
       setYaw(y, 0);
    }
@@ -38,19 +41,19 @@ public class RotationManager {
    public static boolean setYaw(float y, int prio) {
       if (!claim(prio)) {
          return false;
-      } else {
-         yaw = y;
-         return true;
       }
+
+      yaw = y;
+      return true;
    }
 
    public static boolean setPitch(float p, int prio) {
       if (!claim(prio)) {
          return false;
-      } else {
-         pitch = p;
-         return true;
       }
+
+      pitch = p;
+      return true;
    }
 
    public static void setMoveMode(RotationManager.gVOhtBej1x mode, int prio) {
@@ -63,7 +66,7 @@ public class RotationManager {
       yaw = null;
       pitch = null;
       priority = 0;
-      moveMode = RotationManager.gVOhtBej1x.fStlZIvY9lS8;
+      moveMode = RotationManager.gVOhtBej1x.Preserve;
       stampAge = Integer.MIN_VALUE;
    }
 
@@ -81,15 +84,15 @@ public class RotationManager {
       boolean fresh = stale();
       if (!fresh && prio < priority) {
          return false;
-      } else {
-         if (fresh || prio > priority) {
-            moveMode = RotationManager.gVOhtBej1x.fStlZIvY9lS8;
-         }
-
-         priority = prio;
-         stampAge = JhujBv5.fStlZIvY9lS8.player != null ? JhujBv5.fStlZIvY9lS8.player.age : Integer.MIN_VALUE;
-         return true;
       }
+
+      if (fresh || prio > priority) {
+         moveMode = RotationManager.gVOhtBej1x.Preserve;
+      }
+
+      priority = prio;
+      stampAge = JhujBv5.fStlZIvY9lS8.player != null ? JhujBv5.fStlZIvY9lS8.player.age : Integer.MIN_VALUE;
+      return true;
    }
 
    public static boolean isActive() {
@@ -129,18 +132,18 @@ public class RotationManager {
       if (yaw != null && JhujBv5.fStlZIvY9lS8.player != null) {
          if (Math.abs(current.x) <= 1.0E-4F && Math.abs(current.y) <= 1.0E-4F) {
             return null;
-         } else {
-            int step;
-            if (moveMode == RotationManager.gVOhtBej1x.QfZy2gWnKInxFPr) {
-               step = 0;
-            } else {
-               float intent = JhujBv5.fStlZIvY9lS8.player.getYaw() + (float)Math.toDegrees(Math.atan2(-current.x, current.y));
-               step = Math.round(MathHelper.wrapDegrees(intent - yaw) / 45.0F) & 7;
-            }
-
-            inputManaged = true;
-            return INPUTS[step];
          }
+
+         int step;
+         if (moveMode == RotationManager.gVOhtBej1x.Forward) {
+            step = 0;
+         } else {
+            float intent = JhujBv5.fStlZIvY9lS8.player.getYaw() + (float)Math.toDegrees(Math.atan2(-current.x, current.y));
+            step = Math.round(MathHelper.wrapDegrees(intent - yaw) / 45.0F) & 7;
+         }
+
+         inputManaged = true;
+         return INPUTS[step];
       } else {
          return null;
       }
@@ -180,8 +183,11 @@ public class RotationManager {
       }
    }
 
-   public static enum gVOhtBej1x {
-      fStlZIvY9lS8,
-      QfZy2gWnKInxFPr;
+   public enum gVOhtBej1x {
+      Preserve,
+      Forward;
+
+      gVOhtBej1x() {
+      }
    }
 }

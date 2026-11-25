@@ -15,16 +15,15 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-@Mixin({ClientPlayerInteractionManager.class})
+@Mixin(ClientPlayerInteractionManager.class)
 public class ClientPlayerInteractionManagerMixin {
    @Unique
    private static boolean depthInteract$spoofing;
 
-   @Inject(
-      method = {"interactBlock"},
-      at = {@At("HEAD")},
-      cancellable = true
-   )
+   public ClientPlayerInteractionManagerMixin() {
+   }
+
+   @Inject(method = "interactBlock", at = @At("HEAD"), cancellable = true)
    private void depthInteract$swapHit(ClientPlayerEntity player, Hand hand, BlockHitResult hitResult, CallbackInfoReturnable<ActionResult> cir) {
       DepthInteract mod = DepthInteract.INSTANCE;
       if (mod != null && mod.isActive()) {
@@ -33,7 +32,7 @@ public class ClientPlayerInteractionManagerMixin {
                BlockPos pos = mod.fStlZIvY9lS8;
                BlockHitResult newHit = new BlockHitResult(Vec3d.ofCenter(pos), Direction.UP, pos, false);
                depthInteract$spoofing = true;
-               ClientPlayerInteractionManager self = (ClientPlayerInteractionManager)this;
+               ClientPlayerInteractionManager self = (ClientPlayerInteractionManager)(Object)this;
                cir.setReturnValue(self.interactBlock(player, hand, newHit));
                depthInteract$spoofing = false;
             }

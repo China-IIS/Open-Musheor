@@ -3,9 +3,9 @@ package musheor.modules.automation;
 import java.util.List;
 import java.util.function.Predicate;
 import meteordevelopment.meteorclient.events.world.TickEvent.Pre;
-import meteordevelopment.meteorclient.settings.IntSetting.Builder;
 import meteordevelopment.meteorclient.settings.Setting;
 import meteordevelopment.meteorclient.settings.SettingGroup;
+import meteordevelopment.meteorclient.settings.IntSetting.Builder;
 import meteordevelopment.meteorclient.systems.modules.Module;
 import meteordevelopment.meteorclient.systems.modules.Modules;
 import meteordevelopment.meteorclient.utils.player.ChatUtils;
@@ -145,35 +145,34 @@ public class HotbarReplenish extends Module {
       List<Item> allowed = this.TJImwK2(slot);
       if (allowed.isEmpty()) {
          return false;
-      } else {
-         ItemStack current = this.QfZy2gWnKInxFPr(slot);
-         if (!current.isEmpty() && allowed.contains(current.getItem())) {
-            if (current.isStackable() && current.getCount() <= (Integer)this.wSJeYsJcmjNZf.get()) {
-               int source = this.fStlZIvY9lS8(stack -> ItemStack.areItemsAndComponentsEqual(stack, current), slot);
-               if (source == -1) {
-                  return false;
-               } else {
-                  InvUtils.move().from(source).to(slot);
-                  return true;
-               }
-            } else {
-               return false;
-            }
-         } else {
-            int source = this.fStlZIvY9lS8(stack -> allowed.contains(stack.getItem()), slot);
+      }
+
+      ItemStack current = this.QfZy2gWnKInxFPr(slot);
+      if (!current.isEmpty() && allowed.contains(current.getItem())) {
+         if (current.isStackable() && current.getCount() <= (Integer)this.wSJeYsJcmjNZf.get()) {
+            int source = this.fStlZIvY9lS8(stack -> ItemStack.areItemsAndComponentsEqual(stack, current), slot);
             if (source == -1) {
                return false;
-            } else {
-               InvUtils.move().from(source).to(slot);
-               return true;
             }
+
+            InvUtils.move().from(source).to(slot);
+            return true;
+         } else {
+            return false;
          }
+      } else {
+         int source = this.fStlZIvY9lS8(stack -> allowed.contains(stack.getItem()), slot);
+         if (source == -1) {
+            return false;
+         }
+
+         InvUtils.move().from(source).to(slot);
+         return true;
       }
    }
 
    private int fStlZIvY9lS8(Predicate<ItemStack> wanted, int excludedSlot) {
       assert TJImwK2.player != null;
-
       int best = -1;
       int bestCount = Integer.MAX_VALUE;
 
@@ -192,26 +191,25 @@ public class HotbarReplenish extends Module {
 
    private ItemStack QfZy2gWnKInxFPr(int slot) {
       assert TJImwK2.player != null;
-
       return slot == 45 ? TJImwK2.player.getOffHandStack() : TJImwK2.player.getInventory().getStack(slot);
    }
 
    private List<Item> TJImwK2(int slot) {
       if (slot == 45) {
          return (List<Item>)this.vGAMA89H.get();
-      } else {
-         return switch (slot) {
-            case 0 -> (List)this.qhulAUwd.get();
-            case 1 -> (List)this.BrmKXSYhWhqoB1.get();
-            case 2 -> (List)this.TXWyNb.get();
-            case 3 -> (List)this.I3psabmOrOI.get();
-            case 4 -> (List)this.duJ6sPeetAcBh6P.get();
-            case 5 -> (List)this.j376sIQ.get();
-            case 6 -> (List)this.V7zKJ4n6D.get();
-            case 7 -> (List)this.voxTwgNzyrpaAnP.get();
-            case 8 -> (List)this.xileXsbo.get();
-            default -> List.of();
-         };
       }
+
+      return switch (slot) {
+         case 0 -> (List)this.qhulAUwd.get();
+         case 1 -> (List)this.BrmKXSYhWhqoB1.get();
+         case 2 -> (List)this.TXWyNb.get();
+         case 3 -> (List)this.I3psabmOrOI.get();
+         case 4 -> (List)this.duJ6sPeetAcBh6P.get();
+         case 5 -> (List)this.j376sIQ.get();
+         case 6 -> (List)this.V7zKJ4n6D.get();
+         case 7 -> (List)this.voxTwgNzyrpaAnP.get();
+         case 8 -> (List)this.xileXsbo.get();
+         default -> List.of();
+      };
    }
 }

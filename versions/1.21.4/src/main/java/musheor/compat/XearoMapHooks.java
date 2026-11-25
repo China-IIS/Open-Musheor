@@ -8,6 +8,9 @@ import xaero.map.gui.dropdown.rightclick.RightClickOption;
 public class XearoMapHooks {
    private static XearoMapHooks.RightClickOptionsProvider provider = null;
 
+   public XearoMapHooks() {
+   }
+
    public static void setProvider(XearoMapHooks.RightClickOptionsProvider p) {
       provider = p;
    }

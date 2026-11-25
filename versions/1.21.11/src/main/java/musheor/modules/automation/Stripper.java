@@ -5,9 +5,9 @@ import java.util.ArrayList;
 import java.util.List;
 import meteordevelopment.meteorclient.events.render.Render3DEvent;
 import meteordevelopment.meteorclient.events.world.TickEvent.Pre;
-import meteordevelopment.meteorclient.settings.BlockSetting.Builder;
 import meteordevelopment.meteorclient.settings.Setting;
 import meteordevelopment.meteorclient.settings.SettingGroup;
+import meteordevelopment.meteorclient.settings.BlockSetting.Builder;
 import meteordevelopment.meteorclient.systems.modules.Module;
 import meteordevelopment.meteorclient.utils.misc.Names;
 import meteordevelopment.meteorclient.utils.player.FindItemResult;
@@ -16,9 +16,8 @@ import meteordevelopment.meteorclient.utils.world.BlockUtils;
 import meteordevelopment.orbit.EventHandler;
 import musheor.mixin.AxeItemAccessor;
 import musheor.modules.features.KekMine;
-import musheor.musheor;
-import musheor.utils.manager.pvfA15fQSVM;
 import musheor.utils.oyDPiOVBGKG;
+import musheor.utils.manager.pvfA15fQSVM;
 import musheor.utils.system.MusheorSystem;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -78,18 +77,18 @@ public class Stripper extends Module {
                .defaultValue(true))
             .build()
       );
-   private Stripper.Stage vGAMA89H = Stripper.Stage.fStlZIvY9lS8;
+   private Stripper.Stage vGAMA89H = Stripper.Stage.PLACE;
    private BlockPos qhulAUwd;
    private BlockPos BrmKXSYhWhqoB1;
    private int TXWyNb;
    private int I3psabmOrOI;
 
    public Stripper() {
-      super(musheor.AUTOMATION, "stripper", "Automatically places, strips and breaks logs and waxed copper blocks");
+      super(musheor.musheor.AUTOMATION, "stripper", "Automatically places, strips and breaks logs and waxed copper blocks");
    }
 
    public void onActivate() {
-      this.vGAMA89H = Stripper.Stage.fStlZIvY9lS8;
+      this.vGAMA89H = Stripper.Stage.PLACE;
       this.qhulAUwd = null;
       this.BrmKXSYhWhqoB1 = null;
       this.TXWyNb = 0;
@@ -118,17 +117,17 @@ public class Stripper extends Module {
                if (!pos.equals(this.qhulAUwd)) {
                   this.qhulAUwd = pos;
                   this.TXWyNb = 0;
-                  this.vGAMA89H = Stripper.Stage.fStlZIvY9lS8;
+                  this.vGAMA89H = Stripper.Stage.PLACE;
                }
 
                switch (this.vGAMA89H) {
-                  case fStlZIvY9lS8:
+                  case PLACE:
                      this.QfZy2gWnKInxFPr();
                      break;
-                  case QfZy2gWnKInxFPr:
+                  case STRIP:
                      this.TJImwK2();
                      break;
-                  case TJImwK2:
+                  case BREAK:
                      this.wSJeYsJcmjNZf();
                }
             }
@@ -139,9 +138,9 @@ public class Stripper extends Module {
    private void QfZy2gWnKInxFPr() {
       BlockState state = this.mc.world.getBlockState(this.qhulAUwd);
       if (state.getBlock() == this.QfZy2gWnKInxFPr.get()) {
-         this.fStlZIvY9lS8(Stripper.Stage.QfZy2gWnKInxFPr);
+         this.fStlZIvY9lS8(Stripper.Stage.STRIP);
       } else if (!state.isReplaceable()) {
-         this.fStlZIvY9lS8(Stripper.Stage.TJImwK2);
+         this.fStlZIvY9lS8(Stripper.Stage.BREAK);
       } else if (pvfA15fQSVM.i2Nu6XHKic(((Block)this.QfZy2gWnKInxFPr.get()).asItem()) == 0) {
          if ((Boolean)this.i2Nu6XHKic.get()) {
             this.info("§2Out of %s, disabling.", new Object[]{Names.get((Block)this.QfZy2gWnKInxFPr.get())});
@@ -158,7 +157,7 @@ public class Stripper extends Module {
             }
 
             irzXX.fStlZIvY9lS8(this.qhulAUwd, Direction.DOWN, type, silent);
-            this.fStlZIvY9lS8(Stripper.Stage.QfZy2gWnKInxFPr);
+            this.fStlZIvY9lS8(Stripper.Stage.STRIP);
          }
       }
    }
@@ -167,7 +166,7 @@ public class Stripper extends Module {
       Block block = this.mc.world.getBlockState(this.qhulAUwd).getBlock();
       int needed = this.wSJeYsJcmjNZf(block);
       if (needed == 0) {
-         this.fStlZIvY9lS8(Stripper.Stage.TJImwK2);
+         this.fStlZIvY9lS8(Stripper.Stage.BREAK);
       } else if (!(this.mc.player.getMainHandStack().getItem() instanceof AxeItem)) {
          if (this.vGAMA89H()) {
             this.I3psabmOrOI = (Integer)MusheorSystem.Manager.swapDelay.get();
@@ -183,18 +182,18 @@ public class Stripper extends Module {
             this.fStlZIvY9lS8(this.qhulAUwd, side);
          }
 
-         this.fStlZIvY9lS8(Stripper.Stage.TJImwK2);
+         this.fStlZIvY9lS8(Stripper.Stage.BREAK);
       }
    }
 
    private void wSJeYsJcmjNZf() {
       BlockState state = this.mc.world.getBlockState(this.qhulAUwd);
       if (state.isAir()) {
-         this.fStlZIvY9lS8(Stripper.Stage.fStlZIvY9lS8);
+         this.fStlZIvY9lS8(Stripper.Stage.PLACE);
       } else {
          if (this.qhulAUwd.equals(this.BrmKXSYhWhqoB1) && this.TXWyNb > 0) {
             pvfA15fQSVM.QfZy2gWnKInxFPr(this.BrmKXSYhWhqoB1);
-            KekMine.duJ6sPeetAcBh6P.fStlZIvY9lS8(PlayerActionC2SPacket.Action.STOP_DESTROY_BLOCK, this.qhulAUwd);
+            KekMine.duJ6sPeetAcBh6P.fStlZIvY9lS8(Action.STOP_DESTROY_BLOCK, this.qhulAUwd);
             if (!(Boolean)KekMine.duJ6sPeetAcBh6P.TXWyNb.get()) {
                this.mc.world.syncWorldEvent(2001, this.qhulAUwd, Block.getRawIdFromState(this.mc.world.getBlockState(this.qhulAUwd)));
                this.mc.world.setBlockState(this.qhulAUwd, Blocks.AIR.getDefaultState(), 3);
@@ -207,7 +206,7 @@ public class Stripper extends Module {
 
          this.BrmKXSYhWhqoB1 = this.qhulAUwd;
          this.TXWyNb++;
-         this.fStlZIvY9lS8(Stripper.Stage.fStlZIvY9lS8);
+         this.fStlZIvY9lS8(Stripper.Stage.PLACE);
       }
    }
 
@@ -224,10 +223,10 @@ public class Stripper extends Module {
       FindItemResult axe = InvUtils.find(stack -> stack.getItem() instanceof AxeItem);
       if (!axe.found()) {
          return false;
-      } else {
-         pvfA15fQSVM.TXWyNb(this.mc.player.getInventory().getStack(axe.slot()).getItem());
-         return true;
       }
+
+      pvfA15fQSVM.TXWyNb(this.mc.player.getInventory().getStack(axe.slot()).getItem());
+      return true;
    }
 
    private void fStlZIvY9lS8(BlockPos pos, Direction side) {
@@ -249,10 +248,10 @@ public class Stripper extends Module {
       Block stripped = AxeItemAccessor.getStrippedBlocks().get(block);
       if (stripped != null) {
          return stripped;
-      } else {
-         Block unwaxed = (Block)((BiMap)HoneycombItem.WAXED_TO_UNWAXED_BLOCKS.get()).get(block);
-         return unwaxed != null ? unwaxed : (Block)Oxidizable.getDecreasedOxidationBlock(block).orElse(null);
       }
+
+      Block unwaxed = (Block)((BiMap)HoneycombItem.WAXED_TO_UNWAXED_BLOCKS.get()).get(block);
+      return unwaxed != null ? unwaxed : (Block)Oxidizable.getDecreasedOxidationBlock(block).orElse(null);
    }
 
    public static List<Block> TJImwK2(Block from) {
@@ -288,9 +287,12 @@ public class Stripper extends Module {
       }
    }
 
-   private static enum Stage {
-      fStlZIvY9lS8,
-      QfZy2gWnKInxFPr,
-      TJImwK2;
+   private enum Stage {
+      PLACE,
+      STRIP,
+      BREAK;
+
+      Stage() {
+      }
    }
 }

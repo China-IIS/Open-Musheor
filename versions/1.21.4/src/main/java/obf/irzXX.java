@@ -11,9 +11,9 @@ import net.minecraft.block.Blocks;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.network.packet.c2s.play.PlayerActionC2SPacket.Action;
 import net.minecraft.network.packet.c2s.play.PlayerActionC2SPacket;
 import net.minecraft.network.packet.c2s.play.PlayerInteractBlockC2SPacket;
+import net.minecraft.network.packet.c2s.play.PlayerActionC2SPacket.Action;
 import net.minecraft.registry.Registries;
 import net.minecraft.util.Hand;
 import net.minecraft.util.hit.BlockHitResult;
@@ -42,64 +42,62 @@ public class irzXX {
 
          if (!canPlace) {
             return 0;
-         } else {
-            boolean silent = (Boolean)MusheorSystem.Manager.silentPlace.get();
-            musheor.utils.manager.pvfA15fQSVM.fStlZIvY9lS8(block.asItem(), silent);
-            switch (type) {
-               case Airplace:
-               case AirPlaceSwap:
-                  if (type == MusheorSystem.PlacementType.AirPlaceSwap) {
-                     fStlZIvY9lS8();
-                  }
+         }
 
-                  for (BlockPos posx : positions) {
-                     if (BlockUtils.canPlace(posx, true) && QfZy2gWnKInxFPr(posx)) {
-                        if (!jU8xXhmkg.fStlZIvY9lS8()) {
-                           break;
-                        }
+         boolean silent = (Boolean)MusheorSystem.Manager.silentPlace.get();
+         musheor.utils.manager.pvfA15fQSVM.fStlZIvY9lS8(block.asItem(), silent);
+         switch (type) {
+            case Airplace:
+            case AirPlaceSwap:
+               if (type == MusheorSystem.PlacementType.AirPlaceSwap) {
+                  fStlZIvY9lS8();
+               }
 
-                        if (!state.PVlYDeNipUe().containsKey(posx)) {
-                           state.i2Nu6XHKic(true);
-                           fStlZIvY9lS8(
-                              type == MusheorSystem.PlacementType.AirPlaceSwap ? Hand.OFF_HAND : Hand.MAIN_HAND, fStlZIvY9lS8(posx, side)
-                           );
-                           state.PVlYDeNipUe().put(posx, state.pF16zz4NJECfg7());
-                           if (block == Blocks.OBSIDIAN) {
-                              state.cO1FU7fW();
-                           }
-
-                           placed++;
-                           fStlZIvY9lS8(block, posx);
-                        }
-                     }
-                  }
-
-                  if (type == MusheorSystem.PlacementType.AirPlaceSwap) {
-                     fStlZIvY9lS8();
-                  }
-                  break;
-               case Rotate:
-                  for (BlockPos posxx : positions) {
-                     Direction placeSide = BlockUtils.getPlaceSide(posxx);
-                     if (placeSide != null && BlockUtils.canPlace(posxx, true) && QfZy2gWnKInxFPr(posxx)) {
-                        if (jU8xXhmkg.fStlZIvY9lS8()) {
-                           state.i2Nu6XHKic(true);
-                           BlockUtils.place(posxx, Hand.MAIN_HAND, fStlZIvY9lS8.player.getInventory().selectedSlot, true, 0, false, true, false);
-                           fStlZIvY9lS8(block, posxx);
-                           placed++;
-                        }
+               for (BlockPos pos : positions) {
+                  if (BlockUtils.canPlace(pos, true) && QfZy2gWnKInxFPr(pos)) {
+                     if (!jU8xXhmkg.fStlZIvY9lS8()) {
                         break;
                      }
+
+                     if (!state.PVlYDeNipUe().containsKey(pos)) {
+                        state.i2Nu6XHKic(true);
+                        fStlZIvY9lS8(type == MusheorSystem.PlacementType.AirPlaceSwap ? Hand.OFF_HAND : Hand.MAIN_HAND, fStlZIvY9lS8(pos, side));
+                        state.PVlYDeNipUe().put(pos, state.pF16zz4NJECfg7());
+                        if (block == Blocks.OBSIDIAN) {
+                           state.cO1FU7fW();
+                        }
+
+                        placed++;
+                        fStlZIvY9lS8(block, pos);
+                     }
                   }
-            }
+               }
 
-            if (silent) {
-               InvUtils.swapBack();
-            }
-
-            state.i2Nu6XHKic(false);
-            return placed;
+               if (type == MusheorSystem.PlacementType.AirPlaceSwap) {
+                  fStlZIvY9lS8();
+               }
+               break;
+            case Rotate:
+               for (BlockPos pos : positions) {
+                  Direction placeSide = BlockUtils.getPlaceSide(pos);
+                  if (placeSide != null && BlockUtils.canPlace(pos, true) && QfZy2gWnKInxFPr(pos)) {
+                     if (jU8xXhmkg.fStlZIvY9lS8()) {
+                        state.i2Nu6XHKic(true);
+                        BlockUtils.place(pos, Hand.MAIN_HAND, fStlZIvY9lS8.player.getInventory().selectedSlot, true, 0, false, true, false);
+                        fStlZIvY9lS8(block, pos);
+                        placed++;
+                     }
+                     break;
+                  }
+               }
          }
+
+         if (silent) {
+            InvUtils.swapBack();
+         }
+
+         state.i2Nu6XHKic(false);
+         return placed;
       } else {
          return 0;
       }
@@ -170,9 +168,7 @@ public class irzXX {
    public static boolean fStlZIvY9lS8(BlockPos pos) {
       if (fStlZIvY9lS8.player != null && fStlZIvY9lS8.getNetworkHandler() != null && fStlZIvY9lS8.interactionManager != null) {
          Direction side = BlockUtils.getPlaceSide(pos);
-         return side == null
-            ? false
-            : BlockUtils.place(pos, Hand.MAIN_HAND, fStlZIvY9lS8.player.getInventory().selectedSlot, true, 0, false, true, false);
+         return side == null ? false : BlockUtils.place(pos, Hand.MAIN_HAND, fStlZIvY9lS8.player.getInventory().selectedSlot, true, 0, false, true, false);
       } else {
          return false;
       }
@@ -188,7 +184,7 @@ public class irzXX {
 
    private static void fStlZIvY9lS8() {
       if (fStlZIvY9lS8.player != null) {
-         fStlZIvY9lS8.player.networkHandler.sendPacket(new PlayerActionC2SPacket(PlayerActionC2SPacket.Action.SWAP_ITEM_WITH_OFFHAND, BlockPos.ORIGIN, Direction.DOWN));
+         fStlZIvY9lS8.player.networkHandler.sendPacket(new PlayerActionC2SPacket(Action.SWAP_ITEM_WITH_OFFHAND, BlockPos.ORIGIN, Direction.DOWN));
          ItemStack mainHand = fStlZIvY9lS8.player.getMainHandStack();
          ItemStack offHand = fStlZIvY9lS8.player.getOffHandStack();
          fStlZIvY9lS8.player.getInventory().setStack(fStlZIvY9lS8.player.getInventory().selectedSlot, offHand);
@@ -199,21 +195,15 @@ public class irzXX {
    private static boolean QfZy2gWnKInxFPr(BlockPos pos) {
       if (fStlZIvY9lS8.player == null) {
          return false;
-      } else {
-         double rangeSq = (Double)MusheorSystem.Manager.placementRange.get();
-         return fStlZIvY9lS8.player.squaredDistanceTo(pos.getX(), pos.getY(), pos.getZ()) <= rangeSq * rangeSq;
       }
+
+      double rangeSq = (Double)MusheorSystem.Manager.placementRange.get();
+      return fStlZIvY9lS8.player.squaredDistanceTo(pos.getX(), pos.getY(), pos.getZ()) <= rangeSq * rangeSq;
    }
 
    private static void fStlZIvY9lS8(Block block, BlockPos pos) {
       if (HighwayBuilder.TJImwK2 != null && (Boolean)MusheorSystem.Manager.enableChatDebugging.get()) {
-         MusheorSystem.debug(
-            "placed §5%s §rat %s, %s, %s",
-            Registries.ITEM.getId(block.asItem()).toString(),
-            pos.getX(),
-            pos.getY(),
-            pos.getZ()
-         );
+         MusheorSystem.debug("placed §5%s §rat %s, %s, %s", Registries.ITEM.getId(block.asItem()).toString(), pos.getX(), pos.getY(), pos.getZ());
       }
    }
 

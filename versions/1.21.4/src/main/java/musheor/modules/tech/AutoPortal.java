@@ -5,16 +5,15 @@ import java.util.List;
 import meteordevelopment.meteorclient.events.render.Render3DEvent;
 import meteordevelopment.meteorclient.events.world.TickEvent.Pre;
 import meteordevelopment.meteorclient.renderer.ShapeMode;
-import meteordevelopment.meteorclient.settings.BoolSetting.Builder;
 import meteordevelopment.meteorclient.settings.Setting;
+import meteordevelopment.meteorclient.settings.BoolSetting.Builder;
 import meteordevelopment.meteorclient.systems.modules.Module;
 import meteordevelopment.meteorclient.utils.player.FindItemResult;
 import meteordevelopment.meteorclient.utils.player.InvUtils;
 import meteordevelopment.meteorclient.utils.render.color.SettingColor;
 import meteordevelopment.orbit.EventHandler;
-import musheor.musheor;
-import musheor.utils.manager.pvfA15fQSVM;
 import musheor.utils.oyDPiOVBGKG;
+import musheor.utils.manager.pvfA15fQSVM;
 import musheor.utils.system.MusheorSystem;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -71,12 +70,12 @@ public class AutoPortal extends Module {
    private int voxTwgNzyrpaAnP;
 
    public AutoPortal() {
-      super(musheor.MAIN, "auto-portal", "Automatically builds and lights a nether portal");
+      super(musheor.musheor.MAIN, "auto-portal", "Automatically builds and lights a nether portal");
    }
 
    public void onActivate() {
       this.BrmKXSYhWhqoB1 = false;
-      this.TXWyNb = AutoPortal.Phase.fStlZIvY9lS8;
+      this.TXWyNb = AutoPortal.Phase.PLACING;
       this.I3psabmOrOI.clear();
       this.duJ6sPeetAcBh6P.clear();
       this.j376sIQ = null;
@@ -129,18 +128,18 @@ public class AutoPortal extends Module {
                }
 
                this.BrmKXSYhWhqoB1 = true;
-               this.TXWyNb = AutoPortal.Phase.fStlZIvY9lS8;
+               this.TXWyNb = AutoPortal.Phase.PLACING;
                this.info("Position locked, building portal...", new Object[0]);
             }
 
             switch (this.TXWyNb) {
-               case fStlZIvY9lS8:
+               case PLACING:
                   this.fStlZIvY9lS8(this.voxTwgNzyrpaAnP++);
                   break;
-               case QfZy2gWnKInxFPr:
+               case LIGHTING:
                   this.fStlZIvY9lS8();
                   break;
-               case TJImwK2:
+               case DONE:
                   this.QfZy2gWnKInxFPr();
             }
          }
@@ -161,7 +160,7 @@ public class AutoPortal extends Module {
 
       if (!anyPlaceable) {
          if (this.TJImwK2()) {
-            this.TXWyNb = AutoPortal.Phase.QfZy2gWnKInxFPr;
+            this.TXWyNb = AutoPortal.Phase.LIGHTING;
             this.V7zKJ4n6D = (Integer)MusheorSystem.Manager.swapDelay.get();
          }
       } else if (this.V7zKJ4n6D <= 0) {
@@ -172,17 +171,17 @@ public class AutoPortal extends Module {
          } else {
             pvfA15fQSVM.fStlZIvY9lS8(Items.OBSIDIAN, (Boolean)MusheorSystem.Manager.silentPlace.get());
 
-            for (BlockPos posx : this.I3psabmOrOI) {
+            for (BlockPos pos : this.I3psabmOrOI) {
                if (!jU8xXhmkg.fStlZIvY9lS8()) {
                   break;
                }
 
-               if (!U6PQSXqW.fStlZIvY9lS8().PVlYDeNipUe().containsKey(posx)
-                  && fStlZIvY9lS8.world.getBlockState(posx).getBlock() != Blocks.OBSIDIAN
-                  && fStlZIvY9lS8.world.getBlockState(posx).isReplaceable()
-                  && oyDPiOVBGKG.TJImwK2(posx)) {
-                  U6PQSXqW.fStlZIvY9lS8().PVlYDeNipUe().put(posx, currentTick);
-                  irzXX.fStlZIvY9lS8(posx, Direction.DOWN, U6PQSXqW.fStlZIvY9lS8().QfZy2gWnKInxFPr(), (Boolean)MusheorSystem.Manager.silentPlace.get());
+               if (!U6PQSXqW.fStlZIvY9lS8().PVlYDeNipUe().containsKey(pos)
+                  && fStlZIvY9lS8.world.getBlockState(pos).getBlock() != Blocks.OBSIDIAN
+                  && fStlZIvY9lS8.world.getBlockState(pos).isReplaceable()
+                  && oyDPiOVBGKG.TJImwK2(pos)) {
+                  U6PQSXqW.fStlZIvY9lS8().PVlYDeNipUe().put(pos, currentTick);
+                  irzXX.fStlZIvY9lS8(pos, Direction.DOWN, U6PQSXqW.fStlZIvY9lS8().QfZy2gWnKInxFPr(), (Boolean)MusheorSystem.Manager.silentPlace.get());
                }
             }
          }
@@ -196,8 +195,9 @@ public class AutoPortal extends Module {
             if (inHotbar.found()) {
                InvUtils.swap(inHotbar.slot(), false);
                BlockHitResult hit = new BlockHitResult(Vec3d.ofCenter(this.j376sIQ).add(0.0, 0.5, 0.0), Direction.UP, this.j376sIQ, false);
-               fStlZIvY9lS8.interactionManager.sendSequencedPacket(fStlZIvY9lS8.world, sequence -> new PlayerInteractBlockC2SPacket(Hand.MAIN_HAND, hit, sequence));
-               this.TXWyNb = AutoPortal.Phase.TJImwK2;
+               fStlZIvY9lS8.interactionManager
+                  .sendSequencedPacket(fStlZIvY9lS8.world, sequence -> new PlayerInteractBlockC2SPacket(Hand.MAIN_HAND, hit, sequence));
+               this.TXWyNb = AutoPortal.Phase.DONE;
             } else if (!InvUtils.find(stack -> stack.getItem() == Items.FLINT_AND_STEEL).found()) {
                this.error("Lost flint and steel during build, disabling.", new Object[0]);
                this.toggle();
@@ -216,7 +216,7 @@ public class AutoPortal extends Module {
             this.toggle();
          }
       } else {
-         this.TXWyNb = AutoPortal.Phase.QfZy2gWnKInxFPr;
+         this.TXWyNb = AutoPortal.Phase.LIGHTING;
       }
    }
 
@@ -312,8 +312,8 @@ public class AutoPortal extends Module {
          }
       }
 
-      for (BlockPos posx : this.duJ6sPeetAcBh6P) {
-         BlockState state = fStlZIvY9lS8.world.getBlockState(posx);
+      for (BlockPos pos : this.duJ6sPeetAcBh6P) {
+         BlockState state = fStlZIvY9lS8.world.getBlockState(pos);
          if (state.getBlock() != Blocks.NETHER_PORTAL && state.getBlock() != Blocks.FIRE && !state.isReplaceable()) {
             return true;
          }
@@ -339,9 +339,12 @@ public class AutoPortal extends Module {
       }
    }
 
-   private static enum Phase {
-      fStlZIvY9lS8,
-      QfZy2gWnKInxFPr,
-      TJImwK2;
+   private enum Phase {
+      PLACING,
+      LIGHTING,
+      DONE;
+
+      Phase() {
+      }
    }
 }

@@ -1,77 +1,44 @@
 # Open-Musheor
 
-`musheor` 1.7.1 的反编译源码，面向 Minecraft **1.21.4 / 1.21.5 / 1.21.8 / 1.21.11**。
+Musheor 1.7.1 的反编译源码恢复工程，非作者官方源码。
 
-这不是官方源码。所有代码由发布 jar 反编译得到，仅用于逆向工程学习与研究。
+## 已验证版本
 
-## 内容
-
-| Minecraft | tag | 目录 |
+| Minecraft | 工程 | 当前状态 |
 |---|---|---|
-| 1.21.4 | `v1.7.1-1.21.4` | [`versions/1.21.4`](versions/1.21.4) |
-| 1.21.5 | `v1.7.1-1.21.5` | [`versions/1.21.5`](versions/1.21.5) |
-| 1.21.8 | `v1.7.1-1.21.8` | [`versions/1.21.8`](versions/1.21.8) |
-| 1.21.11 | `v1.7.1-1.21.11` | [`versions/1.21.11`](versions/1.21.11) |
+| **1.21.4** | [源码与构建配置](<versions/1.21.4/build.gradle>) | Java 21 / Gradle 9.5.1：clean build + 完整性 PASS |
+| **1.21.11** | [源码与构建配置](<versions/1.21.11/build.gradle>) | Java 21 / Gradle 9.5.1：clean build + 完整性 PASS |
+| 1.21.5 / 1.21.8 | 保留历史版本 | 不在本次验收范围，不承诺可编译 |
 
-四个版本源码同源，差异只在编译目标。每个目录都是一个独立可构建的 Gradle 工程。
-
-## 工程结构
-
-```
-versions/<mc>/
-├── build.gradle          Fabric Loom 1.10.5 + Meteor Client
-├── settings.gradle
-├── gradle.properties
-├── libs/
-│   ├── Java-WebSocket-1.5.4.jar   原 jar 内嵌依赖
-│   └── baritone.jar               baritone API（compileOnly）
-└── src/main/
-    ├── java/             141 个 .java（Yarn 可读名）
-    └── resources/
-        ├── fabric.mod.json
-        ├── musheor.mixins.json
-        ├── musheor.accesswidener
-        └── assets/
-```
+两版各141个Java文件、243个编译产物类，完整保留可选兼容实现、原始Mixin注册、资源与access widener权限。无stub、无source excludes。仍有deprecated/unchecked提示；**未启动Minecraft，不代表游戏内功能或依赖兼容性已验证**。
 
 ## 构建
 
-需要 JDK 21 与 Gradle 8.12+（Loom 1.10.5 的版本要求）。
+需要 JDK 21（设置 JAVA_HOME）、Node.js 22+、可访问依赖仓库的网络。在仓库根目录运行：
 
-```bash
-cd versions/1.21.8
-gradle build --no-daemon --console=plain
-```
+	node tools/build-all.mjs
 
-产物在 `build/libs/`。
+单版本：
 
-依赖来源：`maven.fabricmc.net`（Loom、Yarn、Fabric Loader）、`maven.meteordev.org/snapshots`（Meteor Client `<mc>-SNAPSHOT`）、Mojang libraries。
+	node tools/build-all.mjs --version 1.21.4
+	node tools/build-all.mjs --version 1.21.11
 
-## 反编译与处理过程
+下载器按[1.21.4清单](<versions/1.21.4/libs/compat-dependencies.json>)、[1.21.11清单](<versions/1.21.11/libs/compat-dependencies.json>)获取真实编译依赖，检查SHA-256/SHA-512；下载后串行执行clean build与结构校验。**不需要GitHub令牌。** 缓存齐全时加 --offline；只构建不下载可加 --skip-download。
 
-1. **Vineflower 1.11.1** 反编译（保留精确大小写路径，先输出 jar 再解包，避免 Windows 大小写覆盖）；
-2. **Yarn 映射**把 intermediary 名（`class_1234` / `method_5678`）换成可读名，含内部类点号形式与跨版本 mappings 兜底；
-3. 清理未使用 import 与反编译噪音；
-4. 修复 Vineflower 的 record 缺陷（空 header + 非法实例字段 → 正确 record 组件），并处理混淆器造成的非法标识符与同名嵌套类型；
-5. 生成 Loom 工程，重映射 accesswidener 到 `named` 命名空间。
+手动：先运行 node tools/fetch-dependencies.mjs，然后 ./gradlew --project-dir versions/1.21.4 clean build（Windows使用gradlew.bat）。产物位于相应工程的build/libs目录，不提交到Git。校验：node tools/verify-build.mjs。
 
-## 已知限制
+## 恢复与可读性
 
-- **1.21.8 尚未完全编译通过**：混淆器在 `obf` / `musheor.utils` / `musheor.utils.manager` 三个包复用了 7 个类名（`pvfA15fQSVM`、`gVOhtBej1x`、`U6PQSXqW`、`GyhoRo`、`irzXX`、`JhujBv5`、`jU8xXhmkg`、`WOGVSBb`），反编译后简单名歧义。其余 140 个文件可通过。
-- **Litematica / Xaero 兼容模块已排除编译**：两者闭源、无公开 maven；`musheor.java` 通过 `Class.forName` 反射加载其实现，排除不影响主工程。需要时把对应 jar 放入 `libs/` 并删掉 `build.gradle` 里对应的 `exclude`。
-- **baritone 使用 1.21.11 的 API jar**：`meteordevelopment:baritone:1.21.8-SNAPSHOT` 在 maven 上只有 pom 没有 jar。
-- `obf/` 包的方法名仍是作者自己的混淆名（如 `fStlZIvY9lS8`），不在 Yarn 映射范围。
+各版本按自身Minecraft层级及Yarn映射，先TinyRemapper 0.11.1重映射字节码，再Vineflower 1.12.0完整反编译；不是对反编译文本做跨版本盲替换。研究了[mjt](https://github.com/luiox/mjt)；v2.3发行只有MCP宿主，不含main文档中新加CLI，因此本次直接使用Vineflower后端。
 
-## 安全审计
+恢复缺失方法、损坏record、enum运行时名称和ordinal、Mixin selector/shadow/accessor映射、泛型推断与重载，并完整编译Litematica/Xaero/Via等兼容类。原作者部分随机标识符没有公开原名映射，保留以避免无依据破坏反射/行为，详见[阅读导航与限制](<docs/RESTORATION.md>)。
 
-见 [SECURITY_AUDIT.md](SECURITY_AUDIT.md)。摘要：
+## 证据和边界
 
-- 无病毒 / 后门 / 持久化 / 进程注入 / C2 / 硬编码恶意 IP；
-- 存在**默认关闭**的遥测：`POST https://api.musheck.dev/stats`，需 `post-stats` 开关 + `apiKey` + `HighwayBuilder` 模块激活，上报 UUID、用户名、服务器地址与挖掘统计；
-- 两个只读端点：`highways.musheck.dev`（高速配置）、`mutuals.musheck.dev`（互关列表），只 GET。
+[本机构建记录](<docs/verification/local-build.md>)、[1.21.4产物结构基线](<docs/verification/1.21.4.baseline.json>)、[1.21.11基线](<docs/verification/1.21.11.baseline.json>)记录本次实际验收。基线来自本机构建，不是GitHub CI通过声明；SNAPSHOT依赖与JDK差异可能改变产物字节，验证器检查类清单/Mixin/资源/依赖而不强制JAR哈希相同。
 
-## 免责声明
+**隐私提醒：原统计上传路径没有检查postStats开关；已有非空API key时只关闭开关不可靠。** 参见[安全复核](<SECURITY_AUDIT.md>)。本次忠实恢复原行为，没有私自修改联网功能。
 
-原 mod 的 `fabric.mod.json` 声明许可为 `All-Rights-Reserved`。本仓库不主张对原始代码的任何权利，仅因学习、兼容性研究与安全分析目的而发布反编译产物。若权利人要求，可随时删除。
+## 许可
 
-代码按原样提供，不附带任何担保。使用第三方 Minecraft 外挂可能违反服务器规则并导致封禁，风险自负。
+原mod声明 **All-Rights-Reserved**，仓库名称不代表已取得开源许可。本仓库不主张对原始代码的权利；反编译、校验或构建成功不授予再分发许可。请在发布/使用前自行核实权利人授权与第三方依赖许可。按原样提供，不保证安全或适用性，使用可能违反服务器规则。

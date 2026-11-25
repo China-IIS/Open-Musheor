@@ -1,8 +1,11 @@
 package musheor.utils;
 
 public enum WOGVSBb {
-   fStlZIvY9lS8,
-   QfZy2gWnKInxFPr,
-   TJImwK2,
-   wSJeYsJcmjNZf;
+   PAVEMENT,
+   PICKAXE_NON_SILK,
+   PICKAXE_SILK,
+   FOOD;
+
+   WOGVSBb() {
+   }
 }

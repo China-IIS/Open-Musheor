@@ -10,19 +10,19 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map.Entry;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
+import java.util.Map.Entry;
 import javax.imageio.ImageIO;
 import meteordevelopment.meteorclient.events.entity.EntityAddedEvent;
 import meteordevelopment.meteorclient.events.render.Render2DEvent;
 import meteordevelopment.meteorclient.events.world.TickEvent.Post;
 import meteordevelopment.meteorclient.renderer.Renderer2D;
 import meteordevelopment.meteorclient.renderer.text.TextRenderer;
-import meteordevelopment.meteorclient.settings.BoolSetting.Builder;
 import meteordevelopment.meteorclient.settings.Setting;
 import meteordevelopment.meteorclient.settings.SettingGroup;
+import meteordevelopment.meteorclient.settings.BoolSetting.Builder;
 import meteordevelopment.meteorclient.systems.modules.Module;
 import meteordevelopment.meteorclient.systems.modules.Modules;
 import meteordevelopment.meteorclient.systems.modules.render.Freecam;
@@ -31,7 +31,6 @@ import meteordevelopment.meteorclient.utils.render.RenderUtils;
 import meteordevelopment.meteorclient.utils.render.color.SettingColor;
 import meteordevelopment.orbit.EventHandler;
 import musheor.compat.VersionHelper;
-import musheor.musheor;
 import musheor.utils.AVZhkxEO;
 import musheor.utils.GyhoRo;
 import net.minecraft.block.TrapdoorBlock;
@@ -81,7 +80,7 @@ public class MoreTags extends Module {
          ((meteordevelopment.meteorclient.settings.EnumSetting.Builder)((meteordevelopment.meteorclient.settings.EnumSetting.Builder)((meteordevelopment.meteorclient.settings.EnumSetting.Builder)((meteordevelopment.meteorclient.settings.EnumSetting.Builder)new meteordevelopment.meteorclient.settings.EnumSetting.Builder()
                         .name("name-color"))
                      .description("How to color the player's name."))
-                  .defaultValue(MoreTags.NameColorType.fStlZIvY9lS8))
+                  .defaultValue(MoreTags.NameColorType.Default))
                .visible(this.fStlZIvY9lS8::get))
             .build()
       );
@@ -90,7 +89,7 @@ public class MoreTags extends Module {
          ((meteordevelopment.meteorclient.settings.ColorSetting.Builder)((meteordevelopment.meteorclient.settings.ColorSetting.Builder)new meteordevelopment.meteorclient.settings.ColorSetting.Builder()
                   .name("name-color-value"))
                .defaultValue(new SettingColor(255, 255, 255))
-               .visible(() -> (Boolean)this.fStlZIvY9lS8.get() && this.BrmKXSYhWhqoB1.get() == MoreTags.NameColorType.QfZy2gWnKInxFPr))
+               .visible(() -> (Boolean)this.fStlZIvY9lS8.get() && this.BrmKXSYhWhqoB1.get() == MoreTags.NameColorType.Color))
             .build()
       );
    private final Setting<SettingColor> I3psabmOrOI = this.TJImwK2
@@ -98,7 +97,7 @@ public class MoreTags extends Module {
          ((meteordevelopment.meteorclient.settings.ColorSetting.Builder)((meteordevelopment.meteorclient.settings.ColorSetting.Builder)new meteordevelopment.meteorclient.settings.ColorSetting.Builder()
                   .name("name-gradient-start"))
                .defaultValue(new SettingColor(255, 100, 100))
-               .visible(() -> (Boolean)this.fStlZIvY9lS8.get() && this.BrmKXSYhWhqoB1.get() == MoreTags.NameColorType.TJImwK2))
+               .visible(() -> (Boolean)this.fStlZIvY9lS8.get() && this.BrmKXSYhWhqoB1.get() == MoreTags.NameColorType.Gradient))
             .build()
       );
    private final Setting<SettingColor> duJ6sPeetAcBh6P = this.TJImwK2
@@ -106,7 +105,7 @@ public class MoreTags extends Module {
          ((meteordevelopment.meteorclient.settings.ColorSetting.Builder)((meteordevelopment.meteorclient.settings.ColorSetting.Builder)new meteordevelopment.meteorclient.settings.ColorSetting.Builder()
                   .name("name-gradient-end"))
                .defaultValue(new SettingColor(100, 100, 255))
-               .visible(() -> (Boolean)this.fStlZIvY9lS8.get() && this.BrmKXSYhWhqoB1.get() == MoreTags.NameColorType.TJImwK2))
+               .visible(() -> (Boolean)this.fStlZIvY9lS8.get() && this.BrmKXSYhWhqoB1.get() == MoreTags.NameColorType.Gradient))
             .build()
       );
    private final Setting<SettingColor> j376sIQ = this.TJImwK2
@@ -146,7 +145,7 @@ public class MoreTags extends Module {
       .add(
          ((meteordevelopment.meteorclient.settings.EnumSetting.Builder)((meteordevelopment.meteorclient.settings.EnumSetting.Builder)((meteordevelopment.meteorclient.settings.EnumSetting.Builder)new meteordevelopment.meteorclient.settings.EnumSetting.Builder()
                      .name("outline"))
-                  .defaultValue(MoreTags.OutlineType.fStlZIvY9lS8))
+                  .defaultValue(MoreTags.OutlineType.Disabled))
                .visible(this.fStlZIvY9lS8::get))
             .build()
       );
@@ -155,7 +154,7 @@ public class MoreTags extends Module {
          ((meteordevelopment.meteorclient.settings.ColorSetting.Builder)((meteordevelopment.meteorclient.settings.ColorSetting.Builder)new meteordevelopment.meteorclient.settings.ColorSetting.Builder()
                   .name("outline-color"))
                .defaultValue(new SettingColor(255, 255, 255, 200))
-               .visible(() -> (Boolean)this.fStlZIvY9lS8.get() && this.nOwp0NYl.get() == MoreTags.OutlineType.QfZy2gWnKInxFPr))
+               .visible(() -> (Boolean)this.fStlZIvY9lS8.get() && this.nOwp0NYl.get() == MoreTags.OutlineType.Color))
             .build()
       );
    private final Setting<Double> zkcZ4Xkp9Ez7Y = this.TJImwK2
@@ -165,7 +164,7 @@ public class MoreTags extends Module {
                .defaultValue(3.0)
                .sliderRange(0.0, 10.0)
                .decimalPlaces(1)
-               .visible(() -> (Boolean)this.fStlZIvY9lS8.get() && this.nOwp0NYl.get() != MoreTags.OutlineType.fStlZIvY9lS8))
+               .visible(() -> (Boolean)this.fStlZIvY9lS8.get() && this.nOwp0NYl.get() != MoreTags.OutlineType.Disabled))
             .build()
       );
    private final Setting<SettingColor> flWHzEyn = this.TJImwK2
@@ -173,7 +172,7 @@ public class MoreTags extends Module {
          ((meteordevelopment.meteorclient.settings.ColorSetting.Builder)((meteordevelopment.meteorclient.settings.ColorSetting.Builder)new meteordevelopment.meteorclient.settings.ColorSetting.Builder()
                   .name("outline-gradient-start"))
                .defaultValue(new SettingColor(255, 100, 100))
-               .visible(() -> (Boolean)this.fStlZIvY9lS8.get() && this.nOwp0NYl.get() == MoreTags.OutlineType.TJImwK2))
+               .visible(() -> (Boolean)this.fStlZIvY9lS8.get() && this.nOwp0NYl.get() == MoreTags.OutlineType.Gradient))
             .build()
       );
    private final Setting<SettingColor> FVjbhYkk53UT = this.TJImwK2
@@ -181,14 +180,14 @@ public class MoreTags extends Module {
          ((meteordevelopment.meteorclient.settings.ColorSetting.Builder)((meteordevelopment.meteorclient.settings.ColorSetting.Builder)new meteordevelopment.meteorclient.settings.ColorSetting.Builder()
                   .name("outline-gradient-end"))
                .defaultValue(new SettingColor(100, 100, 255))
-               .visible(() -> (Boolean)this.fStlZIvY9lS8.get() && this.nOwp0NYl.get() == MoreTags.OutlineType.TJImwK2))
+               .visible(() -> (Boolean)this.fStlZIvY9lS8.get() && this.nOwp0NYl.get() == MoreTags.OutlineType.Gradient))
             .build()
       );
    private final Setting<MoreTags.DistanceType> Nt3xeF = this.TJImwK2
       .add(
          ((meteordevelopment.meteorclient.settings.EnumSetting.Builder)((meteordevelopment.meteorclient.settings.EnumSetting.Builder)((meteordevelopment.meteorclient.settings.EnumSetting.Builder)new meteordevelopment.meteorclient.settings.EnumSetting.Builder()
                      .name("distance"))
-                  .defaultValue(MoreTags.DistanceType.TJImwK2))
+                  .defaultValue(MoreTags.DistanceType.Auto))
                .visible(this.fStlZIvY9lS8::get))
             .build()
       );
@@ -197,7 +196,7 @@ public class MoreTags extends Module {
          ((meteordevelopment.meteorclient.settings.ColorSetting.Builder)((meteordevelopment.meteorclient.settings.ColorSetting.Builder)new meteordevelopment.meteorclient.settings.ColorSetting.Builder()
                   .name("distance-color"))
                .defaultValue(new SettingColor(Color.WHITE))
-               .visible(() -> (Boolean)this.fStlZIvY9lS8.get() && this.Nt3xeF.get() == MoreTags.DistanceType.QfZy2gWnKInxFPr))
+               .visible(() -> (Boolean)this.fStlZIvY9lS8.get() && this.Nt3xeF.get() == MoreTags.DistanceType.Color))
             .build()
       );
    private final Setting<Boolean> jbUe84V1vykfK = this.TJImwK2
@@ -250,7 +249,7 @@ public class MoreTags extends Module {
          ((meteordevelopment.meteorclient.settings.EnumSetting.Builder)((meteordevelopment.meteorclient.settings.EnumSetting.Builder)((meteordevelopment.meteorclient.settings.EnumSetting.Builder)new meteordevelopment.meteorclient.settings.EnumSetting.Builder()
                      .name("pearl-rendering"))
                   .description("Choose whether to render only pearls that have been assigned an owner or render all pearls."))
-               .defaultValue(MoreTags.PearlRenderingType.QfZy2gWnKInxFPr))
+               .defaultValue(MoreTags.PearlRenderingType.Assigned))
             .build()
       );
    private final Setting<SettingColor> icQ738dpWr7W = this.wSJeYsJcmjNZf
@@ -259,7 +258,7 @@ public class MoreTags extends Module {
                      .name("assigned-rendering-color"))
                   .description("Outline color of a pearl whose owner has been resolved."))
                .defaultValue(new SettingColor(Color.MAGENTA))
-               .visible(() -> this.WGmfQKK.get() == MoreTags.PearlRenderingType.QfZy2gWnKInxFPr || this.WGmfQKK.get() == MoreTags.PearlRenderingType.TJImwK2))
+               .visible(() -> this.WGmfQKK.get() == MoreTags.PearlRenderingType.Assigned || this.WGmfQKK.get() == MoreTags.PearlRenderingType.Both))
             .build()
       );
    private final Setting<SettingColor> JAj4YwE2MVx = this.wSJeYsJcmjNZf
@@ -268,7 +267,7 @@ public class MoreTags extends Module {
                      .name("unknown-rendering-color"))
                   .description("Outline color of a pearl whose owner is still unresolved."))
                .defaultValue(new SettingColor(Color.WHITE))
-               .visible(() -> this.WGmfQKK.get() == MoreTags.PearlRenderingType.TJImwK2))
+               .visible(() -> this.WGmfQKK.get() == MoreTags.PearlRenderingType.Both))
             .build()
       );
    private final Setting<MoreTags.TagDisplayType> JPp6VyZP9f = this.wSJeYsJcmjNZf
@@ -276,7 +275,7 @@ public class MoreTags extends Module {
          ((meteordevelopment.meteorclient.settings.EnumSetting.Builder)((meteordevelopment.meteorclient.settings.EnumSetting.Builder)((meteordevelopment.meteorclient.settings.EnumSetting.Builder)new meteordevelopment.meteorclient.settings.EnumSetting.Builder()
                      .name("tag-display"))
                   .description("What to display above the pearl."))
-               .defaultValue(MoreTags.TagDisplayType.wSJeYsJcmjNZf))
+               .defaultValue(MoreTags.TagDisplayType.Both))
             .build()
       );
    private final Setting<Boolean> MR1DKzw = this.wSJeYsJcmjNZf
@@ -284,7 +283,7 @@ public class MoreTags extends Module {
          ((Builder)((Builder)((Builder)((Builder)new Builder().name("tag-distance-scaling"))
                      .description("Scales the tag automatically based on the distance from the player."))
                   .defaultValue(true))
-               .visible(() -> this.JPp6VyZP9f.get() != MoreTags.TagDisplayType.fStlZIvY9lS8))
+               .visible(() -> this.JPp6VyZP9f.get() != MoreTags.TagDisplayType.Disabled))
             .build()
       );
    private final Setting<Boolean> DqGSCWplcjMi = this.wSJeYsJcmjNZf
@@ -300,7 +299,7 @@ public class MoreTags extends Module {
                      .name("tag-color"))
                   .description("Color of the owner's tag rendered above a pearl."))
                .defaultValue(new SettingColor(Color.CYAN))
-               .visible(() -> this.JPp6VyZP9f.get() != MoreTags.TagDisplayType.fStlZIvY9lS8))
+               .visible(() -> this.JPp6VyZP9f.get() != MoreTags.TagDisplayType.Disabled))
             .build()
       );
    private final Setting<Double> g0iiTDJzfIGXdui = this.wSJeYsJcmjNZf
@@ -310,7 +309,7 @@ public class MoreTags extends Module {
                   .description("Scale of the nametag rendered above pearls."))
                .defaultValue(1.0)
                .decimalPlaces(1)
-               .visible(() -> this.JPp6VyZP9f.get() != MoreTags.TagDisplayType.fStlZIvY9lS8))
+               .visible(() -> this.JPp6VyZP9f.get() != MoreTags.TagDisplayType.Disabled))
             .build()
       );
    private final Setting<Double> VIbihOaIVyhvJw = this.wSJeYsJcmjNZf
@@ -320,7 +319,7 @@ public class MoreTags extends Module {
                   .description("Scale of the player face icon rendered above a pearl."))
                .defaultValue(1.0)
                .decimalPlaces(1)
-               .visible(() -> this.JPp6VyZP9f.get() == MoreTags.TagDisplayType.TJImwK2 || this.JPp6VyZP9f.get() == MoreTags.TagDisplayType.wSJeYsJcmjNZf))
+               .visible(() -> this.JPp6VyZP9f.get() == MoreTags.TagDisplayType.Skin || this.JPp6VyZP9f.get() == MoreTags.TagDisplayType.Both))
             .build()
       );
    public static final Map<Integer, String> QfZy2gWnKInxFPr = new HashMap<>();
@@ -330,7 +329,7 @@ public class MoreTags extends Module {
    private final Set<String> lVX1t0MC = new HashSet<>();
 
    public MoreTags() {
-      super(musheor.MAIN, "kek-tags", "Enhanced nametags for players, pearls and items (WIP)");
+      super(musheor.musheor.MAIN, "kek-tags", "Enhanced nametags for players, pearls and items (WIP)");
    }
 
    public void onActivate() {
@@ -396,9 +395,7 @@ public class MoreTags extends Module {
       this.lVX1t0MC.clear();
    }
 
-   @EventHandler(
-      priority = -200
-   )
+   @EventHandler(priority = -200)
    private void fStlZIvY9lS8(EntityAddedEvent event) {
       if (this.mc.world != null && this.mc.player != null) {
          if (event.entity instanceof EnderPearlEntity pearl) {
@@ -468,25 +465,27 @@ public class MoreTags extends Module {
          Entity entity = this.mc.world.getEntityById(id);
          if (entity == null) {
             return true;
-         } else if (entity instanceof EnderPearlEntity pearl) {
+         }
+
+         if (entity instanceof EnderPearlEntity pearl) {
             UUID ownerUuid = this.i2Nu6XHKic(pearl);
             if (ownerUuid == null) {
                return false;
-            } else {
-               PlayerEntity owner = this.mc.world.getPlayers().stream().filter(p -> p.getUuid().equals(ownerUuid)).findFirst().orElse(null);
-               if (owner == null) {
-                  return false;
-               } else {
-                  String name = owner.getName().getString();
-                  QfZy2gWnKInxFPr.put(id, name);
-                  BlockPos pos = this.wSJeYsJcmjNZf(pearl);
-                  if (pos != null) {
-                     GyhoRo.fStlZIvY9lS8(name, pos, id);
-                  }
-
-                  return true;
-               }
             }
+
+            PlayerEntity owner = this.mc.world.getPlayers().stream().filter(p -> p.getUuid().equals(ownerUuid)).findFirst().orElse(null);
+            if (owner == null) {
+               return false;
+            }
+
+            String name = owner.getName().getString();
+            QfZy2gWnKInxFPr.put(id, name);
+            BlockPos pos = this.wSJeYsJcmjNZf(pearl);
+            if (pos != null) {
+               GyhoRo.fStlZIvY9lS8(name, pos, id);
+            }
+
+            return true;
          } else {
             return true;
          }
@@ -496,17 +495,17 @@ public class MoreTags extends Module {
    private BlockPos wSJeYsJcmjNZf(EnderPearlEntity pearl) {
       if (this.mc.world == null) {
          return null;
-      } else {
-         BlockPos base = pearl.getBlockPos();
-
-         for (BlockPos candidate : new BlockPos[]{base.down(), base}) {
-            if (this.mc.world.getBlockState(candidate).getBlock() instanceof TrapdoorBlock) {
-               return candidate;
-            }
-         }
-
-         return null;
       }
+
+      BlockPos base = pearl.getBlockPos();
+
+      for (BlockPos candidate : new BlockPos[]{base.down(), base}) {
+         if (this.mc.world.getBlockState(candidate).getBlock() instanceof TrapdoorBlock) {
+            return candidate;
+         }
+      }
+
+      return null;
    }
 
    public void fStlZIvY9lS8(int pearlId, int ownerEntityId) {
@@ -518,16 +517,16 @@ public class MoreTags extends Module {
          Field f = ProjectileEntity.class.getDeclaredField("ownerUuid");
          f.setAccessible(true);
          return (UUID)f.get(pearl);
-      } catch (Exception var3) {
+      } catch (Exception e) {
          return null;
       }
    }
 
    @EventHandler
    private void fStlZIvY9lS8(Render2DEvent event) {
-      if (this.JPp6VyZP9f.get() != MoreTags.TagDisplayType.fStlZIvY9lS8 && this.mc.world != null && !QfZy2gWnKInxFPr.isEmpty()) {
-         boolean showSkin = this.JPp6VyZP9f.get() == MoreTags.TagDisplayType.TJImwK2 || this.JPp6VyZP9f.get() == MoreTags.TagDisplayType.wSJeYsJcmjNZf;
-         boolean showName = this.JPp6VyZP9f.get() == MoreTags.TagDisplayType.QfZy2gWnKInxFPr || this.JPp6VyZP9f.get() == MoreTags.TagDisplayType.wSJeYsJcmjNZf;
+      if (this.JPp6VyZP9f.get() != MoreTags.TagDisplayType.Disabled && this.mc.world != null && !QfZy2gWnKInxFPr.isEmpty()) {
+         boolean showSkin = this.JPp6VyZP9f.get() == MoreTags.TagDisplayType.Skin || this.JPp6VyZP9f.get() == MoreTags.TagDisplayType.Both;
+         boolean showName = this.JPp6VyZP9f.get() == MoreTags.TagDisplayType.NameTag || this.JPp6VyZP9f.get() == MoreTags.TagDisplayType.Both;
 
          for (Entry<Integer, String> entry : QfZy2gWnKInxFPr.entrySet()) {
             if (this.mc.world.getEntityById(entry.getKey()) instanceof EnderPearlEntity pearl) {
@@ -607,10 +606,10 @@ public class MoreTags extends Module {
                      VersionHelper.get().renderColorRenderer();
                   }
 
-                  if (this.nOwp0NYl.get() != MoreTags.OutlineType.fStlZIvY9lS8) {
+                  if (this.nOwp0NYl.get() != MoreTags.OutlineType.Disabled) {
                      int colA;
                      int colB;
-                     if (this.nOwp0NYl.get() == MoreTags.OutlineType.TJImwK2) {
+                     if (this.nOwp0NYl.get() == MoreTags.OutlineType.Gradient) {
                         colA = this.fStlZIvY9lS8((SettingColor)this.flWHzEyn.get());
                         colB = this.fStlZIvY9lS8((SettingColor)this.FVjbhYkk53UT.get());
                      } else {
@@ -633,22 +632,22 @@ public class MoreTags extends Module {
                   float textY = -(nameH / 2.0F);
                   if (friend) {
                      tr.render(name, textX, textY, (meteordevelopment.meteorclient.utils.render.color.Color)this.j376sIQ.get());
-                  } else if (this.BrmKXSYhWhqoB1.get() == MoreTags.NameColorType.TJImwK2) {
+                  } else if (this.BrmKXSYhWhqoB1.get() == MoreTags.NameColorType.Gradient) {
                      this.fStlZIvY9lS8(tr, name, textX, textY, (SettingColor)this.I3psabmOrOI.get(), (SettingColor)this.duJ6sPeetAcBh6P.get());
-                  } else if (this.BrmKXSYhWhqoB1.get() == MoreTags.NameColorType.QfZy2gWnKInxFPr) {
+                  } else if (this.BrmKXSYhWhqoB1.get() == MoreTags.NameColorType.Color) {
                      tr.render(name, textX, textY, (meteordevelopment.meteorclient.utils.render.color.Color)this.TXWyNb.get());
                   } else {
                      tr.render(name, textX, textY, new SettingColor(255, 255, 255));
                   }
 
                   tr.end();
-                  if (this.Nt3xeF.get() != MoreTags.DistanceType.fStlZIvY9lS8) {
+                  if (this.Nt3xeF.get() != MoreTags.DistanceType.Disabled) {
                      String distStr = String.format("[%dm]", (int)distance);
                      tr.begin();
                      float distW = (float)tr.getWidth(distStr);
                      float distY = totalNameLineH / 2.0F + spacing;
                      int distCol;
-                     if (this.Nt3xeF.get() == MoreTags.DistanceType.TJImwK2) {
+                     if (this.Nt3xeF.get() == MoreTags.DistanceType.Auto) {
                         distCol = AVZhkxEO.fStlZIvY9lS8(distance);
                      } else {
                         SettingColor dc = (SettingColor)this.zXcO5rZ.get();
@@ -696,12 +695,12 @@ public class MoreTags extends Module {
    }
 
    public boolean fStlZIvY9lS8(EnderPearlEntity pearl) {
-      if (this.isActive() && this.WGmfQKK.get() != MoreTags.PearlRenderingType.fStlZIvY9lS8) {
+      if (this.isActive() && this.WGmfQKK.get() != MoreTags.PearlRenderingType.Disabled) {
          int id = pearl.getId();
 
          return switch ((MoreTags.PearlRenderingType)this.WGmfQKK.get()) {
-            case QfZy2gWnKInxFPr -> QfZy2gWnKInxFPr.containsKey(id);
-            case TJImwK2 -> true;
+            case Assigned -> QfZy2gWnKInxFPr.containsKey(id);
+            case Both -> true;
             default -> false;
          };
       } else {
@@ -742,7 +741,7 @@ public class MoreTags extends Module {
                   this.HomZ7BbhM7wB.put(playerName, id);
                   this.lVX1t0MC.remove(playerName);
                });
-            } catch (Exception var8) {
+            } catch (Exception e) {
                this.lVX1t0MC.remove(playerName);
             }
          });
@@ -854,34 +853,49 @@ public class MoreTags extends Module {
       return c.r << 16 | c.g << 8 | c.b;
    }
 
-   private static enum DistanceType {
-      fStlZIvY9lS8,
-      QfZy2gWnKInxFPr,
-      TJImwK2;
+   private enum DistanceType {
+      Disabled,
+      Color,
+      Auto;
+
+      DistanceType() {
+      }
    }
 
-   private static enum NameColorType {
-      fStlZIvY9lS8,
-      QfZy2gWnKInxFPr,
-      TJImwK2;
+   private enum NameColorType {
+      Default,
+      Color,
+      Gradient;
+
+      NameColorType() {
+      }
    }
 
-   private static enum OutlineType {
-      fStlZIvY9lS8,
-      QfZy2gWnKInxFPr,
-      TJImwK2;
+   private enum OutlineType {
+      Disabled,
+      Color,
+      Gradient;
+
+      OutlineType() {
+      }
    }
 
-   private static enum PearlRenderingType {
-      fStlZIvY9lS8,
-      QfZy2gWnKInxFPr,
-      TJImwK2;
+   private enum PearlRenderingType {
+      Disabled,
+      Assigned,
+      Both;
+
+      PearlRenderingType() {
+      }
    }
 
-   private static enum TagDisplayType {
-      fStlZIvY9lS8,
-      QfZy2gWnKInxFPr,
-      TJImwK2,
-      wSJeYsJcmjNZf;
+   private enum TagDisplayType {
+      Disabled,
+      NameTag,
+      Skin,
+      Both;
+
+      TagDisplayType() {
+      }
    }
 }

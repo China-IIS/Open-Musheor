@@ -57,7 +57,11 @@ public class DepthInteract extends Module {
    }
 
    private boolean fStlZIvY9lS8(BlockEntity be) {
-      return be instanceof ChestBlockEntity || be instanceof TrappedChestBlockEntity || be instanceof BarrelBlockEntity || be instanceof ShulkerBoxBlockEntity || be instanceof EnderChestBlockEntity;
+      return be instanceof ChestBlockEntity
+         || be instanceof TrappedChestBlockEntity
+         || be instanceof BarrelBlockEntity
+         || be instanceof ShulkerBoxBlockEntity
+         || be instanceof EnderChestBlockEntity;
    }
 
    @EventHandler

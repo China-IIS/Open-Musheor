@@ -9,27 +9,26 @@ import meteordevelopment.meteorclient.gui.GuiTheme;
 import meteordevelopment.meteorclient.gui.widgets.WWidget;
 import meteordevelopment.meteorclient.gui.widgets.containers.WVerticalList;
 import meteordevelopment.meteorclient.gui.widgets.pressable.WButton;
-import meteordevelopment.meteorclient.settings.EnumSetting.Builder;
 import meteordevelopment.meteorclient.settings.Setting;
 import meteordevelopment.meteorclient.settings.SettingGroup;
+import meteordevelopment.meteorclient.settings.EnumSetting.Builder;
 import meteordevelopment.meteorclient.systems.modules.Module;
 import meteordevelopment.meteorclient.systems.modules.Modules;
 import meteordevelopment.meteorclient.systems.modules.combat.KillAura;
-import meteordevelopment.meteorclient.systems.modules.movement.AutoWalk.Direction;
 import meteordevelopment.meteorclient.systems.modules.movement.AutoWalk;
+import meteordevelopment.meteorclient.systems.modules.movement.AutoWalk.Direction;
 import meteordevelopment.meteorclient.systems.modules.player.AutoEat;
 import meteordevelopment.meteorclient.systems.modules.player.AutoGap;
 import meteordevelopment.meteorclient.systems.modules.render.FreeLook;
 import meteordevelopment.meteorclient.utils.world.BlockUtils;
 import meteordevelopment.orbit.EventHandler;
 import musheor.compat.VersionHelper;
-import musheor.musheor;
 import musheor.utils.JhujBv5;
-import musheor.utils.hud.screen.EchestConfigScreen;
 import musheor.utils.irzXX;
 import musheor.utils.jU8xXhmkg;
-import musheor.utils.manager.pvfA15fQSVM;
 import musheor.utils.oyDPiOVBGKG;
+import musheor.utils.hud.screen.EchestConfigScreen;
+import musheor.utils.manager.pvfA15fQSVM;
 import musheor.utils.system.MusheorSystem;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -60,7 +59,7 @@ public class HighwayBuilder extends Module {
    private final Setting<HighwayBuilder.BuildMode> xileXsbo = this.vGAMA89H
       .add(
          ((Builder)((Builder)((Builder)new Builder().name("build-mode")).description("Pave mode places blocks - Dig mode digs tunnels."))
-               .defaultValue(HighwayBuilder.BuildMode.fStlZIvY9lS8))
+               .defaultValue(HighwayBuilder.BuildMode.Pave))
             .build()
       );
    public final Setting<HighwayBuilder.Mode> fStlZIvY9lS8 = this.vGAMA89H
@@ -69,14 +68,14 @@ public class HighwayBuilder extends Module {
                   .description(
                      "Which mode to run the highwaybuilder in; Auto = fully automatic alignment, width, etc... - Semi = Chosen highway type and other parameters - Manual = full manual control"
                   ))
-               .defaultValue(HighwayBuilder.Mode.fStlZIvY9lS8))
+               .defaultValue(HighwayBuilder.Mode.Auto))
             .build()
       );
    private final Setting<HighwayBuilder.HighwayType> nOwp0NYl = this.vGAMA89H
       .add(
          ((Builder)((Builder)((Builder)((Builder)new Builder().name("highway-type")).description("Cardinal or diagonal highway type."))
-                  .defaultValue(HighwayBuilder.HighwayType.fStlZIvY9lS8))
-               .visible(() -> this.fStlZIvY9lS8.get() != HighwayBuilder.Mode.fStlZIvY9lS8))
+                  .defaultValue(HighwayBuilder.HighwayType.Cardinal))
+               .visible(() -> this.fStlZIvY9lS8.get() != HighwayBuilder.Mode.Auto))
             .build()
       );
    private final Setting<Integer> umvNbb7iD9UpR = this.vGAMA89H
@@ -86,7 +85,7 @@ public class HighwayBuilder extends Module {
                      .description("Width of the pavement below the player's feet."))
                   .defaultValue(4))
                .sliderRange(3, 9)
-               .visible(() -> this.fStlZIvY9lS8.get() != HighwayBuilder.Mode.fStlZIvY9lS8))
+               .visible(() -> this.fStlZIvY9lS8.get() != HighwayBuilder.Mode.Auto))
             .build()
       );
    private final Setting<Boolean> zkcZ4Xkp9Ez7Y = this.vGAMA89H
@@ -95,7 +94,7 @@ public class HighwayBuilder extends Module {
                         .name("auto-bounce"))
                      .description("Automatically start bouncing when no blockages or missing blocks can be found ahead"))
                   .defaultValue(true))
-               .visible(() -> this.fStlZIvY9lS8.get() != HighwayBuilder.Mode.TJImwK2))
+               .visible(() -> this.fStlZIvY9lS8.get() != HighwayBuilder.Mode.Manual))
             .build()
       );
    private final Setting<Integer> flWHzEyn = this.vGAMA89H
@@ -105,7 +104,7 @@ public class HighwayBuilder extends Module {
                      .description("How many blocks to scan ahead and check before allowing the paver to start bouncing"))
                   .defaultValue(24))
                .sliderRange(1, 64)
-               .visible(() -> this.fStlZIvY9lS8.get() != HighwayBuilder.Mode.TJImwK2 && (Boolean)this.zkcZ4Xkp9Ez7Y.get()))
+               .visible(() -> this.fStlZIvY9lS8.get() != HighwayBuilder.Mode.Manual && (Boolean)this.zkcZ4Xkp9Ez7Y.get()))
             .build()
       );
    private final Setting<Block> FVjbhYkk53UT = this.qhulAUwd
@@ -114,15 +113,15 @@ public class HighwayBuilder extends Module {
                         .name("pavement-block"))
                      .description("Block that is used to build highway pavement with."))
                   .defaultValue(Blocks.OBSIDIAN))
-               .visible(() -> this.xileXsbo.get() == HighwayBuilder.BuildMode.fStlZIvY9lS8))
+               .visible(() -> this.xileXsbo.get() == HighwayBuilder.BuildMode.Pave))
             .build()
       );
    private final Setting<HighwayBuilder.ScaffoldMode> Nt3xeF = this.qhulAUwd
       .add(
          ((Builder)((Builder)((Builder)((Builder)new Builder().name("scaffold-mode"))
                      .description("What type of scaffolding to use when going over caves and open area's."))
-                  .defaultValue(HighwayBuilder.ScaffoldMode.QfZy2gWnKInxFPr))
-               .visible(() -> this.xileXsbo.get() == HighwayBuilder.BuildMode.QfZy2gWnKInxFPr))
+                  .defaultValue(HighwayBuilder.ScaffoldMode.Simple))
+               .visible(() -> this.xileXsbo.get() == HighwayBuilder.BuildMode.Tunnel))
             .build()
       );
    private final Setting<Block> zXcO5rZ = this.qhulAUwd
@@ -131,7 +130,7 @@ public class HighwayBuilder extends Module {
                         .name("scaffold-block"))
                      .description("Block that is used to fix the flooring with."))
                   .defaultValue(Blocks.NETHERRACK))
-               .visible(() -> this.xileXsbo.get() == HighwayBuilder.BuildMode.QfZy2gWnKInxFPr && this.Nt3xeF.get() != HighwayBuilder.ScaffoldMode.fStlZIvY9lS8))
+               .visible(() -> this.xileXsbo.get() == HighwayBuilder.BuildMode.Tunnel && this.Nt3xeF.get() != HighwayBuilder.ScaffoldMode.Disabled))
             .build()
       );
    private final Setting<Boolean> jbUe84V1vykfK = this.qhulAUwd
@@ -140,7 +139,7 @@ public class HighwayBuilder extends Module {
                         .name("scaffold-left-rail"))
                      .description("Places the railing on the left side of the player."))
                   .defaultValue(true))
-               .visible(() -> this.xileXsbo.get() == HighwayBuilder.BuildMode.QfZy2gWnKInxFPr))
+               .visible(() -> this.xileXsbo.get() == HighwayBuilder.BuildMode.Tunnel))
             .build()
       );
    private final Setting<Boolean> zbN84Osn9p5lD = this.qhulAUwd
@@ -149,7 +148,7 @@ public class HighwayBuilder extends Module {
                         .name("scaffold-right-rail"))
                      .description("Places the railing on the right side of the player."))
                   .defaultValue(true))
-               .visible(() -> this.xileXsbo.get() == HighwayBuilder.BuildMode.QfZy2gWnKInxFPr))
+               .visible(() -> this.xileXsbo.get() == HighwayBuilder.BuildMode.Tunnel))
             .build()
       );
    private final Setting<Boolean> ZlNrrNcv3Ylc = this.qhulAUwd
@@ -158,7 +157,7 @@ public class HighwayBuilder extends Module {
                         .name("place-rails"))
                      .description("Places railings on both sides of the highway 1 block above the pavement."))
                   .defaultValue(true))
-               .visible(() -> this.xileXsbo.get() == HighwayBuilder.BuildMode.fStlZIvY9lS8 && this.fStlZIvY9lS8.get() != HighwayBuilder.Mode.fStlZIvY9lS8))
+               .visible(() -> this.xileXsbo.get() == HighwayBuilder.BuildMode.Pave && this.fStlZIvY9lS8.get() != HighwayBuilder.Mode.Auto))
             .build()
       );
    private final Setting<Boolean> EVSMbf = this.qhulAUwd
@@ -168,9 +167,9 @@ public class HighwayBuilder extends Module {
                      .description("Places railings on the left side sides of the highway 1 block above the pavement."))
                   .defaultValue(true))
                .visible(
-                  () -> this.xileXsbo.get() == HighwayBuilder.BuildMode.fStlZIvY9lS8
+                  () -> this.xileXsbo.get() == HighwayBuilder.BuildMode.Pave
                      && (Boolean)this.ZlNrrNcv3Ylc.get()
-                     && this.fStlZIvY9lS8.get() != HighwayBuilder.Mode.fStlZIvY9lS8
+                     && this.fStlZIvY9lS8.get() != HighwayBuilder.Mode.Auto
                ))
             .build()
       );
@@ -181,9 +180,9 @@ public class HighwayBuilder extends Module {
                      .description("Places railings on the right sides of the highway 1 block above the pavement."))
                   .defaultValue(true))
                .visible(
-                  () -> this.xileXsbo.get() == HighwayBuilder.BuildMode.fStlZIvY9lS8
+                  () -> this.xileXsbo.get() == HighwayBuilder.BuildMode.Pave
                      && (Boolean)this.ZlNrrNcv3Ylc.get()
-                     && this.fStlZIvY9lS8.get() != HighwayBuilder.Mode.fStlZIvY9lS8
+                     && this.fStlZIvY9lS8.get() != HighwayBuilder.Mode.Auto
                ))
             .build()
       );
@@ -193,7 +192,7 @@ public class HighwayBuilder extends Module {
                         .name("replace-crying-obsidian"))
                      .description("Mines and replaces crying obsidian if part of the pavement positions."))
                   .defaultValue(false))
-               .visible(() -> this.xileXsbo.get() == HighwayBuilder.BuildMode.fStlZIvY9lS8))
+               .visible(() -> this.xileXsbo.get() == HighwayBuilder.BuildMode.Pave))
             .build()
       );
    private final Setting<Boolean> icQ738dpWr7W = this.qhulAUwd
@@ -202,7 +201,7 @@ public class HighwayBuilder extends Module {
                         .name("fill-ceiling"))
                      .description("Fills the ceiling at Y level 123 with blocks."))
                   .defaultValue(false))
-               .visible(() -> this.xileXsbo.get() == HighwayBuilder.BuildMode.fStlZIvY9lS8))
+               .visible(() -> this.xileXsbo.get() == HighwayBuilder.BuildMode.Pave))
             .build()
       );
    private final Setting<Boolean> JAj4YwE2MVx = this.BrmKXSYhWhqoB1
@@ -211,7 +210,7 @@ public class HighwayBuilder extends Module {
                         .name("echest-farming"))
                      .description("Allow the player to farm obsidian by mining enderchests."))
                   .defaultValue(true))
-               .visible(() -> this.xileXsbo.get() == HighwayBuilder.BuildMode.fStlZIvY9lS8 && this.FVjbhYkk53UT.get() == Blocks.OBSIDIAN))
+               .visible(() -> this.xileXsbo.get() == HighwayBuilder.BuildMode.Pave && this.FVjbhYkk53UT.get() == Blocks.OBSIDIAN))
             .build()
       );
    private final Setting<Boolean> JPp6VyZP9f = this.BrmKXSYhWhqoB1
@@ -359,7 +358,7 @@ public class HighwayBuilder extends Module {
    private int npfimrDr0hky = 0;
 
    public HighwayBuilder() {
-      super(musheor.AUTOMATION, "HighwayBuilder", "Automated highway builder for 2b2t.");
+      super(musheor.musheor.AUTOMATION, "HighwayBuilder", "Automated highway builder for 2b2t.");
       TJImwK2 = this;
    }
 
@@ -393,9 +392,9 @@ public class HighwayBuilder extends Module {
       state.UPNmQKi0eiVUue();
       boolean noPavementBlockPresent = this.FVjbhYkk53UT.get() == Blocks.OBSIDIAN && pvfA15fQSVM.i2Nu6XHKic(V7zKJ4n6D().asItem()) < 1;
       boolean noPickaxePresent = pvfA15fQSVM.TJImwK2(false) < 1;
-      if (this.xileXsbo.get() != HighwayBuilder.BuildMode.fStlZIvY9lS8 || !noPavementBlockPresent && !noPickaxePresent) {
+      if (this.xileXsbo.get() != HighwayBuilder.BuildMode.Pave || !noPavementBlockPresent && !noPickaxePresent) {
          boolean noNonSilkPickaxePresent = pvfA15fQSVM.TJImwK2(true) < 1;
-         if (this.xileXsbo.get() == HighwayBuilder.BuildMode.QfZy2gWnKInxFPr) {
+         if (this.xileXsbo.get() == HighwayBuilder.BuildMode.Tunnel) {
             if (noNonSilkPickaxePresent) {
                this.error("No pickaxe found in inventory...!", new Object[0]);
             }
@@ -409,7 +408,7 @@ public class HighwayBuilder extends Module {
             if (!this.JPp6VyZP9f()) {
                irzXX.TJImwK2();
             } else {
-               irzXX.fStlZIvY9lS8(KekNuker.class, "nuker-mode", KekNuker.NukerMode.QfZy2gWnKInxFPr);
+               irzXX.fStlZIvY9lS8(KekNuker.class, "nuker-mode", KekNuker.NukerMode.Highway);
                irzXX.fStlZIvY9lS8(KekNuker.class, "range", 5.5);
                this.MR1DKzw();
                state.Njcn1X5he().clear();
@@ -477,11 +476,11 @@ public class HighwayBuilder extends Module {
             int obsidianCount = pvfA15fQSVM.i2Nu6XHKic(((Block)this.FVjbhYkk53UT.get()).asItem());
             state.i2Nu6XHKic(pvfA15fQSVM.TJImwK2(false));
             state.vGAMA89H(pvfA15fQSVM.TJImwK2(true));
-            if (this.xileXsbo.get() == HighwayBuilder.BuildMode.fStlZIvY9lS8) {
+            if (this.xileXsbo.get() == HighwayBuilder.BuildMode.Pave) {
                state.TJImwK2(enderChestCount <= 8 && obsidianCount <= 8 || state.JPp6VyZP9f() < 1 || !QfZy2gWnKInxFPr());
             }
 
-            if (this.xileXsbo.get() == HighwayBuilder.BuildMode.QfZy2gWnKInxFPr) {
+            if (this.xileXsbo.get() == HighwayBuilder.BuildMode.Tunnel) {
                state.TJImwK2(state.MR1DKzw() < 1 || !QfZy2gWnKInxFPr());
             }
 
@@ -498,35 +497,35 @@ public class HighwayBuilder extends Module {
                MusheorSystem.debug("Running post-echest farmer...");
             } else if (this.QfZy2gWnKInxFPr(obsidianCount, enderChestCount)
                && (Boolean)this.JAj4YwE2MVx.get()
-               && this.xileXsbo.get() == HighwayBuilder.BuildMode.fStlZIvY9lS8) {
+               && this.xileXsbo.get() == HighwayBuilder.BuildMode.Pave) {
                JhujBv5.fStlZIvY9lS8();
                MusheorSystem.debug("Running echest farmer...");
             } else if (!state.j376sIQ()) {
                this.npfimrDr0hky = 0;
-               if (this.xileXsbo.get() == HighwayBuilder.BuildMode.fStlZIvY9lS8) {
-                  if (this.fStlZIvY9lS8.get() == HighwayBuilder.Mode.fStlZIvY9lS8) {
+               if (this.xileXsbo.get() == HighwayBuilder.BuildMode.Pave) {
+                  if (this.fStlZIvY9lS8.get() == HighwayBuilder.Mode.Auto) {
                      JhujBv5.I3psabmOrOI();
                   } else {
                      switch ((HighwayBuilder.HighwayType)this.nOwp0NYl.get()) {
-                        case fStlZIvY9lS8:
+                        case Cardinal:
                            JhujBv5.TJImwK2();
                            break;
-                        case QfZy2gWnKInxFPr:
+                        case Diagonal:
                            JhujBv5.wSJeYsJcmjNZf();
                      }
                   }
                }
 
-               if (this.xileXsbo.get() == HighwayBuilder.BuildMode.QfZy2gWnKInxFPr) {
+               if (this.xileXsbo.get() == HighwayBuilder.BuildMode.Tunnel) {
                   switch ((HighwayBuilder.HighwayType)this.nOwp0NYl.get()) {
-                     case fStlZIvY9lS8:
+                     case Cardinal:
                         JhujBv5.i2Nu6XHKic();
                         break;
-                     case QfZy2gWnKInxFPr:
+                     case Diagonal:
                         JhujBv5.vGAMA89H();
                   }
                }
-            } else if (((Boolean)this.JPp6VyZP9f.get() || (Boolean)this.DqGSCWplcjMi.get()) && this.fStlZIvY9lS8.get() != HighwayBuilder.Mode.TJImwK2) {
+            } else if (((Boolean)this.JPp6VyZP9f.get() || (Boolean)this.DqGSCWplcjMi.get()) && this.fStlZIvY9lS8.get() != HighwayBuilder.Mode.Manual) {
                if (!pvfA15fQSVM.QfZy2gWnKInxFPr && !pvfA15fQSVM.wSJeYsJcmjNZf) {
                   if (this.npfimrDr0hky >= 6) {
                      this.fStlZIvY9lS8(enderChestCount, obsidianCount);
@@ -565,11 +564,11 @@ public class HighwayBuilder extends Module {
          reason = reason + "Food - golden apples blacklisted in auto-eat module? ";
       }
 
-      if (qhulAUwd() == HighwayBuilder.BuildMode.fStlZIvY9lS8 && state.MR1DKzw() < 1) {
+      if (qhulAUwd() == HighwayBuilder.BuildMode.Pave && state.MR1DKzw() < 1) {
          reason = reason + "Non SilkTouch pickaxe.";
       }
 
-      if (qhulAUwd() == HighwayBuilder.BuildMode.QfZy2gWnKInxFPr && state.JPp6VyZP9f() < 1) {
+      if (qhulAUwd() == HighwayBuilder.BuildMode.Tunnel && state.JPp6VyZP9f() < 1) {
          reason = reason + "Pickaxe.";
       }
 
@@ -593,7 +592,6 @@ public class HighwayBuilder extends Module {
 
    private boolean JPp6VyZP9f() {
       assert this.i2Nu6XHKic.player != null;
-
       U6PQSXqW state = U6PQSXqW.fStlZIvY9lS8();
       state.fStlZIvY9lS8(oyDPiOVBGKG.duJ6sPeetAcBh6P());
       state.fStlZIvY9lS8((MusheorSystem.PlacementType)MusheorSystem.Manager.placementType.get());
@@ -604,7 +602,7 @@ public class HighwayBuilder extends Module {
       state.fStlZIvY9lS8(Integer.valueOf(this.i2Nu6XHKic.player.getBlockX()));
       state.QfZy2gWnKInxFPr(Integer.valueOf(this.i2Nu6XHKic.player.getBlockY()));
       state.TJImwK2(Integer.valueOf(this.i2Nu6XHKic.player.getBlockZ()));
-      if (this.fStlZIvY9lS8.get() == HighwayBuilder.Mode.fStlZIvY9lS8) {
+      if (this.fStlZIvY9lS8.get() == HighwayBuilder.Mode.Auto) {
          obf.pvfA15fQSVM.gVOhtBej1x detected = obf.pvfA15fQSVM.fStlZIvY9lS8(
             this.i2Nu6XHKic.player.getBlockX(), this.i2Nu6XHKic.player.getBlockZ(), this.i2Nu6XHKic.player.getBlockY(), state.TJImwK2()
          );
@@ -765,7 +763,7 @@ public class HighwayBuilder extends Module {
    }
 
    public static HighwayBuilder.HighwayType TXWyNb() {
-      if (TJImwK2.fStlZIvY9lS8.get() == HighwayBuilder.Mode.fStlZIvY9lS8) {
+      if (TJImwK2.fStlZIvY9lS8.get() == HighwayBuilder.Mode.Auto) {
          obf.pvfA15fQSVM.gVOhtBej1x d = U6PQSXqW.fStlZIvY9lS8().npfimrDr0hky();
          if (d != null) {
             return d.wSJeYsJcmjNZf;
@@ -776,7 +774,7 @@ public class HighwayBuilder extends Module {
    }
 
    public static int I3psabmOrOI() {
-      if (TJImwK2.fStlZIvY9lS8.get() == HighwayBuilder.Mode.fStlZIvY9lS8) {
+      if (TJImwK2.fStlZIvY9lS8.get() == HighwayBuilder.Mode.Auto) {
          obf.pvfA15fQSVM.gVOhtBej1x d = U6PQSXqW.fStlZIvY9lS8().npfimrDr0hky();
          if (d != null) {
             return d.vGAMA89H;
@@ -855,7 +853,7 @@ public class HighwayBuilder extends Module {
    }
 
    public static boolean WGmfQKK() {
-      return (Boolean)TJImwK2.zkcZ4Xkp9Ez7Y.get() && TJImwK2.xileXsbo.get() == HighwayBuilder.BuildMode.fStlZIvY9lS8;
+      return (Boolean)TJImwK2.zkcZ4Xkp9Ez7Y.get() && TJImwK2.xileXsbo.get() == HighwayBuilder.BuildMode.Pave;
    }
 
    public static int icQ738dpWr7W() {
@@ -865,45 +863,37 @@ public class HighwayBuilder extends Module {
    @EventHandler
    private void fStlZIvY9lS8(Render3DEvent event) {
       U6PQSXqW state = U6PQSXqW.fStlZIvY9lS8();
-
       assert this.i2Nu6XHKic.player != null;
-
       if (state.TJImwK2() != null) {
          if (state.qhulAUwd() != null && state.BrmKXSYhWhqoB1() != null && state.TXWyNb() != null) {
             if (state.I3psabmOrOI() != null && state.duJ6sPeetAcBh6P() != null) {
                if ((Boolean)MusheorSystem.Manager.placeRender.get()) {
-                  if (this.xileXsbo.get() == HighwayBuilder.BuildMode.fStlZIvY9lS8) {
+                  if (this.xileXsbo.get() == HighwayBuilder.BuildMode.Pave) {
                      obf.pvfA15fQSVM.gVOhtBej1x detected = obf.pvfA15fQSVM.fStlZIvY9lS8(
-                        this.i2Nu6XHKic.player.getBlockX(),
-                        this.i2Nu6XHKic.player.getBlockZ(),
-                        this.i2Nu6XHKic.player.getBlockY(),
-                        i2Nu6XHKic()
+                        this.i2Nu6XHKic.player.getBlockX(), this.i2Nu6XHKic.player.getBlockZ(), this.i2Nu6XHKic.player.getBlockY(), i2Nu6XHKic()
                      );
                      int railY = state.BrmKXSYhWhqoB1();
                      List<BlockPos> cardinalPositions = new ArrayList<>();
 
                      for (BlockPos pos : musheor.utils.gVOhtBej1x.fStlZIvY9lS8(3, 2, xileXsbo(), nOwp0NYl())) {
-                        if ((detected == null || pos.getY() != railY || !obf.pvfA15fQSVM.fStlZIvY9lS8(pos, detected)) && BlockUtils.canPlace(pos, true)
-                           )
-                         {
+                        if ((detected == null || pos.getY() != railY || !obf.pvfA15fQSVM.fStlZIvY9lS8(pos, detected)) && BlockUtils.canPlace(pos, true)) {
                            cardinalPositions.add(pos);
                         }
                      }
 
                      List<BlockPos> diagonalPositions = new ArrayList<>();
 
-                     for (BlockPos posx : musheor.utils.gVOhtBej1x.TJImwK2(2, 2, xileXsbo(), nOwp0NYl())) {
-                        if ((detected == null || posx.getY() != railY || !obf.pvfA15fQSVM.fStlZIvY9lS8(posx, detected))
-                           && BlockUtils.canPlace(posx, true)) {
-                           diagonalPositions.add(posx);
+                     for (BlockPos pos : musheor.utils.gVOhtBej1x.TJImwK2(2, 2, xileXsbo(), nOwp0NYl())) {
+                        if ((detected == null || pos.getY() != railY || !obf.pvfA15fQSVM.fStlZIvY9lS8(pos, detected)) && BlockUtils.canPlace(pos, true)) {
+                           diagonalPositions.add(pos);
                         }
                      }
 
-                     if (TXWyNb() == HighwayBuilder.HighwayType.fStlZIvY9lS8) {
+                     if (TXWyNb() == HighwayBuilder.HighwayType.Cardinal) {
                         jU8xXhmkg.fStlZIvY9lS8(event, cardinalPositions, V7zKJ4n6D());
                      }
 
-                     if (TXWyNb() == HighwayBuilder.HighwayType.QfZy2gWnKInxFPr) {
+                     if (TXWyNb() == HighwayBuilder.HighwayType.Diagonal) {
                         jU8xXhmkg.fStlZIvY9lS8(event, diagonalPositions, V7zKJ4n6D());
                      }
                   }
@@ -913,25 +903,37 @@ public class HighwayBuilder extends Module {
       }
    }
 
-   public static enum BuildMode {
-      fStlZIvY9lS8,
-      QfZy2gWnKInxFPr;
+   public enum BuildMode {
+      Pave,
+      Tunnel;
+
+      BuildMode() {
+      }
    }
 
-   public static enum HighwayType {
-      fStlZIvY9lS8,
-      QfZy2gWnKInxFPr;
+   public enum HighwayType {
+      Cardinal,
+      Diagonal;
+
+      HighwayType() {
+      }
    }
 
-   public static enum Mode {
-      fStlZIvY9lS8,
-      QfZy2gWnKInxFPr,
-      TJImwK2;
+   public enum Mode {
+      Auto,
+      Semi,
+      Manual;
+
+      Mode() {
+      }
    }
 
-   public static enum ScaffoldMode {
-      fStlZIvY9lS8,
-      QfZy2gWnKInxFPr,
-      TJImwK2;
+   public enum ScaffoldMode {
+      Disabled,
+      Simple,
+      Full;
+
+      ScaffoldMode() {
+      }
    }
 }

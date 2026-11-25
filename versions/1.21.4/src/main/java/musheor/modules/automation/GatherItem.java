@@ -11,17 +11,16 @@ import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 import meteordevelopment.meteorclient.events.world.TickEvent.Pre;
-import meteordevelopment.meteorclient.settings.ItemSetting.Builder;
 import meteordevelopment.meteorclient.settings.Setting;
 import meteordevelopment.meteorclient.settings.SettingGroup;
+import meteordevelopment.meteorclient.settings.ItemSetting.Builder;
 import meteordevelopment.meteorclient.systems.modules.Module;
 import meteordevelopment.meteorclient.systems.modules.Modules;
 import meteordevelopment.meteorclient.utils.player.ChatUtils;
 import meteordevelopment.orbit.EventHandler;
-import musheor.musheor;
 import musheor.utils.irzXX;
-import musheor.utils.manager.pvfA15fQSVM;
 import musheor.utils.oyDPiOVBGKG;
+import musheor.utils.manager.pvfA15fQSVM;
 import musheor.utils.system.MusheorSystem;
 import net.minecraft.block.AbstractChestBlock;
 import net.minecraft.block.BedBlock;
@@ -52,13 +51,7 @@ public class GatherItem extends Module {
       Blocks.NETHER_PORTAL
    );
    private static final Set<Block> QfZy2gWnKInxFPr = Set.of(
-      Blocks.COBWEB,
-      Blocks.FIRE,
-      Blocks.SOUL_FIRE,
-      Blocks.NETHER_PORTAL,
-      Blocks.END_PORTAL,
-      Blocks.POWDER_SNOW,
-      Blocks.SWEET_BERRY_BUSH
+      Blocks.COBWEB, Blocks.FIRE, Blocks.SOUL_FIRE, Blocks.NETHER_PORTAL, Blocks.END_PORTAL, Blocks.POWDER_SNOW, Blocks.SWEET_BERRY_BUSH
    );
    private final SettingGroup TJImwK2 = this.settings.getDefaultGroup();
    private final Setting<Item> wSJeYsJcmjNZf = this.TJImwK2
@@ -109,7 +102,7 @@ public class GatherItem extends Module {
    private boolean umvNbb7iD9UpR = false;
 
    public GatherItem() {
-      super(musheor.AUTOMATION, "pickup-item", "A helper module that finds and picks up nearby items.");
+      super(musheor.musheor.AUTOMATION, "pickup-item", "A helper module that finds and picks up nearby items.");
    }
 
    public void onActivate() {
@@ -310,9 +303,7 @@ public class GatherItem extends Module {
          } else if (ground.getBlock() instanceof BedBlock) {
             return false;
          } else {
-            return !ground.isSideSolidFullSquare(this.mc.world, groundPos, Direction.UP)
-               ? false
-               : this.QfZy2gWnKInxFPr(pos) && this.QfZy2gWnKInxFPr(pos.up());
+            return !ground.isSideSolidFullSquare(this.mc.world, groundPos, Direction.UP) ? false : this.QfZy2gWnKInxFPr(pos) && this.QfZy2gWnKInxFPr(pos.up());
          }
       }
    }
@@ -321,11 +312,13 @@ public class GatherItem extends Module {
       BlockState state = this.mc.world.getBlockState(pos);
       if (!state.getCollisionShape(this.mc.world, pos).isEmpty()) {
          return false;
-      } else if (QfZy2gWnKInxFPr.contains(state.getBlock())) {
-         return false;
-      } else {
-         FluidState fluid = state.getFluidState();
-         return fluid.getFluid() != Fluids.LAVA && fluid.getFluid() != Fluids.FLOWING_LAVA;
       }
+
+      if (QfZy2gWnKInxFPr.contains(state.getBlock())) {
+         return false;
+      }
+
+      FluidState fluid = state.getFluidState();
+      return fluid.getFluid() != Fluids.LAVA && fluid.getFluid() != Fluids.FLOWING_LAVA;
    }
 }

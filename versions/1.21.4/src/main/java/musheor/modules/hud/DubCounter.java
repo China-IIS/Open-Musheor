@@ -3,11 +3,11 @@ package musheor.modules.hud;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map.Entry;
 import java.util.Map;
-import meteordevelopment.meteorclient.settings.BoolSetting.Builder;
+import java.util.Map.Entry;
 import meteordevelopment.meteorclient.settings.Setting;
 import meteordevelopment.meteorclient.settings.SettingGroup;
+import meteordevelopment.meteorclient.settings.BoolSetting.Builder;
 import meteordevelopment.meteorclient.systems.hud.HudElement;
 import meteordevelopment.meteorclient.systems.hud.HudElementInfo;
 import meteordevelopment.meteorclient.systems.hud.HudRenderer;
@@ -118,7 +118,7 @@ public class DubCounter extends HudElement {
       this.V7zKJ4n6D = 0;
       this.voxTwgNzyrpaAnP.clear();
 
-      for (BlockEntityType<?> type : (List)this.vGAMA89H.get()) {
+      for (BlockEntityType<?> type : this.vGAMA89H.get()) {
          if (!fStlZIvY9lS8(type)) {
             this.voxTwgNzyrpaAnP.put(type, 0);
          }
@@ -128,10 +128,10 @@ public class DubCounter extends HudElement {
          if (be instanceof ChestBlockEntity) {
             BlockState state = be.getCachedState();
             if (state.contains(ChestBlock.CHEST_TYPE)) {
-               ChestType typex = (ChestType)state.get(ChestBlock.CHEST_TYPE);
-               if (typex == ChestType.SINGLE) {
+               ChestType type = (ChestType)state.get(ChestBlock.CHEST_TYPE);
+               if (type == ChestType.SINGLE) {
                   this.V7zKJ4n6D++;
-               } else if (typex == ChestType.LEFT || !this.fStlZIvY9lS8(be.getPos(), state)) {
+               } else if (type == ChestType.LEFT || !this.fStlZIvY9lS8(be.getPos(), state)) {
                   this.j376sIQ++;
                }
             }
@@ -193,20 +193,20 @@ public class DubCounter extends HudElement {
       Identifier id = Registries.BLOCK_ENTITY_TYPE.getId(type);
       if (id == null) {
          return "Unknown";
-      } else {
-         StringBuilder sb = new StringBuilder();
-
-         for (String word : id.getPath().split("_")) {
-            if (!word.isEmpty()) {
-               if (!sb.isEmpty()) {
-                  sb.append(' ');
-               }
-
-               sb.append(Character.toUpperCase(word.charAt(0))).append(word.substring(1));
-            }
-         }
-
-         return sb.toString();
       }
+
+      StringBuilder sb = new StringBuilder();
+
+      for (String word : id.getPath().split("_")) {
+         if (!word.isEmpty()) {
+            if (!sb.isEmpty()) {
+               sb.append(' ');
+            }
+
+            sb.append(Character.toUpperCase(word.charAt(0))).append(word.substring(1));
+         }
+      }
+
+      return sb.toString();
    }
 }

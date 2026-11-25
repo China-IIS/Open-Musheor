@@ -15,8 +15,8 @@ import net.minecraft.block.Blocks;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ServerInfo;
 import net.minecraft.item.Items;
-import net.minecraft.network.packet.c2s.play.ClientStatusC2SPacket.Mode;
 import net.minecraft.network.packet.c2s.play.ClientStatusC2SPacket;
+import net.minecraft.network.packet.c2s.play.ClientStatusC2SPacket.Mode;
 import net.minecraft.stat.StatHandler;
 import net.minecraft.stat.Stats;
 
@@ -24,10 +24,13 @@ public class ServerStatsTracker {
    int tick = 0;
    private static volatile String lastStamp = null;
 
+   public ServerStatsTracker() {
+   }
+
    public static void requestUpdate() {
       MinecraftClient mc = MinecraftClient.getInstance();
       if (mc.player != null && mc.player.networkHandler != null) {
-         mc.player.networkHandler.sendPacket(new ClientStatusC2SPacket(ClientStatusC2SPacket.Mode.REQUEST_STATS));
+         mc.player.networkHandler.sendPacket(new ClientStatusC2SPacket(Mode.REQUEST_STATS));
       }
    }
 

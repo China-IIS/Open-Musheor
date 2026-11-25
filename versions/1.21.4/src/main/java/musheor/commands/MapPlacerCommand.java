@@ -30,10 +30,10 @@ public class MapPlacerCommand extends Command {
       builder.executes(this::fStlZIvY9lS8);
       builder.then(
          ((LiteralArgumentBuilder)((LiteralArgumentBuilder)((LiteralArgumentBuilder)literal("origin")
-                     .then(literal("topleft").executes(ctx -> this.fStlZIvY9lS8(JhujBv5.U6PQSXqW.fStlZIvY9lS8))))
-                  .then(literal("tl").executes(ctx -> this.fStlZIvY9lS8(JhujBv5.U6PQSXqW.fStlZIvY9lS8))))
-               .then(literal("bottomleft").executes(ctx -> this.fStlZIvY9lS8(JhujBv5.U6PQSXqW.QfZy2gWnKInxFPr))))
-            .then(literal("bl").executes(ctx -> this.fStlZIvY9lS8(JhujBv5.U6PQSXqW.QfZy2gWnKInxFPr)))
+                     .then(literal("topleft").executes(ctx -> this.fStlZIvY9lS8(JhujBv5.U6PQSXqW.TopLeft))))
+                  .then(literal("tl").executes(ctx -> this.fStlZIvY9lS8(JhujBv5.U6PQSXqW.TopLeft))))
+               .then(literal("bottomleft").executes(ctx -> this.fStlZIvY9lS8(JhujBv5.U6PQSXqW.BottomLeft))))
+            .then(literal("bl").executes(ctx -> this.fStlZIvY9lS8(JhujBv5.U6PQSXqW.BottomLeft)))
       );
       builder.then(
          literal("size")
@@ -168,74 +168,73 @@ public class MapPlacerCommand extends Command {
    private int wSJeYsJcmjNZf(CommandContext<CommandSource> context) {
       if (!this.QfZy2gWnKInxFPr()) {
          return 1;
-      } else {
-         int before = fStlZIvY9lS8.nOwp0NYl();
-         int found = fStlZIvY9lS8.j376sIQ();
-         fStlZIvY9lS8.FVjbhYkk53UT();
-         this.info("Scanned §b%d§r frames (§b+%d§r new), §b%d§r already filled.", new Object[]{found, found - before, fStlZIvY9lS8.umvNbb7iD9UpR()});
-         return 1;
       }
+
+      int before = fStlZIvY9lS8.nOwp0NYl();
+      int found = fStlZIvY9lS8.j376sIQ();
+      fStlZIvY9lS8.FVjbhYkk53UT();
+      this.info("Scanned §b%d§r frames (§b+%d§r new), §b%d§r already filled.", new Object[]{found, found - before, fStlZIvY9lS8.umvNbb7iD9UpR()});
+      return 1;
    }
 
    private int i2Nu6XHKic(CommandContext<CommandSource> context) {
       if (!this.QfZy2gWnKInxFPr()) {
          return 1;
-      } else {
-         fStlZIvY9lS8.voxTwgNzyrpaAnP();
-         fStlZIvY9lS8.FVjbhYkk53UT();
-         if (fStlZIvY9lS8.nOwp0NYl() == 0) {
-            this.warning("No frames scanned yet. Walk to the mapart and run §b.mp scan§r.", new Object[0]);
-            return 1;
-         } else {
-            int width = fStlZIvY9lS8.TXWyNb();
-            int height = fStlZIvY9lS8.I3psabmOrOI();
+      }
 
-            for (JhujBv5.gVOhtBej1x cell : fStlZIvY9lS8.xileXsbo()) {
-               width = Math.max(width, cell.fStlZIvY9lS8 + 1);
-               height = Math.max(height, cell.QfZy2gWnKInxFPr + 1);
+      fStlZIvY9lS8.voxTwgNzyrpaAnP();
+      fStlZIvY9lS8.FVjbhYkk53UT();
+      if (fStlZIvY9lS8.nOwp0NYl() == 0) {
+         this.warning("No frames scanned yet. Walk to the mapart and run §b.mp scan§r.", new Object[0]);
+         return 1;
+      }
+
+      int width = fStlZIvY9lS8.TXWyNb();
+      int height = fStlZIvY9lS8.I3psabmOrOI();
+
+      for (JhujBv5.gVOhtBej1x cell : fStlZIvY9lS8.xileXsbo()) {
+         width = Math.max(width, cell.fStlZIvY9lS8 + 1);
+         height = Math.max(height, cell.QfZy2gWnKInxFPr + 1);
+      }
+
+      this.info("§a#§r placed  §b#§r ready  §c#§r map missing  §8.§r no frame", new Object[0]);
+
+      for (int row = 0; row < height; row++) {
+         StringBuilder line = new StringBuilder();
+
+         for (int col = 0; col < width; col++) {
+            JhujBv5.gVOhtBej1x cell = this.fStlZIvY9lS8(col, row);
+            if (cell == null) {
+               line.append("§8.");
+            } else if (cell.fStlZIvY9lS8()) {
+               line.append("§a#");
+            } else if (cell.QfZy2gWnKInxFPr() >= 0) {
+               line.append("§b#");
+            } else {
+               line.append("§c#");
             }
+         }
 
-            this.info("§a#§r placed  §b#§r ready  §c#§r map missing  §8.§r no frame", new Object[0]);
+         this.info("§7%2d§r %s", new Object[]{row + fStlZIvY9lS8.duJ6sPeetAcBh6P(), line});
+      }
 
-            for (int row = 0; row < height; row++) {
-               StringBuilder line = new StringBuilder();
+      this.info(
+         "§b%d§r/§b%d§r frames filled, §b%d§r maps in inventory.", new Object[]{fStlZIvY9lS8.umvNbb7iD9UpR(), fStlZIvY9lS8.nOwp0NYl(), MapPlacer.TJImwK2()}
+      );
+      List<String> unmatched = fStlZIvY9lS8.Nt3xeF();
+      if (!unmatched.isEmpty()) {
+         this.warning("§b%d§r map(s) do not land on this canvas:", new Object[]{unmatched.size()});
 
-               for (int col = 0; col < width; col++) {
-                  JhujBv5.gVOhtBej1x cell = this.fStlZIvY9lS8(col, row);
-                  if (cell == null) {
-                     line.append("§8.");
-                  } else if (cell.fStlZIvY9lS8()) {
-                     line.append("§a#");
-                  } else if (cell.QfZy2gWnKInxFPr() >= 0) {
-                     line.append("§b#");
-                  } else {
-                     line.append("§c#");
-                  }
-               }
+         for (String name : unmatched.stream().distinct().limit(10L).toList()) {
+            this.info("  §7%s §8-> %s", new Object[]{name, fStlZIvY9lS8.QfZy2gWnKInxFPr(name)});
+         }
 
-               this.info("§7%2d§r %s", new Object[]{row + fStlZIvY9lS8.duJ6sPeetAcBh6P(), line});
-            }
-
-            this.info(
-               "§b%d§r/§b%d§r frames filled, §b%d§r maps in inventory.",
-               new Object[]{fStlZIvY9lS8.umvNbb7iD9UpR(), fStlZIvY9lS8.nOwp0NYl(), MapPlacer.TJImwK2()}
-            );
-            List<String> unmatched = fStlZIvY9lS8.Nt3xeF();
-            if (!unmatched.isEmpty()) {
-               this.warning("§b%d§r map(s) do not land on this canvas:", new Object[]{unmatched.size()});
-
-               for (String name : unmatched.stream().distinct().limit(10L).toList()) {
-                  this.info("  §7%s §8-> %s", new Object[]{name, fStlZIvY9lS8.QfZy2gWnKInxFPr(name)});
-               }
-
-               if (unmatched.size() > 10) {
-                  this.info("  §7...and %d more", new Object[]{unmatched.size() - 10});
-               }
-            }
-
-            return 1;
+         if (unmatched.size() > 10) {
+            this.info("  §7...and %d more", new Object[]{unmatched.size() - 10});
          }
       }
+
+      return 1;
    }
 
    private JhujBv5.gVOhtBej1x fStlZIvY9lS8(int col, int row) {
@@ -251,17 +250,17 @@ public class MapPlacerCommand extends Command {
    private int vGAMA89H(CommandContext<CommandSource> context) {
       if (!this.QfZy2gWnKInxFPr()) {
          return 1;
-      } else {
-         MapPlacer.fStlZIvY9lS8(false);
-         MapPlacer module = MapPlacer.fStlZIvY9lS8();
-         if (!module.isActive()) {
-            module.toggle();
-         } else {
-            this.info("Already placing — %s", new Object[]{module.QfZy2gWnKInxFPr()});
-         }
-
-         return 1;
       }
+
+      MapPlacer.fStlZIvY9lS8(false);
+      MapPlacer module = MapPlacer.fStlZIvY9lS8();
+      if (!module.isActive()) {
+         module.toggle();
+      } else {
+         this.info("Already placing — %s", new Object[]{module.QfZy2gWnKInxFPr()});
+      }
+
+      return 1;
    }
 
    private int qhulAUwd(CommandContext<CommandSource> context) {
@@ -273,16 +272,16 @@ public class MapPlacerCommand extends Command {
    private int BrmKXSYhWhqoB1(CommandContext<CommandSource> context) {
       if (!this.QfZy2gWnKInxFPr()) {
          return 1;
-      } else {
-         MapPlacer.fStlZIvY9lS8(false);
-         MapPlacer module = MapPlacer.fStlZIvY9lS8();
-         if (!module.isActive()) {
-            module.toggle();
-         }
-
-         this.info("Resumed — %s", new Object[]{module.QfZy2gWnKInxFPr()});
-         return 1;
       }
+
+      MapPlacer.fStlZIvY9lS8(false);
+      MapPlacer module = MapPlacer.fStlZIvY9lS8();
+      if (!module.isActive()) {
+         module.toggle();
+      }
+
+      this.info("Resumed — %s", new Object[]{module.QfZy2gWnKInxFPr()});
+      return 1;
    }
 
    private int TXWyNb(CommandContext<CommandSource> context) {
@@ -317,18 +316,19 @@ public class MapPlacerCommand extends Command {
    private boolean QfZy2gWnKInxFPr() {
       if (fStlZIvY9lS8.QfZy2gWnKInxFPr()) {
          return true;
-      } else {
-         this.error("No canvas — look at the mapart's corner frame and run §b.mp origin topleft§r.", new Object[0]);
-         return false;
       }
+
+      this.error("No canvas — look at the mapart's corner frame and run §b.mp origin topleft§r.", new Object[0]);
+      return false;
    }
 
    private static class PickListener {
       private static final MapPlacerCommand.PickListener fStlZIvY9lS8 = new MapPlacerCommand.PickListener();
 
-      @EventHandler(
-         priority = 200
-      )
+      private PickListener() {
+      }
+
+      @EventHandler(priority = 200)
       private void fStlZIvY9lS8(InteractEntityEvent event) {
          if (MapPlacerCommand.QfZy2gWnKInxFPr != null) {
             if (event.entity instanceof ItemFrameEntity frame) {

@@ -22,14 +22,17 @@ public class XearoHelperImpl implements XearoHelper {
    private XearoHelper.WaypointData lastEtaData = null;
    private Waypoint lastEtaWaypoint = null;
 
+   public XearoHelperImpl() {
+   }
+
    private WaypointSet currentSet() {
       MinimapSession session = (MinimapSession)BuiltInHudModules.MINIMAP.getCurrentSession();
       if (session == null) {
          return null;
-      } else {
-         MinimapWorld world = session.getWorldManager().getCurrentWorld();
-         return world == null ? null : world.getCurrentWaypointSet();
       }
+
+      MinimapWorld world = session.getWorldManager().getCurrentWorld();
+      return world == null ? null : world.getCurrentWaypointSet();
    }
 
    private void refresh() {
@@ -56,11 +59,11 @@ public class XearoHelperImpl implements XearoHelper {
       WaypointSet set = this.currentSet();
       if (set == null) {
          return List.of();
-      } else {
-         List<Waypoint> list = (List<Waypoint>)set.getWaypoints();
-         List<Waypoint> filtered = tempOnly ? list.stream().filter(Waypoint::isTemporary).toList() : list;
-         return filtered.stream().map(XearoHelperImpl::wrap).toList();
       }
+
+      List<Waypoint> list = (List<Waypoint>)set.getWaypoints();
+      List<Waypoint> filtered = tempOnly ? list.stream().filter(Waypoint::isTemporary).toList() : list;
+      return filtered.stream().map(XearoHelperImpl::wrap).toList();
    }
 
    @Override
@@ -178,24 +181,24 @@ public class XearoHelperImpl implements XearoHelper {
    public double distanceToWaypoint(XearoHelper.WaypointData waypoint) {
       if (mc.player == null) {
          return Double.MAX_VALUE;
-      } else {
-         double dx = mc.player.getX() - waypoint.x();
-         double dz = mc.player.getZ() - waypoint.z();
-         return Math.sqrt(dx * dx + dz * dz);
       }
+
+      double dx = mc.player.getX() - waypoint.x();
+      double dz = mc.player.getZ() - waypoint.z();
+      return Math.sqrt(dx * dx + dz * dz);
    }
 
    @Override
    public String getEtaSuffix(XearoHelper.WaypointData waypoint) {
       if (!FabricLoader.getInstance().isModLoaded("xaeroplus")) {
          return null;
-      } else {
-         if (!waypoint.equals(this.lastEtaData)) {
-            this.lastEtaData = waypoint;
-            this.lastEtaWaypoint = new Waypoint(waypoint.x(), waypoint.y(), waypoint.z(), waypoint.name(), "W", WaypointColor.WHITE);
-         }
-
-         return WaypointEtaManager.INSTANCE.getEtaTextSuffix(this.lastEtaWaypoint);
       }
+
+      if (!waypoint.equals(this.lastEtaData)) {
+         this.lastEtaData = waypoint;
+         this.lastEtaWaypoint = new Waypoint(waypoint.x(), waypoint.y(), waypoint.z(), waypoint.name(), "W", WaypointColor.WHITE);
+      }
+
+      return WaypointEtaManager.INSTANCE.getEtaTextSuffix(this.lastEtaWaypoint);
    }
 }

@@ -19,10 +19,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-@Mixin(
-   value = {AutoEat.class},
-   remap = false
-)
+@Mixin(value = AutoEat.class, remap = false)
 public abstract class AutoEatMixin extends Module {
    @Shadow
    public boolean eating;
@@ -53,10 +50,7 @@ public abstract class AutoEatMixin extends Module {
       super(category, name, description);
    }
 
-   @Inject(
-      method = {"startEating"},
-      at = {@At("HEAD")}
-   )
+   @Inject(method = "startEating", at = @At("HEAD"))
    private void onStartEating(CallbackInfo ci) {
       this.savedFoodSlot = this.slot;
       this.waitingToEat = true;
@@ -69,11 +63,7 @@ public abstract class AutoEatMixin extends Module {
       this.screenUseCooldown = 0;
    }
 
-   @Inject(
-      method = {"eat"},
-      at = {@At("HEAD")},
-      cancellable = true
-   )
+   @Inject(method = "eat", at = @At("HEAD"), cancellable = true)
    private void onEat(CallbackInfo ci) {
       if (!this.waitingToEat && !this.resetting) {
          if (this.mc.currentScreen != null) {

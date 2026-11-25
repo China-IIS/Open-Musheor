@@ -56,9 +56,9 @@ public class MutualManager {
             this.parseAndFill(json, "post", POST);
             this.loaded = true;
             System.out.println("[MutualManager] Loaded " + KEK.size() + " KEK, " + POST.size() + " POST from remote.");
-         } catch (Exception var4) {
+         } catch (Exception e) {
             System.err.println("[MutualManager] Error fetching remote UUID list, using fallback.");
-            var4.printStackTrace();
+            e.printStackTrace();
          }
       });
    }
@@ -70,7 +70,7 @@ public class MutualManager {
          for (JsonElement element : root.getAsJsonArray(key)) {
             try {
                target.add(UUID.fromString(element.getAsString()));
-            } catch (IllegalArgumentException var8) {
+            } catch (IllegalArgumentException e) {
                System.err.println("[MutualManager] Skipping invalid UUID: " + element.getAsString());
             }
          }

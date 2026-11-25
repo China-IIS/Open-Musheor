@@ -6,13 +6,12 @@ import java.util.List;
 import java.util.Set;
 import meteordevelopment.meteorclient.events.render.Render3DEvent;
 import meteordevelopment.meteorclient.events.world.TickEvent.Post;
-import meteordevelopment.meteorclient.settings.BlockListSetting.Builder;
 import meteordevelopment.meteorclient.settings.Setting;
 import meteordevelopment.meteorclient.settings.SettingGroup;
+import meteordevelopment.meteorclient.settings.BlockListSetting.Builder;
 import meteordevelopment.meteorclient.systems.modules.Module;
 import meteordevelopment.meteorclient.utils.world.BlockUtils;
 import meteordevelopment.orbit.EventHandler;
-import musheor.musheor;
 import musheor.utils.manager.pvfA15fQSVM;
 import musheor.utils.system.MusheorSystem;
 import net.minecraft.block.Block;
@@ -75,7 +74,7 @@ public class GrimScaffold extends Module {
    private Block TXWyNb = null;
 
    public GrimScaffold() {
-      super(musheor.MAIN, "simple-scaffold", "Place blocks under your feet, even if you are mid-air");
+      super(musheor.musheor.MAIN, "simple-scaffold", "Place blocks under your feet, even if you are mid-air");
    }
 
    public void onActivate() {
@@ -145,9 +144,7 @@ public class GrimScaffold extends Module {
          Direction facing = QfZy2gWnKInxFPr.player.getHorizontalFacing();
          if ((Boolean)this.vGAMA89H.get()) {
             for (int i = 1; i <= range; i++) {
-               BlockPos p = new BlockPos(
-                  below.getX() + facing.getOffsetX() * i, below.getY(), below.getZ() + facing.getOffsetZ() * i
-               );
+               BlockPos p = new BlockPos(below.getX() + facing.getOffsetX() * i, below.getY(), below.getZ() + facing.getOffsetZ() * i);
                if (seen.add(p)) {
                   positions.add(p);
                }

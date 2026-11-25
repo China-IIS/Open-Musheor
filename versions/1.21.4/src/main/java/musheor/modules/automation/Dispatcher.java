@@ -8,19 +8,19 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map.Entry;
 import java.util.Map;
 import java.util.Set;
+import java.util.Map.Entry;
 import java.util.concurrent.LinkedBlockingQueue;
 import javax.net.ssl.HttpsURLConnection;
 import meteordevelopment.meteorclient.events.entity.EntityAddedEvent;
 import meteordevelopment.meteorclient.events.entity.EntityRemovedEvent;
 import meteordevelopment.meteorclient.events.world.ChunkDataEvent;
 import meteordevelopment.meteorclient.events.world.TickEvent.Pre;
-import meteordevelopment.meteorclient.settings.EnumSetting.Builder;
 import meteordevelopment.meteorclient.settings.Setting;
 import meteordevelopment.meteorclient.settings.SettingGroup;
 import meteordevelopment.meteorclient.settings.StorageBlockListSetting;
+import meteordevelopment.meteorclient.settings.EnumSetting.Builder;
 import meteordevelopment.meteorclient.systems.modules.Module;
 import meteordevelopment.meteorclient.systems.modules.Modules;
 import meteordevelopment.meteorclient.utils.player.ChatUtils;
@@ -28,7 +28,6 @@ import meteordevelopment.orbit.EventHandler;
 import musheor.compat.VersionHelper;
 import musheor.compat.XearoHelper;
 import musheor.modules.features.CoordHider;
-import musheor.musheor;
 import musheor.utils.system.MusheorSystem;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.entity.BlockEntity;
@@ -43,8 +42,8 @@ import net.minecraft.util.Formatting;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.Vec3d;
-import net.minecraft.world.Heightmap.Type;
 import net.minecraft.world.World;
+import net.minecraft.world.Heightmap.Type;
 import net.minecraft.world.chunk.WorldChunk;
 
 public class Dispatcher extends Module {
@@ -55,7 +54,7 @@ public class Dispatcher extends Module {
    private final Setting<Dispatcher.NotificationType> BrmKXSYhWhqoB1 = this.wSJeYsJcmjNZf
       .add(
          ((Builder)((Builder)((Builder)new Builder().name("notification-type")).description("How notifications are being handled"))
-               .defaultValue(Dispatcher.NotificationType.TJImwK2))
+               .defaultValue(Dispatcher.NotificationType.Both))
             .build()
       );
    private final Setting<Integer> TXWyNb = this.wSJeYsJcmjNZf
@@ -74,8 +73,8 @@ public class Dispatcher extends Module {
                      .description("Sends notifications over a discord webhook"))
                   .defaultValue(true))
                .visible(
-                  () -> this.BrmKXSYhWhqoB1.get() == Dispatcher.NotificationType.TJImwK2
-                     || this.BrmKXSYhWhqoB1.get() == Dispatcher.NotificationType.QfZy2gWnKInxFPr
+                  () -> this.BrmKXSYhWhqoB1.get() == Dispatcher.NotificationType.Both
+                     || this.BrmKXSYhWhqoB1.get() == Dispatcher.NotificationType.Webhook
                ))
             .build()
       );
@@ -86,8 +85,8 @@ public class Dispatcher extends Module {
                   .defaultValue(""))
                .visible(
                   () -> (
-                        this.BrmKXSYhWhqoB1.get() == Dispatcher.NotificationType.TJImwK2
-                           || this.BrmKXSYhWhqoB1.get() == Dispatcher.NotificationType.QfZy2gWnKInxFPr
+                        this.BrmKXSYhWhqoB1.get() == Dispatcher.NotificationType.Both
+                           || this.BrmKXSYhWhqoB1.get() == Dispatcher.NotificationType.Webhook
                      )
                      && (Boolean)this.I3psabmOrOI.get()
                ))
@@ -102,8 +101,8 @@ public class Dispatcher extends Module {
                .sliderRange(0, 5000)
                .visible(
                   () -> (
-                        this.BrmKXSYhWhqoB1.get() == Dispatcher.NotificationType.TJImwK2
-                           || this.BrmKXSYhWhqoB1.get() == Dispatcher.NotificationType.QfZy2gWnKInxFPr
+                        this.BrmKXSYhWhqoB1.get() == Dispatcher.NotificationType.Both
+                           || this.BrmKXSYhWhqoB1.get() == Dispatcher.NotificationType.Webhook
                      )
                      && (Boolean)this.I3psabmOrOI.get()
                ))
@@ -117,8 +116,8 @@ public class Dispatcher extends Module {
                   .defaultValue(true))
                .visible(
                   () -> (
-                        this.BrmKXSYhWhqoB1.get() == Dispatcher.NotificationType.TJImwK2
-                           || this.BrmKXSYhWhqoB1.get() == Dispatcher.NotificationType.QfZy2gWnKInxFPr
+                        this.BrmKXSYhWhqoB1.get() == Dispatcher.NotificationType.Both
+                           || this.BrmKXSYhWhqoB1.get() == Dispatcher.NotificationType.Webhook
                      )
                      && (Boolean)this.I3psabmOrOI.get()
                ))
@@ -132,8 +131,8 @@ public class Dispatcher extends Module {
                   .defaultValue(false))
                .visible(
                   () -> (
-                        this.BrmKXSYhWhqoB1.get() == Dispatcher.NotificationType.TJImwK2
-                           || this.BrmKXSYhWhqoB1.get() == Dispatcher.NotificationType.QfZy2gWnKInxFPr
+                        this.BrmKXSYhWhqoB1.get() == Dispatcher.NotificationType.Both
+                           || this.BrmKXSYhWhqoB1.get() == Dispatcher.NotificationType.Webhook
                      )
                      && (Boolean)this.I3psabmOrOI.get()
                ))
@@ -146,8 +145,8 @@ public class Dispatcher extends Module {
                   .defaultValue(""))
                .visible(
                   () -> (
-                        this.BrmKXSYhWhqoB1.get() == Dispatcher.NotificationType.TJImwK2
-                           || this.BrmKXSYhWhqoB1.get() == Dispatcher.NotificationType.QfZy2gWnKInxFPr
+                        this.BrmKXSYhWhqoB1.get() == Dispatcher.NotificationType.Both
+                           || this.BrmKXSYhWhqoB1.get() == Dispatcher.NotificationType.Webhook
                      )
                      && (Boolean)this.I3psabmOrOI.get()
                      && (Boolean)this.j376sIQ.get()
@@ -184,8 +183,8 @@ public class Dispatcher extends Module {
                      .description("Plays a sound when dispatch event is triggered"))
                   .defaultValue(true))
                .visible(
-                  () -> this.BrmKXSYhWhqoB1.get() == Dispatcher.NotificationType.TJImwK2
-                     || this.BrmKXSYhWhqoB1.get() == Dispatcher.NotificationType.fStlZIvY9lS8
+                  () -> this.BrmKXSYhWhqoB1.get() == Dispatcher.NotificationType.Both
+                     || this.BrmKXSYhWhqoB1.get() == Dispatcher.NotificationType.Chat
                ))
             .build()
       );
@@ -201,7 +200,7 @@ public class Dispatcher extends Module {
       .add(
          ((Builder)((Builder)((Builder)((Builder)new Builder().name("visual-range-type"))
                      .description("Choose what type of visual range alerts you want to receive"))
-                  .defaultValue(Dispatcher.VisualRangeType.fStlZIvY9lS8))
+                  .defaultValue(Dispatcher.VisualRangeType.Enter))
                .visible(this.nOwp0NYl::get))
             .build()
       );
@@ -213,8 +212,8 @@ public class Dispatcher extends Module {
                   .defaultValue(true))
                .visible(
                   () -> (
-                        this.BrmKXSYhWhqoB1.get() == Dispatcher.NotificationType.TJImwK2
-                           || this.BrmKXSYhWhqoB1.get() == Dispatcher.NotificationType.QfZy2gWnKInxFPr
+                        this.BrmKXSYhWhqoB1.get() == Dispatcher.NotificationType.Both
+                           || this.BrmKXSYhWhqoB1.get() == Dispatcher.NotificationType.Webhook
                      )
                      && (Boolean)this.I3psabmOrOI.get()
                      && (Boolean)this.nOwp0NYl.get()
@@ -238,8 +237,8 @@ public class Dispatcher extends Module {
                   .defaultValue(false))
                .visible(
                   () -> (
-                        this.BrmKXSYhWhqoB1.get() == Dispatcher.NotificationType.TJImwK2
-                           || this.BrmKXSYhWhqoB1.get() == Dispatcher.NotificationType.QfZy2gWnKInxFPr
+                        this.BrmKXSYhWhqoB1.get() == Dispatcher.NotificationType.Both
+                           || this.BrmKXSYhWhqoB1.get() == Dispatcher.NotificationType.Webhook
                      )
                      && (Boolean)this.I3psabmOrOI.get()
                      && (Boolean)this.nOwp0NYl.get()
@@ -291,8 +290,8 @@ public class Dispatcher extends Module {
                   .defaultValue(true))
                .visible(
                   () -> (
-                        this.BrmKXSYhWhqoB1.get() == Dispatcher.NotificationType.TJImwK2
-                           || this.BrmKXSYhWhqoB1.get() == Dispatcher.NotificationType.QfZy2gWnKInxFPr
+                        this.BrmKXSYhWhqoB1.get() == Dispatcher.NotificationType.Both
+                           || this.BrmKXSYhWhqoB1.get() == Dispatcher.NotificationType.Webhook
                      )
                      && (Boolean)this.I3psabmOrOI.get()
                      && (Boolean)this.Nt3xeF.get()
@@ -316,8 +315,8 @@ public class Dispatcher extends Module {
                   .defaultValue(false))
                .visible(
                   () -> (
-                        this.BrmKXSYhWhqoB1.get() == Dispatcher.NotificationType.TJImwK2
-                           || this.BrmKXSYhWhqoB1.get() == Dispatcher.NotificationType.QfZy2gWnKInxFPr
+                        this.BrmKXSYhWhqoB1.get() == Dispatcher.NotificationType.Both
+                           || this.BrmKXSYhWhqoB1.get() == Dispatcher.NotificationType.Webhook
                      )
                      && (Boolean)this.I3psabmOrOI.get()
                      && (Boolean)this.Nt3xeF.get()
@@ -358,8 +357,8 @@ public class Dispatcher extends Module {
                   .defaultValue(true))
                .visible(
                   () -> (
-                        this.BrmKXSYhWhqoB1.get() == Dispatcher.NotificationType.TJImwK2
-                           || this.BrmKXSYhWhqoB1.get() == Dispatcher.NotificationType.QfZy2gWnKInxFPr
+                        this.BrmKXSYhWhqoB1.get() == Dispatcher.NotificationType.Both
+                           || this.BrmKXSYhWhqoB1.get() == Dispatcher.NotificationType.Webhook
                      )
                      && (Boolean)this.I3psabmOrOI.get()
                      && (Boolean)this.JAj4YwE2MVx.get()
@@ -383,8 +382,8 @@ public class Dispatcher extends Module {
                   .defaultValue(false))
                .visible(
                   () -> (
-                        this.BrmKXSYhWhqoB1.get() == Dispatcher.NotificationType.TJImwK2
-                           || this.BrmKXSYhWhqoB1.get() == Dispatcher.NotificationType.QfZy2gWnKInxFPr
+                        this.BrmKXSYhWhqoB1.get() == Dispatcher.NotificationType.Both
+                           || this.BrmKXSYhWhqoB1.get() == Dispatcher.NotificationType.Webhook
                      )
                      && (Boolean)this.I3psabmOrOI.get()
                      && (Boolean)this.JAj4YwE2MVx.get()
@@ -401,7 +400,7 @@ public class Dispatcher extends Module {
    private Thread lVX1t0MC;
 
    public Dispatcher() {
-      super(musheor.AUTOMATION, "dispatcher", "Records specific data and notifies the player in chat or through a discord webhook");
+      super(musheor.musheor.AUTOMATION, "dispatcher", "Records specific data and notifies the player in chat or through a discord webhook");
    }
 
    public void onActivate() {
@@ -422,7 +421,7 @@ public class Dispatcher extends Module {
                   if (timeout > 0) {
                      Thread.sleep(timeout);
                   }
-               } catch (InterruptedException var3) {
+               } catch (InterruptedException e) {
                   Thread.currentThread().interrupt();
                }
             }
@@ -452,8 +451,7 @@ public class Dispatcher extends Module {
       if (this.mc.player != null && this.mc.world != null) {
          if ((Boolean)this.Nt3xeF.get()) {
             Vec3d playerPos = VersionHelper.get().getPlayerPos();
-            if (!(Math.abs(playerPos.x) < ((Integer)this.TXWyNb.get()).intValue())
-               && !(Math.abs(playerPos.z) < ((Integer)this.TXWyNb.get()).intValue())) {
+            if (!(Math.abs(playerPos.x) < ((Integer)this.TXWyNb.get()).intValue()) && !(Math.abs(playerPos.z) < ((Integer)this.TXWyNb.get()).intValue())) {
                WorldChunk chunk = event.chunk();
                long chunkKey = ChunkPos.toLong(chunk.getPos().x, chunk.getPos().z);
                if (this.VIbihOaIVyhvJw.add(chunkKey)) {
@@ -468,19 +466,15 @@ public class Dispatcher extends Module {
    private void fStlZIvY9lS8(EntityAddedEvent event) {
       if (this.mc.player != null && this.mc.world != null) {
          Vec3d playerPos = VersionHelper.get().getPlayerPos();
-         if (!(Math.abs(playerPos.x) < ((Integer)this.TXWyNb.get()).intValue())
-            && !(Math.abs(playerPos.z) < ((Integer)this.TXWyNb.get()).intValue())) {
+         if (!(Math.abs(playerPos.x) < ((Integer)this.TXWyNb.get()).intValue()) && !(Math.abs(playerPos.z) < ((Integer)this.TXWyNb.get()).intValue())) {
             if ((Boolean)this.nOwp0NYl.get()
-               && this.umvNbb7iD9UpR.get() != Dispatcher.VisualRangeType.QfZy2gWnKInxFPr
+               && this.umvNbb7iD9UpR.get() != Dispatcher.VisualRangeType.Leave
                && event.entity.getUuid() != this.mc.player.getUuid()
                && event.entity instanceof PlayerEntity player) {
-               if (this.BrmKXSYhWhqoB1.get() == Dispatcher.NotificationType.TJImwK2 || this.BrmKXSYhWhqoB1.get() == Dispatcher.NotificationType.fStlZIvY9lS8) {
+               if (this.BrmKXSYhWhqoB1.get() == Dispatcher.NotificationType.Both || this.BrmKXSYhWhqoB1.get() == Dispatcher.NotificationType.Chat) {
                   if (((CoordHider)Modules.get().get(CoordHider.class)).isActive()) {
                      ChatUtils.sendMsg(
-                        player.getId() + 100,
-                        Formatting.GRAY,
-                        "(highlight)%s(default) has entered visual range!",
-                        new Object[]{player.getName().getString()}
+                        player.getId() + 100, Formatting.GRAY, "(highlight)%s(default) has entered visual range!", new Object[]{player.getName().getString()}
                      );
                   } else {
                      ChatUtils.sendMsg(
@@ -493,9 +487,7 @@ public class Dispatcher extends Module {
                }
 
                if ((Boolean)this.I3psabmOrOI.get() && (Boolean)this.zkcZ4Xkp9Ez7Y.get() && !((String)this.fStlZIvY9lS8.get()).isEmpty()) {
-                  String pos = this.duJ6sPeetAcBh6P.get()
-                     ? String.format("||%d, %d, %d||", player.getBlockX(), player.getBlockY(), player.getBlockZ())
-                     : "";
+                  String pos = this.duJ6sPeetAcBh6P.get() ? String.format("||%d, %d, %d||", player.getBlockX(), player.getBlockY(), player.getBlockZ()) : "";
                   this.fStlZIvY9lS8(
                      "Visual Range",
                      player.getName().getString() + " has entered visual range!\n" + pos,
@@ -512,7 +504,9 @@ public class Dispatcher extends Module {
                }
 
                if ((Boolean)this.xileXsbo.get()) {
-                  this.mc.world.playSoundFromEntity(this.mc.player, this.mc.player, SoundEvents.ENTITY_EXPERIENCE_ORB_PICKUP, SoundCategory.AMBIENT, 3.0F, 1.0F);
+                  this.mc
+                     .world
+                     .playSoundFromEntity(this.mc.player, this.mc.player, SoundEvents.ENTITY_EXPERIENCE_ORB_PICKUP, SoundCategory.AMBIENT, 3.0F, 1.0F);
                }
             }
 
@@ -531,19 +525,15 @@ public class Dispatcher extends Module {
    private void fStlZIvY9lS8(EntityRemovedEvent event) {
       if (this.mc.player != null && this.mc.world != null) {
          Vec3d playerPos = VersionHelper.get().getPlayerPos();
-         if (!(Math.abs(playerPos.x) < ((Integer)this.TXWyNb.get()).intValue())
-            && !(Math.abs(playerPos.z) < ((Integer)this.TXWyNb.get()).intValue())) {
+         if (!(Math.abs(playerPos.x) < ((Integer)this.TXWyNb.get()).intValue()) && !(Math.abs(playerPos.z) < ((Integer)this.TXWyNb.get()).intValue())) {
             if ((Boolean)this.nOwp0NYl.get()
-               && this.umvNbb7iD9UpR.get() != Dispatcher.VisualRangeType.fStlZIvY9lS8
+               && this.umvNbb7iD9UpR.get() != Dispatcher.VisualRangeType.Enter
                && event.entity.getUuid() != this.mc.player.getUuid()
                && event.entity instanceof PlayerEntity player) {
-               if (this.BrmKXSYhWhqoB1.get() == Dispatcher.NotificationType.TJImwK2 || this.BrmKXSYhWhqoB1.get() == Dispatcher.NotificationType.fStlZIvY9lS8) {
+               if (this.BrmKXSYhWhqoB1.get() == Dispatcher.NotificationType.Both || this.BrmKXSYhWhqoB1.get() == Dispatcher.NotificationType.Chat) {
                   if (((CoordHider)Modules.get().get(CoordHider.class)).isActive()) {
                      ChatUtils.sendMsg(
-                        player.getId() + 100,
-                        Formatting.GRAY,
-                        "(highlight)%s(default) has left visual range!",
-                        new Object[]{player.getName().getString()}
+                        player.getId() + 100, Formatting.GRAY, "(highlight)%s(default) has left visual range!", new Object[]{player.getName().getString()}
                      );
                   } else {
                      ChatUtils.sendMsg(
@@ -556,9 +546,7 @@ public class Dispatcher extends Module {
                }
 
                if ((Boolean)this.I3psabmOrOI.get() && (Boolean)this.zkcZ4Xkp9Ez7Y.get() && !((String)this.fStlZIvY9lS8.get()).isEmpty()) {
-                  String pos = this.duJ6sPeetAcBh6P.get()
-                     ? String.format("||%d, %d, %d||", player.getBlockX(), player.getBlockY(), player.getBlockZ())
-                     : "";
+                  String pos = this.duJ6sPeetAcBh6P.get() ? String.format("||%d, %d, %d||", player.getBlockX(), player.getBlockY(), player.getBlockZ()) : "";
                   this.fStlZIvY9lS8(
                      "Visual Range",
                      player.getName().getString() + " has left visual range!\n" + pos,
@@ -575,7 +563,9 @@ public class Dispatcher extends Module {
                }
 
                if ((Boolean)this.xileXsbo.get()) {
-                  this.mc.world.playSoundFromEntity(this.mc.player, this.mc.player, SoundEvents.ENTITY_EXPERIENCE_ORB_PICKUP, SoundCategory.AMBIENT, 3.0F, 1.0F);
+                  this.mc
+                     .world
+                     .playSoundFromEntity(this.mc.player, this.mc.player, SoundEvents.ENTITY_EXPERIENCE_ORB_PICKUP, SoundCategory.AMBIENT, 3.0F, 1.0F);
                }
             }
          }
@@ -590,7 +580,7 @@ public class Dispatcher extends Module {
             Vec3d first = pearls.getFirst();
             int count = pearls.size();
             if (count == 1) {
-               if (this.BrmKXSYhWhqoB1.get() == Dispatcher.NotificationType.TJImwK2 || this.BrmKXSYhWhqoB1.get() == Dispatcher.NotificationType.fStlZIvY9lS8) {
+               if (this.BrmKXSYhWhqoB1.get() == Dispatcher.NotificationType.Both || this.BrmKXSYhWhqoB1.get() == Dispatcher.NotificationType.Chat) {
                   if (((CoordHider)Modules.get().get(CoordHider.class)).isActive()) {
                      ChatUtils.sendMsg(0, Formatting.BLUE, "Found an Enderpearl!", new Object[0]);
                   } else {
@@ -598,14 +588,7 @@ public class Dispatcher extends Module {
                         0,
                         Formatting.BLUE,
                         "Enderpearl %sfound at [%s%d, %d, %d%s]",
-                        new Object[]{
-                           Formatting.WHITE,
-                           Formatting.GRAY,
-                           (int)first.x,
-                           (int)first.y,
-                           (int)first.z,
-                           Formatting.WHITE
-                        }
+                        new Object[]{Formatting.WHITE, Formatting.GRAY, (int)first.x, (int)first.y, (int)first.z, Formatting.WHITE}
                      );
                   }
                }
@@ -616,22 +599,12 @@ public class Dispatcher extends Module {
                   0,
                   Formatting.BLUE,
                   "%d Enderpearls %sfound at [%s%d, %d, %d%s]",
-                  new Object[]{
-                     count,
-                     Formatting.WHITE,
-                     Formatting.GRAY,
-                     (int)first.x,
-                     (int)first.y,
-                     (int)first.z,
-                     Formatting.WHITE
-                  }
+                  new Object[]{count, Formatting.WHITE, Formatting.GRAY, (int)first.x, (int)first.y, (int)first.z, Formatting.WHITE}
                );
             }
 
             if ((Boolean)this.I3psabmOrOI.get() && (Boolean)this.JPp6VyZP9f.get() && !((String)this.fStlZIvY9lS8.get()).isEmpty()) {
-               String pos = this.duJ6sPeetAcBh6P.get()
-                  ? String.format("||%d, %d, %d||", (int)first.x, (int)first.y, (int)first.z)
-                  : "";
+               String pos = this.duJ6sPeetAcBh6P.get() ? String.format("||%d, %d, %d||", (int)first.x, (int)first.y, (int)first.z) : "";
                this.fStlZIvY9lS8(
                   "Pearl Detected", "Found " + count + " enderpearls!\n" + pos, 5592575, (Boolean)this.DqGSCWplcjMi.get() && (Boolean)this.j376sIQ.get()
                );
@@ -649,12 +622,9 @@ public class Dispatcher extends Module {
    private void fStlZIvY9lS8(ChunkPos chunkPos) {
       if (this.mc.world != null && this.mc.player != null) {
          Vec3d playerPos = VersionHelper.get().getPlayerPos();
-         if (!(Math.abs(playerPos.x) < ((Integer)this.TXWyNb.get()).intValue())
-            && !(Math.abs(playerPos.z) < ((Integer)this.TXWyNb.get()).intValue())) {
+         if (!(Math.abs(playerPos.x) < ((Integer)this.TXWyNb.get()).intValue()) && !(Math.abs(playerPos.z) < ((Integer)this.TXWyNb.get()).intValue())) {
             WorldChunk chunk = this.mc.world.getChunk(chunkPos.x, chunkPos.z);
-            MusheorSystem.debug(
-               "[DEBUG] Scanning chunk " + chunkPos.x + ", " + chunkPos.z + " - block entities: " + chunk.getBlockEntities().size()
-            );
+            MusheorSystem.debug("[DEBUG] Scanning chunk " + chunkPos.x + ", " + chunkPos.z + " - block entities: " + chunk.getBlockEntities().size());
             Map<BlockEntityType<?>, Integer> foundContainers = new HashMap<>();
             boolean foundSingleAlert = false;
             BlockPos firstContainerPos = null;
@@ -689,11 +659,9 @@ public class Dispatcher extends Module {
                }
 
                int totalContainers = foundContainers.values().stream().mapToInt(Integer::intValue).sum();
-               String blockCoords = String.format(
-                  "|%d, %d, %d|", firstContainerPos.getX(), firstContainerPos.getY(), firstContainerPos.getZ()
-               );
+               String blockCoords = String.format("|%d, %d, %d|", firstContainerPos.getX(), firstContainerPos.getY(), firstContainerPos.getZ());
                String description = summary.toString().trim() + "\n||" + blockCoords + "||";
-               if (this.BrmKXSYhWhqoB1.get() == Dispatcher.NotificationType.TJImwK2 || this.BrmKXSYhWhqoB1.get() == Dispatcher.NotificationType.fStlZIvY9lS8) {
+               if (this.BrmKXSYhWhqoB1.get() == Dispatcher.NotificationType.Both || this.BrmKXSYhWhqoB1.get() == Dispatcher.NotificationType.Chat) {
                   if (((CoordHider)Modules.get().get(CoordHider.class)).isActive()) {
                      ChatUtils.sendMsg(
                         0, Formatting.WHITE, "Stash found! %s- %s%d containers", new Object[]{Formatting.WHITE, Formatting.AQUA, totalContainers}
@@ -721,8 +689,7 @@ public class Dispatcher extends Module {
                }
 
                if ((Boolean)this.V7zKJ4n6D.get() && (Boolean)this.EVSMbf.get() && XearoHelper.isLoaded()) {
-                  XearoHelper.get()
-                     .addWaypointToCurrent("Stash: " + totalContainers, "S", Vec3d.of(firstContainerPos), XearoHelper.WaypointColorHint.GOLD);
+                  XearoHelper.get().addWaypointToCurrent("Stash: " + totalContainers, "S", Vec3d.of(firstContainerPos), XearoHelper.WaypointColorHint.GOLD);
                }
             }
 
@@ -731,8 +698,8 @@ public class Dispatcher extends Module {
                boolean isNether = this.mc.world.getRegistryKey() == World.NETHER;
                boolean isEnd = this.mc.world.getRegistryKey() == World.END;
                if (isEnd) {
-                  for (BlockEntity bex : chunk.getBlockEntities().values()) {
-                     if (bex instanceof EndGatewayBlockEntity) {
+                  for (BlockEntity be : chunk.getBlockEntities().values()) {
+                     if (be instanceof EndGatewayBlockEntity) {
                         return;
                      }
                   }
@@ -743,11 +710,11 @@ public class Dispatcher extends Module {
                for (int x = chunkPos.getStartX(); x <= chunkPos.getEndX(); x++) {
                   for (int z = chunkPos.getStartZ(); z <= chunkPos.getEndZ(); z++) {
                      int minY = this.mc.world.getBottomY();
-                     int maxY = this.mc.world.getTopY(Heightmap.Type.MOTION_BLOCKING, x, z);
+                     int maxY = this.mc.world.getTopY(Type.MOTION_BLOCKING, x, z);
 
                      for (int y = minY; y < maxY; y++) {
-                        BlockPos posx = new BlockPos(x, y, z);
-                        if (this.mc.world.getBlockState(posx).getBlock() == Blocks.BEDROCK) {
+                        BlockPos pos = new BlockPos(x, y, z);
+                        if (this.mc.world.getBlockState(pos).getBlock() == Blocks.BEDROCK) {
                            boolean illegal = false;
                            if (isOverworld && y > 5) {
                               illegal = true;
@@ -758,7 +725,7 @@ public class Dispatcher extends Module {
                            }
 
                            if (illegal) {
-                              illegalPos = posx;
+                              illegalPos = pos;
                               break;
                            }
                         }
@@ -775,10 +742,8 @@ public class Dispatcher extends Module {
                }
 
                if (illegalPos != null) {
-                  String posx = this.duJ6sPeetAcBh6P.get()
-                     ? String.format("|%d, %d, %d|", illegalPos.getX(), illegalPos.getY(), illegalPos.getZ())
-                     : "";
-                  if (this.BrmKXSYhWhqoB1.get() == Dispatcher.NotificationType.TJImwK2 || this.BrmKXSYhWhqoB1.get() == Dispatcher.NotificationType.fStlZIvY9lS8
+                  String pos = this.duJ6sPeetAcBh6P.get() ? String.format("|%d, %d, %d|", illegalPos.getX(), illegalPos.getY(), illegalPos.getZ()) : "";
+                  if (this.BrmKXSYhWhqoB1.get() == Dispatcher.NotificationType.Both || this.BrmKXSYhWhqoB1.get() == Dispatcher.NotificationType.Chat
                      )
                    {
                      if (((CoordHider)Modules.get().get(CoordHider.class)).isActive()) {
@@ -795,7 +760,7 @@ public class Dispatcher extends Module {
 
                   if ((Boolean)this.I3psabmOrOI.get() && (Boolean)this.ZlNrrNcv3Ylc.get() && !((String)this.fStlZIvY9lS8.get()).isEmpty()) {
                      this.fStlZIvY9lS8(
-                        "Illegal Bedrock", "**Found illegal bedrock**!!\n" + posx, 16711935, (Boolean)this.pF16zz4NJECfg7.get() && (Boolean)this.j376sIQ.get()
+                        "Illegal Bedrock", "**Found illegal bedrock**!!\n" + pos, 16711935, (Boolean)this.pF16zz4NJECfg7.get() && (Boolean)this.j376sIQ.get()
                      );
                   }
 
@@ -838,21 +803,27 @@ public class Dispatcher extends Module {
          stream.close();
          connection.getInputStream().close();
          connection.disconnect();
-      } catch (UnknownServiceException | MalformedURLException var5) {
-      } catch (Exception var6) {
-         var6.printStackTrace();
+      } catch (MalformedURLException | UnknownServiceException var5) {
+      } catch (Exception e) {
+         e.printStackTrace();
       }
    }
 
-   private static enum NotificationType {
-      fStlZIvY9lS8,
-      QfZy2gWnKInxFPr,
-      TJImwK2;
+   private enum NotificationType {
+      Chat,
+      Webhook,
+      Both;
+
+      NotificationType() {
+      }
    }
 
-   private static enum VisualRangeType {
-      fStlZIvY9lS8,
-      QfZy2gWnKInxFPr,
-      TJImwK2;
+   private enum VisualRangeType {
+      Enter,
+      Leave,
+      Both;
+
+      VisualRangeType() {
+      }
    }
 }

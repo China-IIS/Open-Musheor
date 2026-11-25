@@ -12,7 +12,7 @@ public class HighwayNavigator {
    private final HighwayNavigator.BounceController TJImwK2;
    private final HighwayNavigator.Listener wSJeYsJcmjNZf;
    private final HighwayNavigator.Config i2Nu6XHKic;
-   private HighwayNavigator.State vGAMA89H = HighwayNavigator.State.fStlZIvY9lS8;
+   private HighwayNavigator.State vGAMA89H = HighwayNavigator.State.ALIGNING;
    private int qhulAUwd = 0;
    private int BrmKXSYhWhqoB1 = 0;
    private int TXWyNb = 0;
@@ -35,24 +35,24 @@ public class HighwayNavigator {
 
    public void QfZy2gWnKInxFPr() {
       if (this.fStlZIvY9lS8.player != null && this.fStlZIvY9lS8.world != null) {
-         if (this.vGAMA89H != HighwayNavigator.State.vGAMA89H && this.vGAMA89H != HighwayNavigator.State.qhulAUwd) {
+         if (this.vGAMA89H != HighwayNavigator.State.DONE && this.vGAMA89H != HighwayNavigator.State.FAILED) {
             if (this.QfZy2gWnKInxFPr.fStlZIvY9lS8.isEmpty()) {
                this.umvNbb7iD9UpR();
             } else {
                switch (this.vGAMA89H) {
-                  case fStlZIvY9lS8:
+                  case ALIGNING:
                      this.wSJeYsJcmjNZf();
                      break;
-                  case QfZy2gWnKInxFPr:
+                  case BOUNCING:
                      this.i2Nu6XHKic();
                      break;
-                  case TJImwK2:
+                  case APPROACHING_WAYPOINT:
                      this.vGAMA89H();
                      break;
-                  case wSJeYsJcmjNZf:
+                  case TRANSITIONING:
                      this.qhulAUwd();
                      break;
-                  case i2Nu6XHKic:
+                  case SETTLING:
                      this.BrmKXSYhWhqoB1();
                }
             }
@@ -77,7 +77,7 @@ public class HighwayNavigator {
          this.BrmKXSYhWhqoB1 = 0;
          this.j376sIQ = this.fStlZIvY9lS8(this.voxTwgNzyrpaAnP());
          this.I3psabmOrOI();
-         this.fStlZIvY9lS8(HighwayNavigator.State.QfZy2gWnKInxFPr, "bouncing toward " + this.xileXsbo());
+         this.fStlZIvY9lS8(HighwayNavigator.State.BOUNCING, "bouncing toward " + this.xileXsbo());
       }
    }
 
@@ -90,7 +90,7 @@ public class HighwayNavigator {
 
       this.j376sIQ();
       if (dist < this.i2Nu6XHKic.fStlZIvY9lS8() && dist < this.j376sIQ) {
-         this.fStlZIvY9lS8(HighwayNavigator.State.TJImwK2, "approaching " + this.xileXsbo());
+         this.fStlZIvY9lS8(HighwayNavigator.State.APPROACHING_WAYPOINT, "approaching " + this.xileXsbo());
       }
    }
 
@@ -102,14 +102,14 @@ public class HighwayNavigator {
          this.duJ6sPeetAcBh6P();
          BlockPos goal = this.QfZy2gWnKInxFPr(target);
          GyhoRo.fStlZIvY9lS8(goal);
-         this.fStlZIvY9lS8(HighwayNavigator.State.wSJeYsJcmjNZf, "transitioning at " + this.xileXsbo());
+         this.fStlZIvY9lS8(HighwayNavigator.State.TRANSITIONING, "transitioning at " + this.xileXsbo());
       }
    }
 
    private void qhulAUwd() {
       if (!GyhoRo.TJImwK2()) {
          this.I3psabmOrOI = this.i2Nu6XHKic.i2Nu6XHKic();
-         this.fStlZIvY9lS8(HighwayNavigator.State.i2Nu6XHKic, "settling at " + this.xileXsbo());
+         this.fStlZIvY9lS8(HighwayNavigator.State.SETTLING, "settling at " + this.xileXsbo());
       }
    }
 
@@ -130,7 +130,7 @@ public class HighwayNavigator {
          this.umvNbb7iD9UpR();
       } else {
          this.I3psabmOrOI();
-         this.fStlZIvY9lS8(HighwayNavigator.State.fStlZIvY9lS8, "aligning for leg " + this.qhulAUwd + ": " + this.V7zKJ4n6D().TJImwK2().vGAMA89H());
+         this.fStlZIvY9lS8(HighwayNavigator.State.ALIGNING, "aligning for leg " + this.qhulAUwd + ": " + this.V7zKJ4n6D().TJImwK2().vGAMA89H());
       }
    }
 
@@ -208,7 +208,7 @@ public class HighwayNavigator {
 
    private void umvNbb7iD9UpR() {
       this.duJ6sPeetAcBh6P();
-      this.vGAMA89H = HighwayNavigator.State.vGAMA89H;
+      this.vGAMA89H = HighwayNavigator.State.DONE;
       this.wSJeYsJcmjNZf.fStlZIvY9lS8();
    }
 
@@ -217,10 +217,15 @@ public class HighwayNavigator {
    }
 
    public record Config(double fStlZIvY9lS8, double QfZy2gWnKInxFPr, int TJImwK2, float wSJeYsJcmjNZf, int i2Nu6XHKic, int vGAMA89H) {
+
       public int i2Nu6XHKic() {
          return this.vGAMA89H;
       }
-   
+
+      @Override
+      public final String toString() {
+         return "Config[approachRadius=" + this.fStlZIvY9lS8 + ", arriveRadius=" + this.QfZy2gWnKInxFPr + ", alignTimeoutTicks=" + this.TJImwK2 + ", yawToleranceDeg=" + this.wSJeYsJcmjNZf + ", transitionGoalDist=" + this.i2Nu6XHKic + ", settleTicks=" + this.vGAMA89H + "]";
+      }
    }
 
    public interface Listener {
@@ -229,13 +234,16 @@ public class HighwayNavigator {
       void fStlZIvY9lS8();
    }
 
-   public static enum State {
-      fStlZIvY9lS8,
-      QfZy2gWnKInxFPr,
-      TJImwK2,
-      wSJeYsJcmjNZf,
-      i2Nu6XHKic,
-      vGAMA89H,
-      qhulAUwd;
+   public enum State {
+      ALIGNING,
+      BOUNCING,
+      APPROACHING_WAYPOINT,
+      TRANSITIONING,
+      SETTLING,
+      DONE,
+      FAILED;
+
+      State() {
+      }
    }
 }

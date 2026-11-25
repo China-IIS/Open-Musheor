@@ -6,7 +6,7 @@ import net.minecraft.item.AxeItem;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.gen.Accessor;
 
-@Mixin({AxeItem.class})
+@Mixin(AxeItem.class)
 public interface AxeItemAccessor {
    @Accessor("STRIPPED_BLOCKS")
    static Map<Block, Block> getStrippedBlocks() {

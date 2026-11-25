@@ -44,6 +44,9 @@ public class VersionHelperImpl implements VersionHelper {
    private static final Gson GSON_INSTANCE = new GsonBuilder().setPrettyPrinting().create();
    private static final MinecraftClient mc = MinecraftClient.getInstance();
 
+   public VersionHelperImpl() {
+   }
+
    @Override
    public Gson getGson() {
       return GSON_INSTANCE;

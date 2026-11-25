@@ -4,9 +4,9 @@ import it.unimi.dsi.fastutil.Pair;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map.Entry;
 import java.util.Map;
 import java.util.Set;
+import java.util.Map.Entry;
 import java.util.stream.Collectors;
 import meteordevelopment.meteorclient.events.render.Render3DEvent;
 import meteordevelopment.meteorclient.renderer.ShapeMode;
@@ -19,6 +19,9 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 
 public class jU8xXhmkg {
+   public jU8xXhmkg() {
+   }
+
    public static void fStlZIvY9lS8(Render3DEvent event, List<Pair<BlockPos, Block>> blocks) {
       if (MinecraftClient.getInstance().player != null && MinecraftClient.getInstance().world != null) {
          if (blocks != null && !blocks.isEmpty()) {

@@ -6,9 +6,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map.Entry;
 import java.util.Map;
 import java.util.Set;
+import java.util.Map.Entry;
 import meteordevelopment.meteorclient.MeteorClient;
 import meteordevelopment.meteorclient.commands.Command;
 import meteordevelopment.meteorclient.events.entity.player.InteractBlockEvent;
@@ -59,17 +59,17 @@ public class RestockConfig extends Command {
       if (!wSJeYsJcmjNZf) {
          this.info("Usage: .rc auto | add <item> | remove <item> | list | clear", new Object[0]);
          return 1;
-      } else {
-         wSJeYsJcmjNZf = false;
-         i2Nu6XHKic = null;
-         vGAMA89H = -1;
-         if (MeteorClient.EVENT_BUS.isListening(RestockConfig.AutoConfigListener.class)) {
-            MeteorClient.EVENT_BUS.unsubscribe(RestockConfig.AutoConfigListener.fStlZIvY9lS8);
-         }
-
-         this.info("Exited auto config mode", new Object[0]);
-         return 1;
       }
+
+      wSJeYsJcmjNZf = false;
+      i2Nu6XHKic = null;
+      vGAMA89H = -1;
+      if (MeteorClient.EVENT_BUS.isListening(RestockConfig.AutoConfigListener.class)) {
+         MeteorClient.EVENT_BUS.unsubscribe(RestockConfig.AutoConfigListener.fStlZIvY9lS8);
+      }
+
+      this.info("Exited auto config mode", new Object[0]);
+      return 1;
    }
 
    private int QfZy2gWnKInxFPr(CommandContext<CommandSource> context) {
@@ -117,21 +117,21 @@ public class RestockConfig extends Command {
       if (fStlZIvY9lS8.isEmpty()) {
          this.info("No restocking containers configured", new Object[0]);
          return 1;
-      } else {
-         this.info("Restocking containers:", new Object[0]);
-
-         for (Entry<Item, List<BlockPos>> entry : fStlZIvY9lS8.entrySet()) {
-            Item item = entry.getKey();
-            List<BlockPos> positions = entry.getValue();
-            this.info("§b%s§r (%d containers):", new Object[]{fStlZIvY9lS8(item), positions.size()});
-
-            for (BlockPos pos : positions) {
-               this.info("  - %s, blocks away", new Object[]{Math.ceil(oyDPiOVBGKG.fStlZIvY9lS8(mc.player.getBlockPos(), pos))});
-            }
-         }
-
-         return 1;
       }
+
+      this.info("Restocking containers:", new Object[0]);
+
+      for (Entry<Item, List<BlockPos>> entry : fStlZIvY9lS8.entrySet()) {
+         Item item = entry.getKey();
+         List<BlockPos> positions = entry.getValue();
+         this.info("§b%s§r (%d containers):", new Object[]{fStlZIvY9lS8(item), positions.size()});
+
+         for (BlockPos pos : positions) {
+            this.info("  - %s, blocks away", new Object[]{Math.ceil(oyDPiOVBGKG.fStlZIvY9lS8(mc.player.getBlockPos(), pos))});
+         }
+      }
+
+      return 1;
    }
 
    private int vGAMA89H(CommandContext<CommandSource> context) {
@@ -207,9 +207,10 @@ public class RestockConfig extends Command {
    private static class AutoConfigListener {
       private static final RestockConfig.AutoConfigListener fStlZIvY9lS8 = new RestockConfig.AutoConfigListener();
 
-      @EventHandler(
-         priority = 200
-      )
+      private AutoConfigListener() {
+      }
+
+      @EventHandler(priority = 200)
       private void fStlZIvY9lS8(InteractBlockEvent event) {
          if (RestockConfig.wSJeYsJcmjNZf) {
             RestockConfig.i2Nu6XHKic = event.result.getBlockPos();
@@ -217,9 +218,7 @@ public class RestockConfig extends Command {
          }
       }
 
-      @EventHandler(
-         priority = 200
-      )
+      @EventHandler(priority = 200)
       private void fStlZIvY9lS8(OpenScreenEvent event) {
          if (RestockConfig.wSJeYsJcmjNZf && RestockConfig.i2Nu6XHKic != null) {
             if (event.screen != null) {
@@ -251,9 +250,7 @@ public class RestockConfig extends Command {
                      if (foundItems.isEmpty()) {
                         ChatUtils.info(
                            "Container at §b%d %d %d§r is empty, skipping",
-                           new Object[]{
-                              RestockConfig.i2Nu6XHKic.getX(), RestockConfig.i2Nu6XHKic.getY(), RestockConfig.i2Nu6XHKic.getZ()
-                           }
+                           new Object[]{RestockConfig.i2Nu6XHKic.getX(), RestockConfig.i2Nu6XHKic.getY(), RestockConfig.i2Nu6XHKic.getZ()}
                         );
                      } else {
                         BlockPos pos = RestockConfig.i2Nu6XHKic;
@@ -266,13 +263,10 @@ public class RestockConfig extends Command {
                         }
 
                         RestockConfig.i2Nu6XHKic();
-                        ChatUtils.info(
-                           "Registered §b%d§r item(s) from container",
-                           new Object[]{foundItems.size(), pos.getX(), pos.getY(), pos.getZ()}
-                        );
+                        ChatUtils.info("Registered §b%d§r item(s) from container", new Object[]{foundItems.size(), pos.getX(), pos.getY(), pos.getZ()});
 
-                        for (Item itemx : foundItems) {
-                           ChatUtils.info("  - §b%s", new Object[]{RestockConfig.fStlZIvY9lS8(itemx)});
+                        for (Item item : foundItems) {
+                           ChatUtils.info("  - §b%s", new Object[]{RestockConfig.fStlZIvY9lS8(item)});
                         }
                      }
 
@@ -287,9 +281,10 @@ public class RestockConfig extends Command {
    private static class RestockingConfigListener {
       private static final RestockConfig.RestockingConfigListener fStlZIvY9lS8 = new RestockConfig.RestockingConfigListener();
 
-      @EventHandler(
-         priority = 200
-      )
+      private RestockingConfigListener() {
+      }
+
+      @EventHandler(priority = 200)
       private void fStlZIvY9lS8(InteractBlockEvent event) {
          if (RestockConfig.QfZy2gWnKInxFPr && RestockConfig.TJImwK2 != null) {
             BlockPos pos = event.result.getBlockPos();
@@ -300,9 +295,7 @@ public class RestockConfig extends Command {
          }
       }
 
-      @EventHandler(
-         priority = 200
-      )
+      @EventHandler(priority = 200)
       private void fStlZIvY9lS8(OpenScreenEvent event) {
          if (RestockConfig.QfZy2gWnKInxFPr) {
             if (event.screen != null) {

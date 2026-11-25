@@ -30,17 +30,19 @@ public class AVZhkxEO {
    public static boolean wSJeYsJcmjNZf(PlayerEntity player) {
       if (!QfZy2gWnKInxFPr(player).isEmpty()) {
          return true;
-      } else if (!TJImwK2(player).isEmpty()) {
-         return true;
-      } else {
-         for (ItemStack s : fStlZIvY9lS8(player)) {
-            if (!s.isEmpty()) {
-               return true;
-            }
-         }
-
-         return false;
       }
+
+      if (!TJImwK2(player).isEmpty()) {
+         return true;
+      }
+
+      for (ItemStack s : fStlZIvY9lS8(player)) {
+         if (!s.isEmpty()) {
+            return true;
+         }
+      }
+
+      return false;
    }
 
    public static int fStlZIvY9lS8(double distance) {

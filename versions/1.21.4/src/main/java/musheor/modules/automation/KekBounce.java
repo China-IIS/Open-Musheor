@@ -9,9 +9,9 @@ import meteordevelopment.meteorclient.events.game.GameLeftEvent;
 import meteordevelopment.meteorclient.events.packets.PacketEvent.Receive;
 import meteordevelopment.meteorclient.events.world.PlaySoundEvent;
 import meteordevelopment.meteorclient.events.world.TickEvent.Pre;
-import meteordevelopment.meteorclient.settings.EnumSetting.Builder;
 import meteordevelopment.meteorclient.settings.Setting;
 import meteordevelopment.meteorclient.settings.SettingGroup;
+import meteordevelopment.meteorclient.settings.EnumSetting.Builder;
 import meteordevelopment.meteorclient.systems.modules.Module;
 import meteordevelopment.meteorclient.systems.modules.Modules;
 import meteordevelopment.meteorclient.systems.modules.player.AutoEat;
@@ -22,25 +22,23 @@ import musheor.compat.VersionHelper;
 import musheor.compat.XearoHelper;
 import musheor.modules.automation.highway.HighwayNavigator;
 import musheor.modules.automation.highway.HighwayRouter;
-import musheor.musheor;
 import musheor.utils.irzXX;
+import musheor.utils.oyDPiOVBGKG;
+import musheor.utils.pvfA15fQSVM;
 import musheor.utils.manager.RotationManager;
 import musheor.utils.manager.U6PQSXqW;
 import musheor.utils.manager.gVOhtBej1x;
-import musheor.utils.oyDPiOVBGKG;
-import musheor.utils.pvfA15fQSVM;
 import musheor.utils.system.HighwayNetworkManager;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.component.DataComponentTypes;
 import net.minecraft.component.type.EquippableComponent;
 import net.minecraft.entity.EquipmentSlot;
-import net.minecraft.entity.data.DataTracker.SerializedEntry;
 import net.minecraft.entity.data.TrackedDataHandler;
+import net.minecraft.entity.data.DataTracker.SerializedEntry;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
-import net.minecraft.network.packet.c2s.play.ClientCommandC2SPacket.Mode;
 import net.minecraft.network.packet.c2s.play.ClientCommandC2SPacket;
 import net.minecraft.network.packet.s2c.play.EntityTrackerUpdateS2CPacket;
 import net.minecraft.network.packet.s2c.play.PlayerPositionLookS2CPacket;
@@ -63,7 +61,7 @@ public class KekBounce extends Module {
       .add(
          ((Builder)((Builder)((Builder)new Builder().name("mode"))
                   .description("Simple: freeform bounce. Navigate: Set and follows temporary waypoints created using Xearo"))
-               .defaultValue(KekBounce.Mode.fStlZIvY9lS8))
+               .defaultValue(KekBounce.Mode.Simple))
             .build()
       );
    private final Setting<Boolean> BrmKXSYhWhqoB1 = this.fStlZIvY9lS8
@@ -143,7 +141,7 @@ public class KekBounce extends Module {
       .add(
          ((Builder)((Builder)((Builder)new Builder().name("yaw-lock"))
                   .description("Snap on activation, Snap to nearest axis, configure custom value or disable."))
-               .defaultValue(KekBounce.YawLock.fStlZIvY9lS8))
+               .defaultValue(KekBounce.YawLock.Onactivate))
             .build()
       );
    private final Setting<Double> nOwp0NYl = this.TJImwK2
@@ -154,7 +152,7 @@ public class KekBounce extends Module {
                .defaultValue(0.0)
                .sliderRange(-180.0, 180.0)
                .decimalPlaces(2)
-               .visible(() -> this.xileXsbo.get() == KekBounce.YawLock.TJImwK2))
+               .visible(() -> this.xileXsbo.get() == KekBounce.YawLock.Custom))
             .build()
       );
    private final Setting<Boolean> umvNbb7iD9UpR = this.wSJeYsJcmjNZf
@@ -169,14 +167,14 @@ public class KekBounce extends Module {
       .add(
          ((Builder)((Builder)((Builder)((Builder)new Builder().name("start-pos-type"))
                      .description("Automatic or custom starting position for aligning with obstacle-passer"))
-                  .defaultValue(KekBounce.StartPos.fStlZIvY9lS8))
-               .visible(() -> this.qhulAUwd.get() == KekBounce.Mode.fStlZIvY9lS8 && (Boolean)this.umvNbb7iD9UpR.get()))
+                  .defaultValue(KekBounce.StartPos.OnActivate))
+               .visible(() -> this.qhulAUwd.get() == KekBounce.Mode.Simple && (Boolean)this.umvNbb7iD9UpR.get()))
             .build()
       );
    private final Setting<KekBounce.Height> flWHzEyn = this.wSJeYsJcmjNZf
       .add(
          ((Builder)((Builder)((Builder)((Builder)new Builder().name("target-y")).description("The Y level to bounce at."))
-                  .defaultValue(KekBounce.Height.fStlZIvY9lS8))
+                  .defaultValue(KekBounce.Height.Auto))
                .visible(this.umvNbb7iD9UpR::get))
             .build()
       );
@@ -187,7 +185,7 @@ public class KekBounce extends Module {
                      .description("The Y level to bounce at."))
                   .defaultValue(120))
                .sliderRange(-64, 120)
-               .visible(() -> (Boolean)this.umvNbb7iD9UpR.get() && this.flWHzEyn.get() == KekBounce.Height.QfZy2gWnKInxFPr))
+               .visible(() -> (Boolean)this.umvNbb7iD9UpR.get() && this.flWHzEyn.get() == KekBounce.Height.Manual))
             .build()
       );
    private final Setting<BlockPos> Nt3xeF = this.wSJeYsJcmjNZf
@@ -197,9 +195,9 @@ public class KekBounce extends Module {
                         .description("The position to align with when using the custom starting position option."))
                      .defaultValue(new BlockPos(0, 0, 0)))
                   .visible(
-                     () -> this.qhulAUwd.get() == KekBounce.Mode.fStlZIvY9lS8
+                     () -> this.qhulAUwd.get() == KekBounce.Mode.Simple
                         && (Boolean)this.umvNbb7iD9UpR.get()
-                        && this.zkcZ4Xkp9Ez7Y.get() == KekBounce.StartPos.QfZy2gWnKInxFPr
+                        && this.zkcZ4Xkp9Ez7Y.get() == KekBounce.StartPos.Custom
                   ))
                .onChanged(value -> this.npfimrDr0hky = value))
             .build()
@@ -254,7 +252,7 @@ public class KekBounce extends Module {
                      .description("Displays and calculates arrival time above the player's hotbar."))
                   .defaultValue(true))
                .visible(
-                  () -> XearoHelper.isLoaded() && FabricLoader.getInstance().isModLoaded("xaeroplus") && this.qhulAUwd.get() == KekBounce.Mode.QfZy2gWnKInxFPr
+                  () -> XearoHelper.isLoaded() && FabricLoader.getInstance().isModLoaded("xaeroplus") && this.qhulAUwd.get() == KekBounce.Mode.Advanced
                ))
             .build()
       );
@@ -265,7 +263,7 @@ public class KekBounce extends Module {
                      .description("Displays your current navigation path on your minimap / worldmap."))
                   .defaultValue(true))
                .visible(
-                  () -> XearoHelper.isLoaded() && FabricLoader.getInstance().isModLoaded("xaeroplus") && this.qhulAUwd.get() == KekBounce.Mode.QfZy2gWnKInxFPr
+                  () -> XearoHelper.isLoaded() && FabricLoader.getInstance().isModLoaded("xaeroplus") && this.qhulAUwd.get() == KekBounce.Mode.Advanced
                ))
             .build()
       );
@@ -277,7 +275,7 @@ public class KekBounce extends Module {
                .defaultValue(64.0)
                .sliderRange(16.0, 256.0)
                .decimalPlaces(0)
-               .visible(() -> XearoHelper.isLoaded() && this.qhulAUwd.get() == KekBounce.Mode.QfZy2gWnKInxFPr))
+               .visible(() -> XearoHelper.isLoaded() && this.qhulAUwd.get() == KekBounce.Mode.Advanced))
             .build()
       );
    private final Setting<Double> icQ738dpWr7W = this.vGAMA89H
@@ -288,7 +286,7 @@ public class KekBounce extends Module {
                .defaultValue(32.0)
                .sliderRange(8.0, 128.0)
                .decimalPlaces(0)
-               .visible(() -> XearoHelper.isLoaded() && this.qhulAUwd.get() == KekBounce.Mode.QfZy2gWnKInxFPr))
+               .visible(() -> XearoHelper.isLoaded() && this.qhulAUwd.get() == KekBounce.Mode.Advanced))
             .build()
       );
    private final Setting<Integer> JAj4YwE2MVx = this.vGAMA89H
@@ -298,7 +296,7 @@ public class KekBounce extends Module {
                      .description("Ticks to spend aligning yaw before bouncing anyway."))
                   .defaultValue(40))
                .sliderRange(10, 100)
-               .visible(() -> XearoHelper.isLoaded() && this.qhulAUwd.get() == KekBounce.Mode.QfZy2gWnKInxFPr))
+               .visible(() -> XearoHelper.isLoaded() && this.qhulAUwd.get() == KekBounce.Mode.Advanced))
             .build()
       );
    private final Setting<Double> JPp6VyZP9f = this.vGAMA89H
@@ -309,7 +307,7 @@ public class KekBounce extends Module {
                .defaultValue(4.0)
                .sliderRange(1.0, 20.0)
                .decimalPlaces(1)
-               .visible(() -> XearoHelper.isLoaded() && this.qhulAUwd.get() == KekBounce.Mode.QfZy2gWnKInxFPr))
+               .visible(() -> XearoHelper.isLoaded() && this.qhulAUwd.get() == KekBounce.Mode.Advanced))
             .build()
       );
    private final Setting<Integer> MR1DKzw = this.vGAMA89H
@@ -319,7 +317,7 @@ public class KekBounce extends Module {
                      .description("Baritone goal distance when walking an intersection."))
                   .defaultValue(8))
                .sliderRange(1, 32)
-               .visible(() -> XearoHelper.isLoaded() && this.qhulAUwd.get() == KekBounce.Mode.QfZy2gWnKInxFPr))
+               .visible(() -> XearoHelper.isLoaded() && this.qhulAUwd.get() == KekBounce.Mode.Advanced))
             .build()
       );
    private final Setting<Integer> DqGSCWplcjMi = this.vGAMA89H
@@ -329,7 +327,7 @@ public class KekBounce extends Module {
                      .description("Ticks to wait at an intersection after arriving before resuming bounce."))
                   .defaultValue(10))
                .sliderRange(0, 40)
-               .visible(() -> XearoHelper.isLoaded() && this.qhulAUwd.get() == KekBounce.Mode.QfZy2gWnKInxFPr))
+               .visible(() -> XearoHelper.isLoaded() && this.qhulAUwd.get() == KekBounce.Mode.Advanced))
             .build()
       );
    private final Setting<Boolean> cO1FU7fW = this.i2Nu6XHKic
@@ -417,7 +415,7 @@ public class KekBounce extends Module {
    private boolean auOYKcACfh9b;
 
    public KekBounce() {
-      super(musheor.AUTOMATION, "kek-bounce", "Elytra bounce module with some extra juice.");
+      super(musheor.musheor.AUTOMATION, "kek-bounce", "Elytra bounce module with some extra juice.");
    }
 
    public void onActivate() {
@@ -435,10 +433,10 @@ public class KekBounce extends Module {
             qhulAUwd();
          }
 
-         this.npfimrDr0hky = this.zkcZ4Xkp9Ez7Y.get() == KekBounce.StartPos.fStlZIvY9lS8
+         this.npfimrDr0hky = this.zkcZ4Xkp9Ez7Y.get() == KekBounce.StartPos.OnActivate
             ? BlockPos.ofFloored(VersionHelper.get().getPlayerPos())
             : (BlockPos)this.Nt3xeF.get();
-         if (this.flWHzEyn.get() == KekBounce.Height.fStlZIvY9lS8) {
+         if (this.flWHzEyn.get() == KekBounce.Height.Auto) {
             this.FVjbhYkk53UT.set(this.mc.player.getBlockY());
          }
 
@@ -463,11 +461,11 @@ public class KekBounce extends Module {
             ((ChestSwap)Modules.get().get(ChestSwap.class)).swap();
          }
 
-         if (this.xileXsbo.get() == KekBounce.YawLock.fStlZIvY9lS8) {
+         if (this.xileXsbo.get() == KekBounce.YawLock.Onactivate) {
             this.F4hivB = this.mc.player.getYaw();
          }
 
-         if (this.qhulAUwd.get() == KekBounce.Mode.QfZy2gWnKInxFPr) {
+         if (this.qhulAUwd.get() == KekBounce.Mode.Advanced) {
             if ((Boolean)this.pF16zz4NJECfg7.get() && !FabricLoader.getInstance().isModLoaded("xaeroplus")) {
                this.warning("Cannot render path on map, %sXaeroPlus %srequired but not installed!", new Object[]{Formatting.GOLD, Formatting.YELLOW});
                this.pF16zz4NJECfg7.set(false);
@@ -479,9 +477,7 @@ public class KekBounce extends Module {
             }
 
             if (!XearoHelper.isLoaded()) {
-               this.warning(
-                  "AdvancedNavigation requires %sXaero%s. Install it or switch to Simple mode.", new Object[]{Formatting.RED, Formatting.YELLOW}
-               );
+               this.warning("AdvancedNavigation requires %sXaero%s. Install it or switch to Simple mode.", new Object[]{Formatting.RED, Formatting.YELLOW});
                this.toggle();
                return;
             }
@@ -585,37 +581,30 @@ public class KekBounce extends Module {
             (Integer)this.MR1DKzw.get(),
             (Integer)this.DqGSCWplcjMi.get()
          );
-         this.bDU9FLOzvL = new HighwayNavigator(
-            route,
-            navConfig,
-            new HighwayNavigator.BounceController() {
-               @Override
-               public void fStlZIvY9lS8(boolean active) {
-                  KekBounce.this.xarqg2oUiwotDG4 = !active;
-               }
-            },
-            new HighwayNavigator.Listener() {
-               @Override
-               public void fStlZIvY9lS8(HighwayNavigator.State newState, String description) {
-                  ChatUtils.info(Formatting.AQUA + "[2bNav] " + Formatting.WHITE + description, new Object[0]);
-               }
+         this.bDU9FLOzvL = new HighwayNavigator(route, navConfig, new HighwayNavigator.BounceController() {
+            @Override
+            public void fStlZIvY9lS8(boolean active) {
+               KekBounce.this.xarqg2oUiwotDG4 = !active;
+            }
+         }, new HighwayNavigator.Listener() {
+            @Override
+            public void fStlZIvY9lS8(HighwayNavigator.State newState, String description) {
+               ChatUtils.info(Formatting.AQUA + "[2bNav] " + Formatting.WHITE + description, new Object[0]);
+            }
 
-               @Override
-               public void fStlZIvY9lS8() {
-                  XearoHelper.get().deleteCurrentWaypoint(KekBounce.this.PuZZ3s4mpaTz);
-                  KekBounce.this.PuZZ3s4mpaTz = null;
-                  XearoHelper.WaypointData next = XearoHelper.get().getOldestWaypoint(true);
-                  if (next == null) {
-                     ChatUtils.info(
-                        Formatting.AQUA + "[2bNav] " + Formatting.WHITE + "No waypoints found, assuming destination was reached!", new Object[0]
-                     );
-                     KekBounce.this.toggle();
-                  } else {
-                     KekBounce.this.fStlZIvY9lS8(next);
-                  }
+            @Override
+            public void fStlZIvY9lS8() {
+               XearoHelper.get().deleteCurrentWaypoint(KekBounce.this.PuZZ3s4mpaTz);
+               KekBounce.this.PuZZ3s4mpaTz = null;
+               XearoHelper.WaypointData next = XearoHelper.get().getOldestWaypoint(true);
+               if (next == null) {
+                  ChatUtils.info(Formatting.AQUA + "[2bNav] " + Formatting.WHITE + "No waypoints found, assuming destination was reached!", new Object[0]);
+                  KekBounce.this.toggle();
+               } else {
+                  KekBounce.this.fStlZIvY9lS8(next);
                }
             }
-         );
+         });
       }
    }
 
@@ -633,7 +622,7 @@ public class KekBounce extends Module {
                this.Kl8YPWLVNx7VE = this.mc.player.getY();
             }
 
-            if (this.qhulAUwd.get() == KekBounce.Mode.QfZy2gWnKInxFPr) {
+            if (this.qhulAUwd.get() == KekBounce.Mode.Advanced) {
                this.wSJeYsJcmjNZf();
             } else {
                this.i2Nu6XHKic();
@@ -656,21 +645,21 @@ public class KekBounce extends Module {
          if (!(event.packet instanceof PlayerPositionLookS2CPacket)) {
             if (event.packet instanceof EntityTrackerUpdateS2CPacket packet && (Integer)this.duJ6sPeetAcBh6P.get() > 0) {
                ClientPlayerEntity player = this.mc.player;
-               if (player != null && packet.comp_1127() == player.getId() && player.isGliding()) {
-                  List<DataTracker.SerializedEntry<?>> values = packet.comp_1128();
+               if (player != null && packet.id() == player.getId() && player.isGliding()) {
+                  List<SerializedEntry<?>> values = packet.trackedValues();
 
                   for (int i = 0; i < values.size(); i++) {
-                     DataTracker.SerializedEntry<?> entry = values.get(i);
-                     if (entry.comp_1115() == 0 && entry.comp_1117() instanceof Byte flags) {
+                     SerializedEntry<?> entry = values.get(i);
+                     if (entry.id() == 0 && entry.value() instanceof Byte flags) {
                         if ((flags & -128) != 0) {
                            return;
                         }
 
-                        TrackedDataHandler<Byte> handler = entry.comp_1116();
+                        TrackedDataHandler<Byte> handler = (TrackedDataHandler<Byte>)(TrackedDataHandler<?>)entry.handler();
                         synchronized (this.ZSlhR16SSPV) {
                            try {
-                              values.set(i, new DataTracker.SerializedEntry(entry.comp_1115(), handler, (byte)(flags | -128)));
-                           } catch (UnsupportedOperationException var12) {
+                              values.set(i, new SerializedEntry(entry.id(), handler, (byte)(flags | -128)));
+                           } catch (UnsupportedOperationException e) {
                               return;
                            }
 
@@ -716,7 +705,7 @@ public class KekBounce extends Module {
       } else if (this.zbN84Osn9p5lD()) {
          this.RFflNsLXot = true;
       } else {
-         if (this.qhulAUwd.get() == KekBounce.Mode.QfZy2gWnKInxFPr && (Boolean)this.pF16zz4NJECfg7.get()) {
+         if (this.qhulAUwd.get() == KekBounce.Mode.Advanced && (Boolean)this.pF16zz4NJECfg7.get()) {
             this.EVSMbf();
          }
 
@@ -725,7 +714,7 @@ public class KekBounce extends Module {
          }
 
          if (this.bDU9FLOzvL != null) {
-            if ((Boolean)this.umvNbb7iD9UpR.get() && this.bDU9FLOzvL.fStlZIvY9lS8() == HighwayNavigator.State.QfZy2gWnKInxFPr) {
+            if ((Boolean)this.umvNbb7iD9UpR.get() && this.bDU9FLOzvL.fStlZIvY9lS8() == HighwayNavigator.State.BOUNCING) {
                this.umvNbb7iD9UpR();
             }
 
@@ -774,9 +763,7 @@ public class KekBounce extends Module {
             && !this.mc.player.hasStatusEffect(StatusEffects.SLOW_FALLING)
             && !this.mc.player.hasStatusEffect(StatusEffects.LEVITATION)
             && !this.mc.player.hasStatusEffect(StatusEffects.JUMP_BOOST)) {
-            float p = policy.fStlZIvY9lS8(
-               this.mc.player.getY() - this.Kl8YPWLVNx7VE, this.mc.player.getVelocity().y, this.mc.player.isOnGround()
-            );
+            float p = policy.fStlZIvY9lS8(this.mc.player.getY() - this.Kl8YPWLVNx7VE, this.mc.player.getVelocity().y, this.mc.player.isOnGround());
             if (RotationManager.setPitch(p, 0)) {
                this.ez9qLff15LVy = true;
             }
@@ -801,7 +788,9 @@ public class KekBounce extends Module {
       if (!(Boolean)this.TXWyNb.get() || !this.TXWyNb()) {
          if (!this.mc.player.isGliding() && !this.mc.player.isOnGround()) {
             this.mc.player.startGliding();
-            this.mc.getNetworkHandler().sendPacket(new ClientCommandC2SPacket(this.mc.player, ClientCommandC2SPacket.Mode.START_FALL_FLYING));
+            this.mc
+               .getNetworkHandler()
+               .sendPacket(new ClientCommandC2SPacket(this.mc.player, net.minecraft.network.packet.c2s.play.ClientCommandC2SPacket.Mode.START_FALL_FLYING));
          }
       }
    }
@@ -834,37 +823,37 @@ public class KekBounce extends Module {
 
          if (this.V7zKJ4n6D() < 0) {
             return false;
-         } else {
-            musheor.utils.manager.pvfA15fQSVM.fStlZIvY9lS8(this.pq4J656cQwYF);
-            this.oF40kxwxfq4ZX = true;
-            this.pAwSMtP8++;
-            boolean ground = this.mc.player.isOnGround();
-            if (ground) {
-               this.VLEShZ5mkNBQ4PS0 = 0;
-               this.vijg33HMhCnyX = true;
-            } else {
-               this.VLEShZ5mkNBQ4PS0++;
-            }
-
-            if (this.voxTwgNzyrpaAnP() && this.nOwp0NYl() && this.pAwSMtP8 - this.dje1llF2o >= 2) {
-               this.dje1llF2o = this.pAwSMtP8;
-               this.j376sIQ();
-            }
-
-            if (this.jAZp22H8V) {
-               this.U1qL6cLGWxa++;
-               boolean nextHop = this.vijg33HMhCnyX && this.VLEShZ5mkNBQ4PS0 >= 2;
-               if (nextHop || this.U1qL6cLGWxa > (Integer)this.duJ6sPeetAcBh6P.get()) {
-                  this.duJ6sPeetAcBh6P();
-               }
-            }
-
-            if (!ground && this.VLEShZ5mkNBQ4PS0 >= 2 && !this.mc.player.isGliding() && this.pAwSMtP8 - this.GSmbIrINgvYzyhK >= 2) {
-               this.I3psabmOrOI();
-            }
-
-            return true;
          }
+
+         musheor.utils.manager.pvfA15fQSVM.fStlZIvY9lS8(this.pq4J656cQwYF);
+         this.oF40kxwxfq4ZX = true;
+         this.pAwSMtP8++;
+         boolean ground = this.mc.player.isOnGround();
+         if (ground) {
+            this.VLEShZ5mkNBQ4PS0 = 0;
+            this.vijg33HMhCnyX = true;
+         } else {
+            this.VLEShZ5mkNBQ4PS0++;
+         }
+
+         if (this.voxTwgNzyrpaAnP() && this.nOwp0NYl() && this.pAwSMtP8 - this.dje1llF2o >= 2) {
+            this.dje1llF2o = this.pAwSMtP8;
+            this.j376sIQ();
+         }
+
+         if (this.jAZp22H8V) {
+            this.U1qL6cLGWxa++;
+            boolean nextHop = this.vijg33HMhCnyX && this.VLEShZ5mkNBQ4PS0 >= 2;
+            if (nextHop || this.U1qL6cLGWxa > (Integer)this.duJ6sPeetAcBh6P.get()) {
+               this.duJ6sPeetAcBh6P();
+            }
+         }
+
+         if (!ground && this.VLEShZ5mkNBQ4PS0 >= 2 && !this.mc.player.isGliding() && this.pAwSMtP8 - this.GSmbIrINgvYzyhK >= 2) {
+            this.I3psabmOrOI();
+         }
+
+         return true;
       }
    }
 
@@ -872,7 +861,9 @@ public class KekBounce extends Module {
       if (this.xileXsbo() && !this.voxTwgNzyrpaAnP()) {
          this.j376sIQ();
          if (this.voxTwgNzyrpaAnP()) {
-            this.mc.getNetworkHandler().sendPacket(new ClientCommandC2SPacket(this.mc.player, ClientCommandC2SPacket.Mode.START_FALL_FLYING));
+            this.mc
+               .getNetworkHandler()
+               .sendPacket(new ClientCommandC2SPacket(this.mc.player, net.minecraft.network.packet.c2s.play.ClientCommandC2SPacket.Mode.START_FALL_FLYING));
             this.mc.player.startGliding();
             this.j376sIQ();
             this.GSmbIrINgvYzyhK = this.pAwSMtP8;
@@ -937,10 +928,10 @@ public class KekBounce extends Module {
    private static boolean fStlZIvY9lS8(ItemStack stack) {
       if (stack.isOf(Items.ELYTRA)) {
          return false;
-      } else {
-         EquippableComponent equippable = (EquippableComponent)stack.get(DataComponentTypes.EQUIPPABLE);
-         return equippable != null && equippable.comp_3174() == EquipmentSlot.CHEST;
       }
+
+      EquippableComponent equippable = (EquippableComponent)stack.get(DataComponentTypes.EQUIPPABLE);
+      return equippable != null && equippable.slot() == EquipmentSlot.CHEST;
    }
 
    private void umvNbb7iD9UpR() {
@@ -953,7 +944,7 @@ public class KekBounce extends Module {
       } else if (this.lVX1t0MC > 0) {
          this.lVX1t0MC--;
       } else {
-         boolean yLevelWrong = this.qhulAUwd.get() != KekBounce.Mode.QfZy2gWnKInxFPr
+         boolean yLevelWrong = this.qhulAUwd.get() != KekBounce.Mode.Advanced
             && (
                VersionHelper.get().getPlayerPos().getY() < ((Integer)this.FVjbhYkk53UT.get()).intValue()
                   || VersionHelper.get().getPlayerPos().getY() > (Integer)this.FVjbhYkk53UT.get() + 2
@@ -987,7 +978,7 @@ public class KekBounce extends Module {
       this.HomZ7BbhM7wB = 0;
       this.lVX1t0MC = 20;
       this.PVlYDeNipUe = 0;
-      if (this.qhulAUwd.get() != KekBounce.Mode.QfZy2gWnKInxFPr && this.vLRVDxlh != null) {
+      if (this.qhulAUwd.get() != KekBounce.Mode.Advanced && this.vLRVDxlh != null) {
          this.mc.player.setYaw(oyDPiOVBGKG.gVOhtBej1x.fStlZIvY9lS8(this.vLRVDxlh));
       }
    }
@@ -995,16 +986,16 @@ public class KekBounce extends Module {
    private void FVjbhYkk53UT() {
       KekBounce.YawLock yawMode = (KekBounce.YawLock)this.xileXsbo.get();
       switch (yawMode) {
-         case fStlZIvY9lS8:
+         case Onactivate:
             if (this.F4hivB != null) {
                this.mc.player.setYaw(oyDPiOVBGKG.gVOhtBej1x.fStlZIvY9lS8(oyDPiOVBGKG.gVOhtBej1x.fStlZIvY9lS8(this.F4hivB)));
             }
             break;
-         case QfZy2gWnKInxFPr:
+         case Snap:
             oyDPiOVBGKG.gVOhtBej1x direction = oyDPiOVBGKG.duJ6sPeetAcBh6P();
             this.mc.player.setYaw(oyDPiOVBGKG.gVOhtBej1x.fStlZIvY9lS8(direction));
             break;
-         case TJImwK2:
+         case Custom:
             this.mc.player.setYaw(((Double)this.nOwp0NYl.get()).floatValue());
       }
    }
@@ -1013,7 +1004,9 @@ public class KekBounce extends Module {
       irzXX.QfZy2gWnKInxFPr();
       if (this.mc.player != null && this.mc.player.isGliding()) {
          if (notifyServer && this.mc.getNetworkHandler() != null) {
-            this.mc.getNetworkHandler().sendPacket(new ClientCommandC2SPacket(this.mc.player, ClientCommandC2SPacket.Mode.START_FALL_FLYING));
+            this.mc
+               .getNetworkHandler()
+               .sendPacket(new ClientCommandC2SPacket(this.mc.player, net.minecraft.network.packet.c2s.play.ClientCommandC2SPacket.Mode.START_FALL_FLYING));
          }
 
          this.mc.player.stopGliding();
@@ -1023,39 +1016,39 @@ public class KekBounce extends Module {
    private boolean Nt3xeF() {
       if (this.mc.player == null) {
          return false;
-      } else {
-         int age = this.mc.player.age;
-         if (age != this.X9ysJTxpWn2 + 1) {
-            this.zXcO5rZ();
-         }
-
-         this.X9ysJTxpWn2 = age;
-         int window = (Integer)this.jbUe84V1vykfK.get();
-
-         for (int i = this.yYqDk4cMM0.getAndSet(0); i > 0; i--) {
-            this.UsQcxwgBUuV.addLast(age);
-         }
-
-         while (!this.UsQcxwgBUuV.isEmpty() && age - this.UsQcxwgBUuV.peekFirst() >= window) {
-            this.UsQcxwgBUuV.removeFirst();
-         }
-
-         if ((Integer)this.ZlNrrNcv3Ylc.get() > 0 && this.UsQcxwgBUuV.size() >= (Integer)this.ZlNrrNcv3Ylc.get()) {
-            return true;
-         } else {
-            this.UPNmQKi0eiVUue.addLast(VersionHelper.get().getPlayerPos());
-            if (this.UPNmQKi0eiVUue.size() <= window) {
-               return false;
-            } else {
-               Vec3d then = this.UPNmQKi0eiVUue.removeFirst();
-               Vec3d now = this.UPNmQKi0eiVUue.peekLast();
-               double dx = now.x - then.x;
-               double dz = now.z - then.z;
-               double min = (Double)this.zbN84Osn9p5lD.get();
-               return dx * dx + dz * dz < min * min;
-            }
-         }
       }
+
+      int age = this.mc.player.age;
+      if (age != this.X9ysJTxpWn2 + 1) {
+         this.zXcO5rZ();
+      }
+
+      this.X9ysJTxpWn2 = age;
+      int window = (Integer)this.jbUe84V1vykfK.get();
+
+      for (int i = this.yYqDk4cMM0.getAndSet(0); i > 0; i--) {
+         this.UsQcxwgBUuV.addLast(age);
+      }
+
+      while (!this.UsQcxwgBUuV.isEmpty() && age - this.UsQcxwgBUuV.peekFirst() >= window) {
+         this.UsQcxwgBUuV.removeFirst();
+      }
+
+      if ((Integer)this.ZlNrrNcv3Ylc.get() > 0 && this.UsQcxwgBUuV.size() >= (Integer)this.ZlNrrNcv3Ylc.get()) {
+         return true;
+      }
+
+      this.UPNmQKi0eiVUue.addLast(VersionHelper.get().getPlayerPos());
+      if (this.UPNmQKi0eiVUue.size() <= window) {
+         return false;
+      }
+
+      Vec3d then = this.UPNmQKi0eiVUue.removeFirst();
+      Vec3d now = this.UPNmQKi0eiVUue.peekLast();
+      double dx = now.x - then.x;
+      double dz = now.z - then.z;
+      double min = (Double)this.zbN84Osn9p5lD.get();
+      return dx * dx + dz * dz < min * min;
    }
 
    private void zXcO5rZ() {
@@ -1104,39 +1097,39 @@ public class KekBounce extends Module {
       int px = this.mc.player.getBlockX();
       int py = (Integer)this.FVjbhYkk53UT.get();
       int pz = this.mc.player.getBlockZ();
-      if (this.qhulAUwd.get() == KekBounce.Mode.QfZy2gWnKInxFPr) {
+      if (this.qhulAUwd.get() == KekBounce.Mode.Advanced) {
          return switch (this.vLRVDxlh) {
-            case i2Nu6XHKic -> new BlockPos(px, py, pz - distance);
-            case fStlZIvY9lS8 -> new BlockPos(px, py, pz + distance);
-            case qhulAUwd -> new BlockPos(px + distance, py, pz);
-            case TJImwK2 -> new BlockPos(px - distance, py, pz);
-            case vGAMA89H -> new BlockPos(px + distance, py, pz - distance);
-            case wSJeYsJcmjNZf -> new BlockPos(px - distance, py, pz - distance);
-            case BrmKXSYhWhqoB1 -> new BlockPos(px + distance, py, pz + distance);
-            case QfZy2gWnKInxFPr -> new BlockPos(px - distance, py, pz + distance);
+            case NORTH -> new BlockPos(px, py, pz - distance);
+            case SOUTH -> new BlockPos(px, py, pz + distance);
+            case EAST -> new BlockPos(px + distance, py, pz);
+            case WEST -> new BlockPos(px - distance, py, pz);
+            case NORTH_EAST -> new BlockPos(px + distance, py, pz - distance);
+            case NORTH_WEST -> new BlockPos(px - distance, py, pz - distance);
+            case SOUTH_EAST -> new BlockPos(px + distance, py, pz + distance);
+            case SOUTH_WEST -> new BlockPos(px - distance, py, pz + distance);
          };
       } else {
          int sx = this.npfimrDr0hky.getX();
          int sz = this.npfimrDr0hky.getZ();
 
          return switch (this.vLRVDxlh) {
-            case i2Nu6XHKic -> new BlockPos(sx, py, pz - distance);
-            case fStlZIvY9lS8 -> new BlockPos(sx, py, pz + distance);
-            case qhulAUwd -> new BlockPos(px + distance, py, sz);
-            case TJImwK2 -> new BlockPos(px - distance, py, sz);
-            case vGAMA89H -> {
+            case NORTH -> new BlockPos(sx, py, pz - distance);
+            case SOUTH -> new BlockPos(sx, py, pz + distance);
+            case EAST -> new BlockPos(px + distance, py, sz);
+            case WEST -> new BlockPos(px - distance, py, sz);
+            case NORTH_EAST -> {
                int gx = px + distance;
                yield new BlockPos(gx, py, sx + sz - gx);
             }
-            case wSJeYsJcmjNZf -> {
+            case NORTH_WEST -> {
                int gx = px - distance;
                yield new BlockPos(gx, py, gx - (sx - sz));
             }
-            case BrmKXSYhWhqoB1 -> {
+            case SOUTH_EAST -> {
                int gx = px + distance;
                yield new BlockPos(gx, py, gx - (sx - sz));
             }
-            case QfZy2gWnKInxFPr -> {
+            case SOUTH_WEST -> {
                int gx = px - distance;
                yield new BlockPos(gx, py, sx + sz - gx);
             }
@@ -1223,25 +1216,37 @@ public class KekBounce extends Module {
       return this.isActive() && !this.xarqg2oUiwotDG4 && !this.RFflNsLXot && !GyhoRo.TJImwK2();
    }
 
-   private static enum Height {
-      fStlZIvY9lS8,
-      QfZy2gWnKInxFPr;
+   private enum Height {
+      Auto,
+      Manual;
+
+      Height() {
+      }
    }
 
-   public static enum Mode {
-      fStlZIvY9lS8,
-      QfZy2gWnKInxFPr;
+   public enum Mode {
+      Simple,
+      Advanced;
+
+      Mode() {
+      }
    }
 
-   private static enum StartPos {
-      fStlZIvY9lS8,
-      QfZy2gWnKInxFPr;
+   private enum StartPos {
+      OnActivate,
+      Custom;
+
+      StartPos() {
+      }
    }
 
-   public static enum YawLock {
-      fStlZIvY9lS8,
-      QfZy2gWnKInxFPr,
-      TJImwK2,
-      wSJeYsJcmjNZf;
+   public enum YawLock {
+      Onactivate,
+      Snap,
+      Custom,
+      Disable;
+
+      YawLock() {
+      }
    }
 }

@@ -19,10 +19,10 @@ public class U6PQSXqW {
    public static synchronized boolean fStlZIvY9lS8(int parameter) {
       if (!QfZy2gWnKInxFPr) {
          return false;
-      } else {
-         fStlZIvY9lS8.addLast(parameter);
-         return true;
       }
+
+      fStlZIvY9lS8.addLast(parameter);
+      return true;
    }
 
    public static synchronized void TJImwK2() {

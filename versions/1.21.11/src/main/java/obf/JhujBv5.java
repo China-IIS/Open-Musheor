@@ -23,7 +23,7 @@ import net.minecraft.util.math.Vec3i;
 public class JhujBv5 {
    private static final MinecraftClient fStlZIvY9lS8 = MinecraftClient.getInstance();
    private static final JhujBv5 QfZy2gWnKInxFPr = new JhujBv5();
-   private JhujBv5.U6PQSXqW TJImwK2 = JhujBv5.U6PQSXqW.fStlZIvY9lS8;
+   private JhujBv5.U6PQSXqW TJImwK2 = JhujBv5.U6PQSXqW.TopLeft;
    private BlockPos wSJeYsJcmjNZf;
    private Direction i2Nu6XHKic;
    private Direction vGAMA89H;
@@ -35,6 +35,9 @@ public class JhujBv5 {
    private final List<String> j376sIQ = new ArrayList<>();
    private static final Pattern V7zKJ4n6D = Pattern.compile("\\d{1,4}");
    private static final Pattern voxTwgNzyrpaAnP = Pattern.compile("[(\\[{]([^)\\]}]*)[)\\]}]");
+
+   public JhujBv5() {
+   }
 
    public static JhujBv5 fStlZIvY9lS8() {
       return QfZy2gWnKInxFPr;
@@ -50,14 +53,14 @@ public class JhujBv5 {
       this.i2Nu6XHKic = frame.getHorizontalFacing();
       if (this.i2Nu6XHKic.getAxis().isVertical()) {
          Direction away = oyDPiOVBGKG.fStlZIvY9lS8(playerYaw, 0.0F);
-         this.qhulAUwd = origin == JhujBv5.U6PQSXqW.fStlZIvY9lS8 ? away : away.getOpposite();
+         this.qhulAUwd = origin == JhujBv5.U6PQSXqW.TopLeft ? away : away.getOpposite();
          this.vGAMA89H = this.qhulAUwd.rotateYClockwise();
          if (this.i2Nu6XHKic == Direction.DOWN) {
             this.vGAMA89H = this.vGAMA89H.getOpposite();
          }
       } else {
          this.vGAMA89H = this.i2Nu6XHKic.rotateYCounterclockwise();
-         this.qhulAUwd = origin == JhujBv5.U6PQSXqW.fStlZIvY9lS8 ? Direction.DOWN : Direction.UP;
+         this.qhulAUwd = origin == JhujBv5.U6PQSXqW.TopLeft ? Direction.DOWN : Direction.UP;
       }
 
       this.duJ6sPeetAcBh6P.clear();
@@ -200,7 +203,7 @@ public class JhujBv5 {
             ItemStack stack = fStlZIvY9lS8.player.getInventory().getStack(slot);
             if (!stack.isEmpty() && stack.getItem() == Items.FILLED_MAP) {
                String name = stack.getName().getString();
-               JhujBv5.Index target = fStlZIvY9lS8(name);
+               JhujBv5.pvfA15fQSVM target = fStlZIvY9lS8(name);
                long key = target == null ? Long.MIN_VALUE : this.fStlZIvY9lS8(target);
                JhujBv5.gVOhtBej1x cell = key == Long.MIN_VALUE ? null : this.duJ6sPeetAcBh6P.get(key);
                if (cell != null && !cell.i2Nu6XHKic && cell.vGAMA89H < 0) {
@@ -217,7 +220,7 @@ public class JhujBv5 {
       return this.j376sIQ;
    }
 
-   public static JhujBv5.Index fStlZIvY9lS8(String name) {
+   public static JhujBv5.pvfA15fQSVM fStlZIvY9lS8(String name) {
       if (name != null && !name.isBlank()) {
          Integer bracketedIndex = null;
          Matcher groups = voxTwgNzyrpaAnP.matcher(name);
@@ -225,7 +228,7 @@ public class JhujBv5 {
          while (groups.find()) {
             List<Integer> nums = TJImwK2(groups.group(1));
             if (nums.size() >= 2) {
-               return new JhujBv5.Index.gVOhtBej1x(nums.get(0), nums.get(1));
+               return new JhujBv5.pvfA15fQSVM.Grid(nums.get(0), nums.get(1));
             }
 
             if (nums.size() == 1 && bracketedIndex == null) {
@@ -234,13 +237,13 @@ public class JhujBv5 {
          }
 
          if (bracketedIndex != null) {
-            return new JhujBv5.Index.Index(bracketedIndex);
+            return new JhujBv5.pvfA15fQSVM.Single(bracketedIndex);
          } else {
-            List<Integer> numsx = TJImwK2(name);
-            if (numsx.size() >= 2) {
-               return new JhujBv5.Index.gVOhtBej1x(numsx.get(numsx.size() - 2), numsx.getLast());
+            List<Integer> nums = TJImwK2(name);
+            if (nums.size() >= 2) {
+               return new JhujBv5.pvfA15fQSVM.Grid(nums.get(nums.size() - 2), nums.getLast());
             } else {
-               return numsx.size() == 1 ? new JhujBv5.Index.Index(numsx.getFirst()) : null;
+               return nums.size() == 1 ? new JhujBv5.pvfA15fQSVM.Single(nums.getFirst()) : null;
             }
          }
       } else {
@@ -259,10 +262,10 @@ public class JhujBv5 {
       return nums;
    }
 
-   private long fStlZIvY9lS8(JhujBv5.Index target) {
+   private long fStlZIvY9lS8(JhujBv5.pvfA15fQSVM target) {
       int col;
       int row;
-      if (target instanceof JhujBv5.Index.gVOhtBej1x grid) {
+      if (target instanceof JhujBv5.pvfA15fQSVM.Grid grid) {
          col = grid.fStlZIvY9lS8() - this.I3psabmOrOI;
          row = grid.QfZy2gWnKInxFPr() - this.I3psabmOrOI;
       } else {
@@ -270,7 +273,7 @@ public class JhujBv5 {
             return Long.MIN_VALUE;
          }
 
-         int index = ((JhujBv5.Index.Index)target).fStlZIvY9lS8() - this.I3psabmOrOI;
+         int index = ((JhujBv5.pvfA15fQSVM.Single)target).fStlZIvY9lS8() - this.I3psabmOrOI;
          if (index < 0) {
             return Long.MIN_VALUE;
          }
@@ -289,19 +292,19 @@ public class JhujBv5 {
    }
 
    public String QfZy2gWnKInxFPr(String name) {
-      JhujBv5.Index target = fStlZIvY9lS8(name);
+      JhujBv5.pvfA15fQSVM target = fStlZIvY9lS8(name);
       if (target == null) {
          return "no numbers in the name";
-      } else if (target instanceof JhujBv5.Index.gVOhtBej1x grid) {
+      } else if (target instanceof JhujBv5.pvfA15fQSVM.Grid grid) {
          return "grid " + grid.fStlZIvY9lS8() + "," + grid.QfZy2gWnKInxFPr();
       } else {
-         int index = ((JhujBv5.Index.Index)target).fStlZIvY9lS8();
+         int index = ((JhujBv5.pvfA15fQSVM.Single)target).fStlZIvY9lS8();
          if (this.BrmKXSYhWhqoB1 <= 0) {
             return "index " + index + " (needs .mp size to resolve)";
-         } else {
-            int n = index - this.I3psabmOrOI;
-            return "index " + index + " -> grid " + (n % this.BrmKXSYhWhqoB1 + this.I3psabmOrOI) + "," + (n / this.BrmKXSYhWhqoB1 + this.I3psabmOrOI);
          }
+
+         int n = index - this.I3psabmOrOI;
+         return "index " + index + " -> grid " + (n % this.BrmKXSYhWhqoB1 + this.I3psabmOrOI) + "," + (n / this.BrmKXSYhWhqoB1 + this.I3psabmOrOI);
       }
    }
 
@@ -321,19 +324,22 @@ public class JhujBv5 {
    public static double fStlZIvY9lS8(ItemFrameEntity frame) {
       if (fStlZIvY9lS8.player == null) {
          return Double.MAX_VALUE;
-      } else {
-         Vec3d eye = fStlZIvY9lS8.player.getEyePos();
-         Box box = frame.getBoundingBox();
-         double x = Math.max(box.minX, Math.min(eye.x, box.maxX));
-         double y = Math.max(box.minY, Math.min(eye.y, box.maxY));
-         double z = Math.max(box.minZ, Math.min(eye.z, box.maxZ));
-         return eye.distanceTo(new Vec3d(x, y, z));
       }
+
+      Vec3d eye = fStlZIvY9lS8.player.getEyePos();
+      Box box = frame.getBoundingBox();
+      double x = Math.max(box.minX, Math.min(eye.x, box.maxX));
+      double y = Math.max(box.minY, Math.min(eye.y, box.maxY));
+      double z = Math.max(box.minZ, Math.min(eye.z, box.maxZ));
+      return eye.distanceTo(new Vec3d(x, y, z));
    }
 
-   public static enum U6PQSXqW {
-      fStlZIvY9lS8,
-      QfZy2gWnKInxFPr;
+   public enum U6PQSXqW {
+      TopLeft,
+      BottomLeft;
+
+      U6PQSXqW() {
+      }
    }
 
    public static final class gVOhtBej1x {
@@ -370,10 +376,10 @@ public class JhujBv5 {
       public boolean fStlZIvY9lS8(int tick, int timeout) {
          if (this.qhulAUwd == Integer.MIN_VALUE) {
             return false;
-         } else {
-            int elapsed = tick - this.qhulAUwd;
-            return elapsed >= 0 && elapsed < timeout;
          }
+
+         int elapsed = tick - this.qhulAUwd;
+         return elapsed >= 0 && elapsed < timeout;
       }
 
       public ItemFrameEntity wSJeYsJcmjNZf() {
@@ -393,18 +399,23 @@ public class JhujBv5 {
       }
    }
 
-   public sealed interface Index permits JhujBv5.Index.gVOhtBej1x, JhujBv5.Index.Index {
-      public record gVOhtBej1x() implements JhujBv5.Index {
-         private final int fStlZIvY9lS8;
-         private final int QfZy2gWnKInxFPr;
+   public sealed interface pvfA15fQSVM permits JhujBv5.pvfA15fQSVM.Grid, JhujBv5.pvfA15fQSVM.Single {
+      record Grid(int fStlZIvY9lS8, int QfZy2gWnKInxFPr) implements JhujBv5.pvfA15fQSVM {
 
-         public gVOhtBej1x(int x, int y) {
-            this.fStlZIvY9lS8 = x;
-            this.QfZy2gWnKInxFPr = y;
+
+         @Override
+         public final String toString() {
+            return "gVOhtBej1x[x=" + this.fStlZIvY9lS8 + ", y=" + this.QfZy2gWnKInxFPr + "]";
          }
       }
 
-      public record Index(int fStlZIvY9lS8) implements JhujBv5.Index {
+      record Single(int fStlZIvY9lS8) implements JhujBv5.pvfA15fQSVM {
+
+
+         @Override
+         public final String toString() {
+            return "pvfA15fQSVM[index=" + this.fStlZIvY9lS8 + "]";
+         }
       }
    }
 }

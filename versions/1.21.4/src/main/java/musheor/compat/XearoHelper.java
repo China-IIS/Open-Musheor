@@ -48,20 +48,26 @@ public interface XearoHelper {
       XearoHelper.XearoHelperHolder.INSTANCE = instance;
    }
 
-   public record LineData(int x1, int z1, int x2, int z2) {
+   record LineData(int x1, int z1, int x2, int z2) {
    }
 
-   public static enum WaypointColorHint {
+   enum WaypointColorHint {
       WHITE,
       RED,
       GOLD,
       BLUE;
+
+      WaypointColorHint() {
+      }
    }
 
-   public record WaypointData(int x, int y, int z, String name, boolean temporary, long createdAt) {
+   record WaypointData(int x, int y, int z, String name, boolean temporary, long createdAt) {
    }
 
-   public static class XearoHelperHolder {
+   class XearoHelperHolder {
       static XearoHelper INSTANCE = null;
+
+      public XearoHelperHolder() {
+      }
    }
 }

@@ -2,15 +2,14 @@ package musheor.modules.tech;
 
 import java.util.ArrayList;
 import java.util.List;
-import meteordevelopment.meteorclient.settings.BoolSetting.Builder;
 import meteordevelopment.meteorclient.settings.Setting;
 import meteordevelopment.meteorclient.settings.SettingGroup;
+import meteordevelopment.meteorclient.settings.BoolSetting.Builder;
 import meteordevelopment.meteorclient.systems.modules.Module;
 import meteordevelopment.meteorclient.utils.Utils;
 import meteordevelopment.meteorclient.utils.misc.Keybind;
 import meteordevelopment.meteorclient.utils.network.MeteorExecutor;
 import meteordevelopment.meteorclient.utils.player.SlotUtils;
-import musheor.musheor;
 import musheor.utils.manager.pvfA15fQSVM;
 import net.minecraft.block.ShulkerBoxBlock;
 import net.minecraft.client.MinecraftClient;
@@ -123,7 +122,7 @@ public class ContainerTweaks extends Module {
       );
 
    public ContainerTweaks() {
-      super(musheor.MAIN, "container-tweaks", "A more advanced way to steal and store items in containers");
+      super(musheor.musheor.MAIN, "container-tweaks", "A more advanced way to steal and store items in containers");
       fStlZIvY9lS8 = this;
    }
 
@@ -159,11 +158,7 @@ public class ContainerTweaks extends Module {
                   i++
                ) {
                   Slot slot = handler.getSlot(i);
-                  if ((
-                        clickedInPlayerInv
-                           ? slot.inventory == this.xileXsbo.player.getInventory()
-                           : slot.inventory != this.xileXsbo.player.getInventory()
-                     )
+                  if ((clickedInPlayerInv ? slot.inventory == this.xileXsbo.player.getInventory() : slot.inventory != this.xileXsbo.player.getInventory())
                      && slot.hasStack()
                      && (this.fStlZIvY9lS8(slot.getStack()) || !(Boolean)this.nOwp0NYl.get())
                      && ItemStack.areItemsAndComponentsEqual(slot.getStack(), target)) {
@@ -193,11 +188,7 @@ public class ContainerTweaks extends Module {
                   i++
                ) {
                   Slot slot = handler.getSlot(i);
-                  if ((
-                        clickedInPlayerInv
-                           ? slot.inventory == this.xileXsbo.player.getInventory()
-                           : slot.inventory != this.xileXsbo.player.getInventory()
-                     )
+                  if ((clickedInPlayerInv ? slot.inventory == this.xileXsbo.player.getInventory() : slot.inventory != this.xileXsbo.player.getInventory())
                      && slot.hasStack()
                      && (this.fStlZIvY9lS8(slot.getStack()) || !(Boolean)this.nOwp0NYl.get())) {
                      if (this.xileXsbo.currentScreen == null || !Utils.canUpdate()) {
@@ -223,96 +214,95 @@ public class ContainerTweaks extends Module {
 
    public void TJImwK2(ScreenHandler handler) {
       if (!((List)this.i2Nu6XHKic.get()).isEmpty()) {
-         MeteorExecutor.execute(
-            () -> {
-               int playerInvStart = SlotUtils.indexToId(9);
+         MeteorExecutor.execute(() -> {
+            int playerInvStart = SlotUtils.indexToId(9);
 
-               for (int i = 0; i < handler.slots.size(); i++) {
-                  Slot bundleSlotRef = handler.getSlot(i);
-                  if (bundleSlotRef.hasStack()
-                     && bundleSlotRef.getStack().getItem() instanceof BundleItem
-                     && this.QfZy2gWnKInxFPr(bundleSlotRef.getStack())) {
-                     boolean bundleInPlayerInv = i >= playerInvStart;
-                     int srcStart = bundleInPlayerInv ? 0 : playerInvStart;
-                     int srcEnd = bundleInPlayerInv ? playerInvStart : handler.slots.size();
+            for (int i = 0; i < handler.slots.size(); i++) {
+               Slot bundleSlotRef = handler.getSlot(i);
+               if (bundleSlotRef.hasStack() && bundleSlotRef.getStack().getItem() instanceof BundleItem && this.QfZy2gWnKInxFPr(bundleSlotRef.getStack())) {
+                  boolean bundleInPlayerInv = i >= playerInvStart;
+                  int srcStart = bundleInPlayerInv ? 0 : playerInvStart;
+                  int srcEnd = bundleInPlayerInv ? playerInvStart : handler.slots.size();
 
-                     for (Item targetItem : (List)this.i2Nu6XHKic.get()) {
-                        if (this.xileXsbo.currentScreen == null || !Utils.canUpdate()) {
-                           return;
+                  for (Item targetItem : this.i2Nu6XHKic.get()) {
+                     if (this.xileXsbo.currentScreen == null || !Utils.canUpdate()) {
+                        return;
+                     }
+
+                     if (this.fStlZIvY9lS8()) {
+                        return;
+                     }
+
+                     int srcSlot = -1;
+
+                     for (int j = srcStart; j < srcEnd; j++) {
+                        Slot s = handler.getSlot(j);
+                        if (s.hasStack() && s.getStack().getItem() == targetItem) {
+                           srcSlot = j;
+                           break;
                         }
+                     }
 
-                        if (this.fStlZIvY9lS8()) {
-                           return;
-                        }
-
-                        int srcSlot = -1;
-
-                        for (int j = srcStart; j < srcEnd; j++) {
-                           Slot s = handler.getSlot(j);
-                           if (s.hasStack() && s.getStack().getItem() == targetItem) {
-                              srcSlot = j;
-                              break;
-                           }
-                        }
-
-                        if (srcSlot != -1) {
-                           this.xileXsbo.interactionManager.clickSlot(handler.syncId, srcSlot, 0, SlotActionType.PICKUP, this.xileXsbo.player);
-                           this.xileXsbo.interactionManager.clickSlot(handler.syncId, i, 0, SlotActionType.PICKUP, this.xileXsbo.player);
-                        }
+                     if (srcSlot != -1) {
+                        this.xileXsbo.interactionManager.clickSlot(handler.syncId, srcSlot, 0, SlotActionType.PICKUP, this.xileXsbo.player);
+                        this.xileXsbo.interactionManager.clickSlot(handler.syncId, i, 0, SlotActionType.PICKUP, this.xileXsbo.player);
                      }
                   }
                }
             }
-         );
+         });
       }
    }
 
    public void wSJeYsJcmjNZf(ScreenHandler handler) {
       if (!((List)this.i2Nu6XHKic.get()).isEmpty()) {
-         MeteorExecutor.execute(() -> {
-            int playerInvStart = SlotUtils.indexToId(9);
+         MeteorExecutor.execute(
+            () -> {
+               int playerInvStart = SlotUtils.indexToId(9);
 
-            for (int i = 0; i < handler.slots.size(); i++) {
-               Slot slot = handler.getSlot(i);
-               if (slot.hasStack() && slot.getStack().getItem() instanceof BundleItem) {
-                  BundleContentsComponent contents = (BundleContentsComponent)slot.getStack().getOrDefault(DataComponentTypes.BUNDLE_CONTENTS, BundleContentsComponent.DEFAULT);
-                  if (!contents.isEmpty()) {
-                     int extractCount = 0;
+               for (int i = 0; i < handler.slots.size(); i++) {
+                  Slot slot = handler.getSlot(i);
+                  if (slot.hasStack() && slot.getStack().getItem() instanceof BundleItem) {
+                     BundleContentsComponent contents = (BundleContentsComponent)slot.getStack()
+                        .getOrDefault(DataComponentTypes.BUNDLE_CONTENTS, BundleContentsComponent.DEFAULT);
+                     if (!contents.isEmpty()) {
+                        int extractCount = 0;
 
-                     for (ItemStack bundled : contents.iterate()) {
-                        if (((List)this.i2Nu6XHKic.get()).contains(bundled.getItem())) {
-                           extractCount++;
+                        for (ItemStack bundled : contents.iterate()) {
+                           if (((List)this.i2Nu6XHKic.get()).contains(bundled.getItem())) {
+                              extractCount++;
+                           }
                         }
-                     }
 
-                     if (extractCount != 0) {
-                        boolean bundleInPlayerInv = i >= playerInvStart;
-                        int dstStart = bundleInPlayerInv ? 0 : playerInvStart;
-                        int dstEnd = bundleInPlayerInv ? playerInvStart : handler.slots.size();
+                        if (extractCount != 0) {
+                           boolean bundleInPlayerInv = i >= playerInvStart;
+                           int dstStart = bundleInPlayerInv ? 0 : playerInvStart;
+                           int dstEnd = bundleInPlayerInv ? playerInvStart : handler.slots.size();
 
-                        for (int k = 0; k < extractCount; k++) {
-                           if (this.xileXsbo.currentScreen == null || !Utils.canUpdate()) {
-                              return;
-                           }
+                           for (int k = 0; k < extractCount; k++) {
+                              if (this.xileXsbo.currentScreen == null || !Utils.canUpdate()) {
+                                 return;
+                              }
 
-                           if (this.fStlZIvY9lS8()) {
-                              return;
-                           }
+                              if (this.fStlZIvY9lS8()) {
+                                 return;
+                              }
 
-                           if (bundleInPlayerInv && pvfA15fQSVM.fStlZIvY9lS8(handler) == 0) {
-                              return;
-                           }
+                              if (bundleInPlayerInv && pvfA15fQSVM.fStlZIvY9lS8(handler) == 0) {
+                                 return;
+                              }
 
-                           if (!bundleInPlayerInv && pvfA15fQSVM.duJ6sPeetAcBh6P() == 0) {
-                              return;
-                           }
+                              if (!bundleInPlayerInv && pvfA15fQSVM.duJ6sPeetAcBh6P() == 0) {
+                                 return;
+                              }
 
-                           this.xileXsbo.interactionManager.clickSlot(handler.syncId, i, 1, SlotActionType.PICKUP, this.xileXsbo.player);
+                              this.xileXsbo.interactionManager.clickSlot(handler.syncId, i, 1, SlotActionType.PICKUP, this.xileXsbo.player);
 
-                           for (int j = dstStart; j < dstEnd; j++) {
-                              if (!handler.getSlot(j).hasStack()) {
-                                 this.xileXsbo.interactionManager.clickSlot(handler.syncId, j, 0, SlotActionType.PICKUP, this.xileXsbo.player);
-                                 break;
+                              for (int j = dstStart; j < dstEnd; j++) {
+                                 if (!handler.getSlot(j).hasStack()) {
+                                    this.xileXsbo.interactionManager.clickSlot(handler.syncId, j, 0, SlotActionType.PICKUP, this.xileXsbo.player);
+                                    break;
+                                 }
                               }
                            }
                         }
@@ -320,7 +310,7 @@ public class ContainerTweaks extends Module {
                   }
                }
             }
-         });
+         );
       }
    }
 

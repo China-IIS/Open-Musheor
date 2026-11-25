@@ -1,16 +1,15 @@
 package musheor.modules.features;
 
 import meteordevelopment.meteorclient.events.world.TickEvent.Pre;
-import meteordevelopment.meteorclient.settings.EnumSetting.Builder;
 import meteordevelopment.meteorclient.settings.Setting;
 import meteordevelopment.meteorclient.settings.SettingGroup;
+import meteordevelopment.meteorclient.settings.EnumSetting.Builder;
 import meteordevelopment.meteorclient.systems.modules.Module;
 import meteordevelopment.meteorclient.systems.modules.Modules;
 import meteordevelopment.meteorclient.systems.modules.misc.AutoReconnect;
 import meteordevelopment.meteorclient.utils.player.PlayerUtils;
 import meteordevelopment.meteorclient.utils.world.Dimension;
 import meteordevelopment.orbit.EventHandler;
-import musheor.musheor;
 import musheor.utils.irzXX;
 import net.minecraft.network.packet.s2c.common.DisconnectS2CPacket;
 import net.minecraft.text.Text;
@@ -83,7 +82,7 @@ public class LogoutGoal extends Module {
       );
 
    public LogoutGoal() {
-      super(musheor.MAIN, "logout-goal", "Automatically disconnect when arriving at a specific location.");
+      super(musheor.musheor.MAIN, "logout-goal", "Automatically disconnect when arriving at a specific location.");
    }
 
    @EventHandler
@@ -113,14 +112,12 @@ public class LogoutGoal extends Module {
 
    private boolean fStlZIvY9lS8() {
       assert this.mc.player != null;
-
       return this.mc.player.getX() <= (Integer)this.wSJeYsJcmjNZf.get() + (Integer)this.BrmKXSYhWhqoB1.get()
          && this.mc.player.getX() >= (Integer)this.wSJeYsJcmjNZf.get() - (Integer)this.BrmKXSYhWhqoB1.get();
    }
 
    private boolean QfZy2gWnKInxFPr() {
       assert this.mc.player != null;
-
       return this.mc.player.getZ() <= (Integer)this.i2Nu6XHKic.get() + (Integer)this.BrmKXSYhWhqoB1.get()
          && this.mc.player.getZ() >= (Integer)this.i2Nu6XHKic.get() - (Integer)this.BrmKXSYhWhqoB1.get();
    }

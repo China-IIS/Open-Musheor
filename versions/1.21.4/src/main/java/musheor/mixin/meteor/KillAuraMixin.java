@@ -5,9 +5,9 @@ import meteordevelopment.meteorclient.settings.Setting;
 import meteordevelopment.meteorclient.systems.friends.Friends;
 import meteordevelopment.meteorclient.systems.modules.Category;
 import meteordevelopment.meteorclient.systems.modules.Module;
+import meteordevelopment.meteorclient.systems.modules.combat.KillAura;
 import meteordevelopment.meteorclient.systems.modules.combat.KillAura.EntityAge;
 import meteordevelopment.meteorclient.systems.modules.combat.KillAura.ShieldMode;
-import meteordevelopment.meteorclient.systems.modules.combat.KillAura;
 import meteordevelopment.meteorclient.utils.player.PlayerUtils;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
@@ -28,10 +28,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-@Mixin(
-   value = {KillAura.class},
-   remap = false
-)
+@Mixin(value = KillAura.class, remap = false)
 public abstract class KillAuraMixin extends Module {
    @Shadow
    @Final
@@ -81,11 +78,7 @@ public abstract class KillAuraMixin extends Module {
       return this.ageFilter("hostile-mob-age-filter", "mob-age-filter");
    }
 
-   @Inject(
-      method = {"entityCheck"},
-      at = {@At("HEAD")},
-      cancellable = true
-   )
+   @Inject(method = "entityCheck", at = @At("HEAD"), cancellable = true)
    private void onEntityCheck(Entity entity, CallbackInfoReturnable<Boolean> cir) {
       if (!entity.equals(this.mc.player) && !entity.equals(this.mc.getCameraEntity())) {
          if (!(entity instanceof LivingEntity livingEntity && livingEntity.isDead()) && entity.isAlive()) {

@@ -86,14 +86,17 @@ public class musheor extends MeteorAddon {
    public static final Category PLUS = new Category("Musheor+");
    public static final HudGroup MUSHEOR_HUD = new HudGroup("Musheor");
 
+   public musheor() {
+   }
+
    public void onInitialize() {
       LOG.info("Musheor initializing");
 
       try {
          Class.forName("musheor.compat.VersionHelperImpl").getMethod("init").invoke(null);
          LOG.info("VersionHelper initialized");
-      } catch (Exception var6) {
-         LOG.error("Failed to initialize VersionHelper", var6);
+      } catch (Exception e) {
+         LOG.error("Failed to initialize VersionHelper", e);
       }
 
       Systems.add(new MusheorSystem());
@@ -103,16 +106,16 @@ public class musheor extends MeteorAddon {
          Class.forName("musheor.plus.PlusInitializer").getMethod("register").invoke(null);
          LOG.info("Plus modules registered");
       } catch (ClassNotFoundException var4) {
-      } catch (Exception var5) {
-         LOG.error("Failed to register Plus modules", var5);
+      } catch (Exception e) {
+         LOG.error("Failed to register Plus modules", e);
       }
 
       if (FabricLoader.getInstance().isModLoaded("xaerominimap")) {
          try {
             XearoHelper.setInstance((XearoHelper)Class.forName("musheor.compat.XearoHelperImpl").getDeclaredConstructor().newInstance());
             LOG.info("XearoHelper initialized");
-         } catch (Exception var3) {
-            LOG.error("Failed to initialize XearoHelper — is XaeroPlus also installed?", var3);
+         } catch (Exception e) {
+            LOG.error("Failed to initialize XearoHelper — is XaeroPlus also installed?", e);
          }
       } else {
          LOG.warn("Xaero's Minimap not found — waypoint and navigation features will be unavailable.");
@@ -122,8 +125,8 @@ public class musheor extends MeteorAddon {
          try {
             LitematicaHelper.setInstance((LitematicaHelper)Class.forName("musheor.compat.LitematicaHelperImpl").getDeclaredConstructor().newInstance());
             LOG.info("LitematicaHelper initialized");
-         } catch (Exception var2) {
-            LOG.error("Failed to initialize LitematicaHelper — is Malilib also installed?", var2);
+         } catch (Exception e) {
+            LOG.error("Failed to initialize LitematicaHelper — is Malilib also installed?", e);
          }
       } else {
          LOG.warn("Litematica not found — Printer (Litematica mode) and KekNuker (Litematica mode) will warn if selected.");

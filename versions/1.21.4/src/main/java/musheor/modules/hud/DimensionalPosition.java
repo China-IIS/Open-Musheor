@@ -3,16 +3,16 @@ package musheor.modules.hud;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
-import meteordevelopment.meteorclient.settings.BoolSetting.Builder;
 import meteordevelopment.meteorclient.settings.Setting;
 import meteordevelopment.meteorclient.settings.SettingGroup;
+import meteordevelopment.meteorclient.settings.BoolSetting.Builder;
 import meteordevelopment.meteorclient.systems.hud.HudElement;
 import meteordevelopment.meteorclient.systems.hud.HudElementInfo;
 import meteordevelopment.meteorclient.systems.hud.HudRenderer;
 import meteordevelopment.meteorclient.systems.modules.Modules;
 import meteordevelopment.meteorclient.utils.render.color.SettingColor;
-import musheor.modules.features.CoordHider;
 import musheor.musheor;
+import musheor.modules.features.CoordHider;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.world.World;
 
@@ -179,8 +179,9 @@ public class DimensionalPosition extends HudElement {
    }
 
    private double fStlZIvY9lS8(HudRenderer renderer, String[] row, SettingColor color, double startX, double startY, double sepW, double gapW) {
-      renderer.text(row[0], startX, startY, color, true, (Double)this.qhulAUwd.get());
-      double cx = startX + (renderer.textWidth(row[0], true, (Double)this.qhulAUwd.get()) + gapW);
+      double cx = startX;
+      renderer.text(row[0], cx, startY, color, true, (Double)this.qhulAUwd.get());
+      cx += renderer.textWidth(row[0], true, (Double)this.qhulAUwd.get()) + gapW;
       renderer.text(row[1], cx, startY, color, true, (Double)this.qhulAUwd.get());
       cx += renderer.textWidth(row[1], true, (Double)this.qhulAUwd.get());
       renderer.text(" ", cx, startY, color, true, (Double)this.qhulAUwd.get());

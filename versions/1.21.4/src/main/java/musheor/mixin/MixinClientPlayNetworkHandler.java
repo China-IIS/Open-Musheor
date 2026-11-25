@@ -11,7 +11,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-@Mixin({ClientPlayNetworkHandler.class})
+@Mixin(ClientPlayNetworkHandler.class)
 public class MixinClientPlayNetworkHandler {
    @Unique
    private boolean musheor$keepLook;
@@ -19,6 +19,9 @@ public class MixinClientPlayNetworkHandler {
    private float musheor$yaw;
    @Unique
    private float musheor$pitch;
+
+   public MixinClientPlayNetworkHandler() {
+   }
 
    @Unique
    private void musheor$capture() {
@@ -40,34 +43,22 @@ public class MixinClientPlayNetworkHandler {
       }
    }
 
-   @Inject(
-      method = {"onPlayerPositionLook"},
-      at = {@At("HEAD")}
-   )
+   @Inject(method = "onPlayerPositionLook", at = @At("HEAD"))
    private void musheor$captureOnTeleport(PlayerPositionLookS2CPacket packet, CallbackInfo ci) {
       this.musheor$capture();
    }
 
-   @Inject(
-      method = {"onPlayerPositionLook"},
-      at = {@At("RETURN")}
-   )
+   @Inject(method = "onPlayerPositionLook", at = @At("RETURN"))
    private void musheor$restoreOnTeleport(PlayerPositionLookS2CPacket packet, CallbackInfo ci) {
       this.musheor$restore();
    }
 
-   @Inject(
-      method = {"onPlayerRotation"},
-      at = {@At("HEAD")}
-   )
+   @Inject(method = "onPlayerRotation", at = @At("HEAD"))
    private void musheor$captureOnRotation(PlayerRotationS2CPacket packet, CallbackInfo ci) {
       this.musheor$capture();
    }
 
-   @Inject(
-      method = {"onPlayerRotation"},
-      at = {@At("RETURN")}
-   )
+   @Inject(method = "onPlayerRotation", at = @At("RETURN"))
    private void musheor$restoreOnRotation(PlayerRotationS2CPacket packet, CallbackInfo ci) {
       this.musheor$restore();
    }

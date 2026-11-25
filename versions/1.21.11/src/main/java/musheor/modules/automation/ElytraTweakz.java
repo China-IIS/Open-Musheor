@@ -1,15 +1,14 @@
 package musheor.modules.automation;
 
 import meteordevelopment.meteorclient.events.world.TickEvent.Pre;
-import meteordevelopment.meteorclient.settings.BoolSetting.Builder;
 import meteordevelopment.meteorclient.settings.Setting;
+import meteordevelopment.meteorclient.settings.BoolSetting.Builder;
 import meteordevelopment.meteorclient.systems.modules.Module;
 import meteordevelopment.meteorclient.systems.modules.Modules;
 import meteordevelopment.meteorclient.systems.modules.player.ChestSwap;
 import meteordevelopment.meteorclient.utils.misc.Keybind;
 import meteordevelopment.meteorclient.utils.player.InvUtils;
 import meteordevelopment.orbit.EventHandler;
-import musheor.musheor;
 import musheor.utils.manager.gVOhtBej1x;
 import musheor.utils.manager.pvfA15fQSVM;
 import musheor.utils.system.MusheorSystem;
@@ -70,7 +69,7 @@ public class ElytraTweakz extends Module {
    private int j376sIQ;
 
    public ElytraTweakz() {
-      super(musheor.MAIN, "elytra-tweakz", "Useful elytra enhancements and tweaks");
+      super(musheor.musheor.MAIN, "elytra-tweakz", "Useful elytra enhancements and tweaks");
       QfZy2gWnKInxFPr = this;
    }
 

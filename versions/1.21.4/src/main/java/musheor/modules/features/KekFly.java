@@ -3,9 +3,9 @@ package musheor.modules.features;
 import meteordevelopment.meteorclient.events.game.GameLeftEvent;
 import meteordevelopment.meteorclient.events.packets.PacketEvent.Receive;
 import meteordevelopment.meteorclient.events.world.TickEvent.Pre;
-import meteordevelopment.meteorclient.settings.BoolSetting.Builder;
 import meteordevelopment.meteorclient.settings.Setting;
 import meteordevelopment.meteorclient.settings.SettingGroup;
+import meteordevelopment.meteorclient.settings.BoolSetting.Builder;
 import meteordevelopment.meteorclient.systems.modules.Module;
 import meteordevelopment.meteorclient.systems.modules.Modules;
 import meteordevelopment.meteorclient.systems.modules.player.ChestSwap;
@@ -13,7 +13,6 @@ import meteordevelopment.meteorclient.utils.player.ChatUtils;
 import meteordevelopment.meteorclient.utils.player.PlayerUtils;
 import meteordevelopment.meteorclient.utils.world.Dimension;
 import meteordevelopment.orbit.EventHandler;
-import musheor.musheor;
 import musheor.utils.manager.gVOhtBej1x;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.item.Items;
@@ -58,7 +57,7 @@ public class KekFly extends Module {
    public static KekFly TJImwK2;
 
    public KekFly() {
-      super(musheor.MAIN, "kek-fly", "ZOOM thru the air, or even on ground...");
+      super(musheor.musheor.MAIN, "kek-fly", "ZOOM thru the air, or even on ground...");
       TJImwK2 = this;
    }
 
@@ -70,9 +69,9 @@ public class KekFly extends Module {
       } else {
          gVOhtBej1x.fStlZIvY9lS8(this, this.BrmKXSYhWhqoB1::get);
          if (this.mc.player != null && this.mc.world != null) {
-            if ((Boolean)this.vGAMA89H.get()
-               && !(Boolean)this.BrmKXSYhWhqoB1.get()
-               && !this.mc.player.getEquippedStack(EquipmentSlot.CHEST).isOf(Items.ELYTRA)) {
+            if ((Boolean)this.vGAMA89H.get() && !(Boolean)this.BrmKXSYhWhqoB1.get() && !this.mc.player.getEquippedStack(EquipmentSlot.CHEST).isOf(Items.ELYTRA)
+               )
+             {
                ((ChestSwap)Modules.get().get(ChestSwap.class)).swap();
             }
 

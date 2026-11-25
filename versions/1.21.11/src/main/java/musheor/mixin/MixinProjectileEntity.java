@@ -10,19 +10,19 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-@Mixin({ProjectileEntity.class})
+@Mixin(ProjectileEntity.class)
 public class MixinProjectileEntity {
-   @Inject(
-      method = {"onSpawnPacket"},
-      at = {@At("TAIL")}
-   )
+   public MixinProjectileEntity() {
+   }
+
+   @Inject(method = "onSpawnPacket", at = @At("TAIL"))
    private void cacheOwnerEntityId(EntitySpawnS2CPacket packet, CallbackInfo ci) {
-      if (((ProjectileEntity)this).getType() == EntityType.ENDER_PEARL) {
+      if (((ProjectileEntity)(Object)this).getType() == EntityType.ENDER_PEARL) {
          int ownerEntityId = packet.getEntityData();
          if (ownerEntityId != 0) {
             MoreTags module = (MoreTags)Modules.get().get(MoreTags.class);
             if (module != null) {
-               module.fStlZIvY9lS8(((ProjectileEntity)this).getId(), ownerEntityId);
+               module.fStlZIvY9lS8(((ProjectileEntity)(Object)this).getId(), ownerEntityId);
             }
          }
       }

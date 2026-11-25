@@ -103,12 +103,13 @@ public interface VersionHelper {
       }
 
       MinecraftClient mc = MinecraftClient.getInstance();
-      return mc.player != null
-         ? new Vec3d(mc.player.getX(), mc.player.getY(), mc.player.getZ())
-         : Vec3d.ZERO;
+      return mc.player != null ? new Vec3d(mc.player.getX(), mc.player.getY(), mc.player.getZ()) : Vec3d.ZERO;
    }
 
-   public static class VersionHelperHolder {
+   class VersionHelperHolder {
       static VersionHelper INSTANCE;
+
+      public VersionHelperHolder() {
+      }
    }
 }

@@ -17,9 +17,9 @@ import java.util.Set;
 import meteordevelopment.meteorclient.events.render.Render3DEvent;
 import meteordevelopment.meteorclient.events.world.TickEvent.Pre;
 import meteordevelopment.meteorclient.renderer.ShapeMode;
-import meteordevelopment.meteorclient.settings.EnumSetting.Builder;
 import meteordevelopment.meteorclient.settings.Setting;
 import meteordevelopment.meteorclient.settings.SettingGroup;
+import meteordevelopment.meteorclient.settings.EnumSetting.Builder;
 import meteordevelopment.meteorclient.systems.modules.Module;
 import meteordevelopment.meteorclient.systems.modules.Modules;
 import meteordevelopment.meteorclient.utils.render.color.SettingColor;
@@ -28,7 +28,6 @@ import meteordevelopment.orbit.EventHandler;
 import musheor.compat.LitematicaHelper;
 import musheor.modules.features.KekMine;
 import musheor.modules.hud.HudInfoPlus;
-import musheor.musheor;
 import musheor.utils.gVOhtBej1x;
 import musheor.utils.jU8xXhmkg;
 import musheor.utils.oyDPiOVBGKG;
@@ -36,12 +35,12 @@ import musheor.utils.system.MusheorSystem;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.util.math.BlockPos.Mutable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.Vec3i;
+import net.minecraft.util.math.BlockPos.Mutable;
 import obf.GyhoRo;
 import obf.U6PQSXqW;
 import obf.pvfA15fQSVM;
@@ -53,25 +52,25 @@ public class KekNuker extends Module {
    private static final MinecraftClient duJ6sPeetAcBh6P = MinecraftClient.getInstance();
    public static KekNuker fStlZIvY9lS8;
    public final Setting<KekNuker.NukerMode> QfZy2gWnKInxFPr = this.BrmKXSYhWhqoB1
-      .add(((Builder)((Builder)new Builder().name("nuker-mode")).defaultValue(KekNuker.NukerMode.fStlZIvY9lS8)).build());
+      .add(((Builder)((Builder)new Builder().name("nuker-mode")).defaultValue(KekNuker.NukerMode.Normal)).build());
    private final Setting<KekNuker.LayerType> j376sIQ = this.BrmKXSYhWhqoB1
       .add(
          ((Builder)((Builder)((Builder)((Builder)new Builder().name("layer-type"))
                      .description("Controls where blocks are allowed to be broken (layer handling)"))
-                  .defaultValue(KekNuker.LayerType.QfZy2gWnKInxFPr))
-               .visible(() -> this.QfZy2gWnKInxFPr.get() != KekNuker.NukerMode.QfZy2gWnKInxFPr))
+                  .defaultValue(KekNuker.LayerType.Flatten))
+               .visible(() -> this.QfZy2gWnKInxFPr.get() != KekNuker.NukerMode.Highway))
             .build()
       );
    private final Setting<KekNuker.SortMode> V7zKJ4n6D = this.BrmKXSYhWhqoB1
       .add(
          ((Builder)((Builder)((Builder)new Builder().name("sort-mode")).description("Choose what order to mine the blocks in"))
-               .defaultValue(KekNuker.SortMode.QfZy2gWnKInxFPr))
+               .defaultValue(KekNuker.SortMode.Efficient))
             .build()
       );
    public final Setting<KekNuker.Shape> TJImwK2 = this.BrmKXSYhWhqoB1
       .add(
-         ((Builder)((Builder)((Builder)new Builder().name("shape")).defaultValue(KekNuker.Shape.QfZy2gWnKInxFPr))
-               .visible(() -> this.QfZy2gWnKInxFPr.get() != KekNuker.NukerMode.QfZy2gWnKInxFPr))
+         ((Builder)((Builder)((Builder)new Builder().name("shape")).defaultValue(KekNuker.Shape.Sphere))
+               .visible(() -> this.QfZy2gWnKInxFPr.get() != KekNuker.NukerMode.Highway))
             .build()
       );
    public final Setting<Double> wSJeYsJcmjNZf = this.BrmKXSYhWhqoB1
@@ -89,7 +88,7 @@ public class KekNuker extends Module {
                         .name("below-feet-last"))
                      .description("Makes it so the block you are standing on is only mined when all other blocks in range are broken"))
                   .defaultValue(false))
-               .visible(() -> this.QfZy2gWnKInxFPr.get() != KekNuker.NukerMode.QfZy2gWnKInxFPr))
+               .visible(() -> this.QfZy2gWnKInxFPr.get() != KekNuker.NukerMode.Highway))
             .build()
       );
    private final Setting<Boolean> xileXsbo = this.BrmKXSYhWhqoB1
@@ -97,7 +96,7 @@ public class KekNuker extends Module {
          ((meteordevelopment.meteorclient.settings.BoolSetting.Builder)((meteordevelopment.meteorclient.settings.BoolSetting.Builder)((meteordevelopment.meteorclient.settings.BoolSetting.Builder)((meteordevelopment.meteorclient.settings.BoolSetting.Builder)new meteordevelopment.meteorclient.settings.BoolSetting.Builder()
                         .name("ignore-air"))
                      .description("Ignores air blocks in the schematic."))
-                  .visible(() -> LitematicaHelper.isLoaded() && this.QfZy2gWnKInxFPr.get() == KekNuker.NukerMode.TJImwK2))
+                  .visible(() -> LitematicaHelper.isLoaded() && this.QfZy2gWnKInxFPr.get() == KekNuker.NukerMode.Litematica))
                .defaultValue(false))
             .build()
       );
@@ -128,14 +127,14 @@ public class KekNuker extends Module {
             .build()
       );
    private final Setting<KekNuker.ListMode> zkcZ4Xkp9Ez7Y = this.BrmKXSYhWhqoB1
-      .add(((Builder)((Builder)((Builder)new Builder().name("list-mode")).description("Selection mode")).defaultValue(KekNuker.ListMode.fStlZIvY9lS8)).build());
+      .add(((Builder)((Builder)((Builder)new Builder().name("list-mode")).description("Selection mode")).defaultValue(KekNuker.ListMode.Disabled)).build());
    private final Setting<List<Block>> flWHzEyn = this.BrmKXSYhWhqoB1
       .add(
          ((meteordevelopment.meteorclient.settings.BlockListSetting.Builder)((meteordevelopment.meteorclient.settings.BlockListSetting.Builder)((meteordevelopment.meteorclient.settings.BlockListSetting.Builder)new meteordevelopment.meteorclient.settings.BlockListSetting.Builder()
                      .name("whitelist"))
                   .description("The blocks you want to mine."))
                .defaultValue(new Block[0])
-               .visible(() -> this.zkcZ4Xkp9Ez7Y.get() == KekNuker.ListMode.QfZy2gWnKInxFPr))
+               .visible(() -> this.zkcZ4Xkp9Ez7Y.get() == KekNuker.ListMode.Whitelist))
             .build()
       );
    private final Setting<List<Block>> FVjbhYkk53UT = this.BrmKXSYhWhqoB1
@@ -144,7 +143,7 @@ public class KekNuker extends Module {
                      .name("blacklist"))
                   .description("The blocks you don't want to mine."))
                .defaultValue(new Block[0])
-               .visible(() -> this.zkcZ4Xkp9Ez7Y.get() == KekNuker.ListMode.TJImwK2))
+               .visible(() -> this.zkcZ4Xkp9Ez7Y.get() == KekNuker.ListMode.Blacklist))
             .build()
       );
    private final Setting<Boolean> Nt3xeF = this.TXWyNb
@@ -153,7 +152,7 @@ public class KekNuker extends Module {
                         .name("auto-pathfind"))
                      .description("Automatically pathfinds when no blocks are in range"))
                   .defaultValue(false))
-               .visible(() -> this.QfZy2gWnKInxFPr.get() != KekNuker.NukerMode.QfZy2gWnKInxFPr))
+               .visible(() -> this.QfZy2gWnKInxFPr.get() != KekNuker.NukerMode.Highway))
             .build()
       );
    private final Setting<Integer> zXcO5rZ = this.TXWyNb
@@ -163,7 +162,7 @@ public class KekNuker extends Module {
                      .description("Maximum range in chunks the pathfinder can scan for more blocks to break"))
                   .defaultValue(4))
                .sliderMax(8)
-               .visible(() -> this.QfZy2gWnKInxFPr.get() != KekNuker.NukerMode.QfZy2gWnKInxFPr))
+               .visible(() -> this.QfZy2gWnKInxFPr.get() != KekNuker.NukerMode.Highway))
             .build()
       );
    private final Setting<Integer> jbUe84V1vykfK = this.TXWyNb
@@ -176,7 +175,7 @@ public class KekNuker extends Module {
                   .defaultValue(2))
                .min(1)
                .sliderMax(8)
-               .visible(() -> this.QfZy2gWnKInxFPr.get() != KekNuker.NukerMode.QfZy2gWnKInxFPr))
+               .visible(() -> this.QfZy2gWnKInxFPr.get() != KekNuker.NukerMode.Highway))
             .build()
       );
    private final Setting<Boolean> zbN84Osn9p5lD = this.I3psabmOrOI
@@ -207,7 +206,7 @@ public class KekNuker extends Module {
    private boolean MR1DKzw = false;
 
    public KekNuker() {
-      super(musheor.AUTOMATION, "kek-nuker", "Mines blocks in radius of the player");
+      super(musheor.musheor.AUTOMATION, "kek-nuker", "Mines blocks in radius of the player");
       fStlZIvY9lS8 = this;
    }
 
@@ -253,10 +252,10 @@ public class KekNuker extends Module {
                      : this.pF16zz4NJECfg7 - entry.getValue() > (Integer)KekMine.duJ6sPeetAcBh6P.vGAMA89H.get()
                );
             Module kekMine = Modules.get().get(KekMine.class);
-            if (this.QfZy2gWnKInxFPr.get() == KekNuker.NukerMode.fStlZIvY9lS8) {
+            if (this.QfZy2gWnKInxFPr.get() == KekNuker.NukerMode.Normal) {
                vGAMA89H.clear();
                vGAMA89H = fStlZIvY9lS8((KekNuker.Shape)this.TJImwK2.get(), (Double)this.wSJeYsJcmjNZf.get());
-            } else if (this.QfZy2gWnKInxFPr.get() == KekNuker.NukerMode.TJImwK2) {
+            } else if (this.QfZy2gWnKInxFPr.get() == KekNuker.NukerMode.Litematica) {
                if (!LitematicaHelper.isLoaded()) {
                   this.warning("Litematica is not installed. Install Litematica or switch to another mode.", new Object[0]);
                   this.toggle();
@@ -265,7 +264,7 @@ public class KekNuker extends Module {
 
                vGAMA89H.clear();
                vGAMA89H.addAll(LitematicaHelper.get().getWrongSchematicBlocks((Double)this.wSJeYsJcmjNZf.get(), (Boolean)this.xileXsbo.get()));
-            } else if (this.QfZy2gWnKInxFPr.get() == KekNuker.NukerMode.wSJeYsJcmjNZf) {
+            } else if (this.QfZy2gWnKInxFPr.get() == KekNuker.NukerMode.BaritoneSelection) {
                vGAMA89H.clear();
                vGAMA89H.addAll(this.wSJeYsJcmjNZf());
             }
@@ -275,12 +274,9 @@ public class KekNuker extends Module {
             for (BlockPos pos : vGAMA89H) {
                BlockState state = duJ6sPeetAcBh6P.world.getBlockState(pos);
                if ((
-                     this.QfZy2gWnKInxFPr.get() == KekNuker.NukerMode.QfZy2gWnKInxFPr
-                        || (
-                              this.j376sIQ.get() != KekNuker.LayerType.QfZy2gWnKInxFPr
-                                 || pos.getY() >= duJ6sPeetAcBh6P.player.getBlockPos().getY()
-                           )
-                           && (this.j376sIQ.get() != KekNuker.LayerType.TJImwK2 || LitematicaHelper.get().isPositionInRenderLayer(pos))
+                     this.QfZy2gWnKInxFPr.get() == KekNuker.NukerMode.Highway
+                        || (this.j376sIQ.get() != KekNuker.LayerType.Flatten || pos.getY() >= duJ6sPeetAcBh6P.player.getBlockPos().getY())
+                           && (this.j376sIQ.get() != KekNuker.LayerType.LitematicaLayers || LitematicaHelper.get().isPositionInRenderLayer(pos))
                   )
                   && !state.isLiquid()
                   && !state.isAir()
@@ -288,9 +284,9 @@ public class KekNuker extends Module {
                   && (!(Boolean)this.nOwp0NYl.get() || !oyDPiOVBGKG.fStlZIvY9lS8(pos))
                   && !(fStlZIvY9lS8(duJ6sPeetAcBh6P.player.getEyePos(), pos) > (Double)this.wSJeYsJcmjNZf.get() * (Double)this.wSJeYsJcmjNZf.get())
                   && (
-                     this.zkcZ4Xkp9Ez7Y.get() == KekNuker.ListMode.fStlZIvY9lS8
-                        || (this.zkcZ4Xkp9Ez7Y.get() != KekNuker.ListMode.QfZy2gWnKInxFPr || ((List)this.flWHzEyn.get()).contains(state.getBlock()))
-                           && (this.zkcZ4Xkp9Ez7Y.get() != KekNuker.ListMode.TJImwK2 || !((List)this.FVjbhYkk53UT.get()).contains(state.getBlock()))
+                     this.zkcZ4Xkp9Ez7Y.get() == KekNuker.ListMode.Disabled
+                        || (this.zkcZ4Xkp9Ez7Y.get() != KekNuker.ListMode.Whitelist || ((List)this.flWHzEyn.get()).contains(state.getBlock()))
+                           && (this.zkcZ4Xkp9Ez7Y.get() != KekNuker.ListMode.Blacklist || !((List)this.FVjbhYkk53UT.get()).contains(state.getBlock()))
                   )) {
                   EVSMbf.add(pos);
                }
@@ -300,14 +296,14 @@ public class KekNuker extends Module {
             if ((Boolean)this.voxTwgNzyrpaAnP.get()) {
                BlockPos p = duJ6sPeetAcBh6P.player.getBlockPos();
                List<BlockPos> below = EVSMbf.stream()
-                  .filter(posx -> posx.getX() == p.getX() && posx.getZ() == p.getZ() && posx.getY() < p.getY())
+                  .filter(pos -> pos.getX() == p.getX() && pos.getZ() == p.getZ() && pos.getY() < p.getY())
                   .sorted(Comparator.comparingInt(Vec3i::getY).reversed())
                   .toList();
                EVSMbf.removeAll(below);
                EVSMbf.addAll(below);
             }
 
-            if (EVSMbf.isEmpty() && (Boolean)this.Nt3xeF.get() && this.QfZy2gWnKInxFPr.get() != KekNuker.NukerMode.QfZy2gWnKInxFPr) {
+            if (EVSMbf.isEmpty() && (Boolean)this.Nt3xeF.get() && this.QfZy2gWnKInxFPr.get() != KekNuker.NukerMode.Highway) {
                if (this.MR1DKzw) {
                   this.MR1DKzw = false;
                   this.WGmfQKK = -1;
@@ -347,12 +343,9 @@ public class KekNuker extends Module {
                      if (candidate != null
                         && (
                            this.JPp6VyZP9f == null
-                              || duJ6sPeetAcBh6P.player
-                                    .squaredDistanceTo(candidate.getX() + 0.5, candidate.getY() + 0.5, candidate.getZ() + 0.5)
+                              || duJ6sPeetAcBh6P.player.squaredDistanceTo(candidate.getX() + 0.5, candidate.getY() + 0.5, candidate.getZ() + 0.5)
                                  < duJ6sPeetAcBh6P.player
-                                    .squaredDistanceTo(
-                                       this.JPp6VyZP9f.getX() + 0.5, this.JPp6VyZP9f.getY() + 0.5, this.JPp6VyZP9f.getZ() + 0.5
-                                    )
+                                    .squaredDistanceTo(this.JPp6VyZP9f.getX() + 0.5, this.JPp6VyZP9f.getY() + 0.5, this.JPp6VyZP9f.getZ() + 0.5)
                         )) {
                         this.JPp6VyZP9f = candidate;
                      }
@@ -380,31 +373,31 @@ public class KekNuker extends Module {
                this.MR1DKzw = true;
                int count = 0;
 
-               for (BlockPos posx : EVSMbf) {
-                  BlockState state = duJ6sPeetAcBh6P.world.getBlockState(posx);
+               for (BlockPos pos : EVSMbf) {
+                  BlockState state = duJ6sPeetAcBh6P.world.getBlockState(pos);
                   if (HudInfoPlus.vGAMA89H() >= ((Integer)MusheorSystem.Manager.globalPacketLimit.get()).intValue() * 0.9 && (Boolean)this.umvNbb7iD9UpR.get()) {
                      break;
                   }
 
-                  if (!qhulAUwd.containsKey(posx)) {
-                     KekMine.MineContext ctx = new KekMine.MineContext(posx, duJ6sPeetAcBh6P.world.getBlockState(posx), true);
+                  if (!qhulAUwd.containsKey(pos)) {
+                     KekMine.MineContext ctx = new KekMine.MineContext(pos, duJ6sPeetAcBh6P.world.getBlockState(pos), true);
                      if (kekMine.isActive()) {
                         if (!KekMine.duJ6sPeetAcBh6P.fStlZIvY9lS8()) {
-                           Direction face = QfZy2gWnKInxFPr(duJ6sPeetAcBh6P.player.getEyePos(), posx);
+                           Direction face = QfZy2gWnKInxFPr(duJ6sPeetAcBh6P.player.getEyePos(), pos);
                            if (ctx.j376sIQ) {
-                              KekMine.fStlZIvY9lS8(posx, face, false);
+                              KekMine.fStlZIvY9lS8(pos, face, false);
                               count++;
                            } else {
-                              KekMine.duJ6sPeetAcBh6P.fStlZIvY9lS8(posx, state, face, false);
+                              KekMine.duJ6sPeetAcBh6P.fStlZIvY9lS8(pos, state, face, false);
                            }
 
-                           qhulAUwd.put(posx, this.pF16zz4NJECfg7);
+                           qhulAUwd.put(pos, this.pF16zz4NJECfg7);
                         }
                      } else {
-                        KekMine.duJ6sPeetAcBh6P.QfZy2gWnKInxFPr(posx);
-                        BlockUtils.breakBlock(posx, true);
+                        KekMine.duJ6sPeetAcBh6P.QfZy2gWnKInxFPr(pos);
+                        BlockUtils.breakBlock(pos, true);
                         count++;
-                        if (!BlockUtils.canInstaBreak(posx)) {
+                        if (!BlockUtils.canInstaBreak(pos)) {
                            break;
                         }
                      }
@@ -421,9 +414,7 @@ public class KekNuker extends Module {
                   if ((Boolean)this.voxTwgNzyrpaAnP.get()) {
                      BlockPos p = duJ6sPeetAcBh6P.player.getBlockPos();
                      List<BlockPos> below = queueList.stream()
-                        .filter(
-                           posx -> posx.getX() == p.getX() && posx.getZ() == p.getZ() && posx.getY() < p.getY()
-                        )
+                        .filter(pos -> pos.getX() == p.getX() && pos.getZ() == p.getZ() && pos.getY() < p.getY())
                         .sorted(Comparator.comparingInt(Vec3i::getY).reversed())
                         .toList();
                      queueList.removeAll(below);
@@ -454,7 +445,7 @@ public class KekNuker extends Module {
             break;
          case Efficient:
             this.QfZy2gWnKInxFPr(list);
-         case null:
+         case null, default:
       }
    }
 
@@ -482,44 +473,44 @@ public class KekNuker extends Module {
       oyDPiOVBGKG.gVOhtBej1x dir = HighwayBuilder.i2Nu6XHKic();
       if (dir == null) {
          return false;
-      } else {
-         boolean isCardinal = dir == oyDPiOVBGKG.gVOhtBej1x.i2Nu6XHKic
-            || dir == oyDPiOVBGKG.gVOhtBej1x.fStlZIvY9lS8
-            || dir == oyDPiOVBGKG.gVOhtBej1x.qhulAUwd
-            || dir == oyDPiOVBGKG.gVOhtBej1x.TJImwK2;
-         BlockPos[] zone = isCardinal ? gVOhtBej1x.fStlZIvY9lS8(0, 2) : gVOhtBej1x.QfZy2gWnKInxFPr(0, 2);
-         Set<BlockPos> zoneSet = new HashSet<>(Arrays.asList(zone));
-         U6PQSXqW state = U6PQSXqW.fStlZIvY9lS8();
-         pvfA15fQSVM.gVOhtBej1x detected = state.npfimrDr0hky();
-         if (detected != null && state.BrmKXSYhWhqoB1() != null) {
-            int railY = state.BrmKXSYhWhqoB1();
-            BlockPos[] railZone = isCardinal ? gVOhtBej1x.fStlZIvY9lS8(0, 2, true, true) : gVOhtBej1x.TJImwK2(0, 2, true, true);
+      }
 
-            for (BlockPos pos : railZone) {
-               if (pos.getY() == railY && pvfA15fQSVM.fStlZIvY9lS8(pos, detected)) {
-                  zoneSet.add(pos);
-               }
-            }
-         }
+      boolean isCardinal = dir == oyDPiOVBGKG.gVOhtBej1x.NORTH
+         || dir == oyDPiOVBGKG.gVOhtBej1x.SOUTH
+         || dir == oyDPiOVBGKG.gVOhtBej1x.EAST
+         || dir == oyDPiOVBGKG.gVOhtBej1x.WEST;
+      BlockPos[] zone = isCardinal ? gVOhtBej1x.fStlZIvY9lS8(0, 2) : gVOhtBej1x.QfZy2gWnKInxFPr(0, 2);
+      Set<BlockPos> zoneSet = new HashSet<>(Arrays.asList(zone));
+      U6PQSXqW state = U6PQSXqW.fStlZIvY9lS8();
+      pvfA15fQSVM.gVOhtBej1x detected = state.npfimrDr0hky();
+      if (detected != null && state.BrmKXSYhWhqoB1() != null) {
+         int railY = state.BrmKXSYhWhqoB1();
+         BlockPos[] railZone = isCardinal ? gVOhtBej1x.fStlZIvY9lS8(0, 2, true, true) : gVOhtBej1x.TJImwK2(0, 2, true, true);
 
-         BlockPos p = KekMine.duJ6sPeetAcBh6P.wSJeYsJcmjNZf();
-         if (p != null && zoneSet.contains(p)) {
-            return true;
-         } else {
-            p = KekMine.duJ6sPeetAcBh6P.i2Nu6XHKic();
-            if (p != null && zoneSet.contains(p)) {
-               return true;
-            } else {
-               for (BlockPos posx : EVSMbf) {
-                  if (zoneSet.contains(posx)) {
-                     return true;
-                  }
-               }
-
-               return false;
+         for (BlockPos pos : railZone) {
+            if (pos.getY() == railY && pvfA15fQSVM.fStlZIvY9lS8(pos, detected)) {
+               zoneSet.add(pos);
             }
          }
       }
+
+      BlockPos p = KekMine.duJ6sPeetAcBh6P.wSJeYsJcmjNZf();
+      if (p != null && zoneSet.contains(p)) {
+         return true;
+      }
+
+      p = KekMine.duJ6sPeetAcBh6P.i2Nu6XHKic();
+      if (p != null && zoneSet.contains(p)) {
+         return true;
+      }
+
+      for (BlockPos pos : EVSMbf) {
+         if (zoneSet.contains(pos)) {
+            return true;
+         }
+      }
+
+      return false;
    }
 
    public static List<BlockPos> fStlZIvY9lS8(KekNuker.Shape shape, double radius) {
@@ -532,11 +523,11 @@ public class KekNuker extends Module {
             for (int z = -blockRadius; z < blockRadius; z++) {
                BlockPos pos = BlockPos.ofFloored(eyePos.x + x, eyePos.y + y, eyePos.z + z);
                if (BlockUtils.canBreak(pos)) {
-                  if (shape == KekNuker.Shape.QfZy2gWnKInxFPr) {
+                  if (shape == KekNuker.Shape.Sphere) {
                      if (fStlZIvY9lS8(eyePos, pos) <= radius * radius) {
                         positions.add(pos);
                      }
-                  } else if (shape == KekNuker.Shape.fStlZIvY9lS8) {
+                  } else if (shape == KekNuker.Shape.Cube) {
                      positions.add(pos);
                   }
                }
@@ -548,9 +539,9 @@ public class KekNuker extends Module {
    }
 
    static double fStlZIvY9lS8(Vec3d eye, BlockPos pos) {
-      double cx = Math.max((double)pos.getX(), Math.min(eye.x, pos.getX() + 1.0));
-      double cy = Math.max((double)pos.getY(), Math.min(eye.y, pos.getY() + 1.0));
-      double cz = Math.max((double)pos.getZ(), Math.min(eye.z, pos.getZ() + 1.0));
+      double cx = Math.max(pos.getX(), Math.min(eye.x, pos.getX() + 1.0));
+      double cy = Math.max(pos.getY(), Math.min(eye.y, pos.getY() + 1.0));
+      double cz = Math.max(pos.getZ(), Math.min(eye.z, pos.getZ() + 1.0));
       double dx = eye.x - cx;
       double dy = eye.y - cy;
       double dz = eye.z - cz;
@@ -576,107 +567,109 @@ public class KekNuker extends Module {
    private ChunkPos fStlZIvY9lS8(ChunkPos center, int radius, int index) {
       if (radius == 0) {
          return center;
-      } else {
-         int cx = center.x;
-         int cz = center.z;
-         if (index < 2 * radius + 1) {
-            return new ChunkPos(cx - radius + index, cz - radius);
-         } else {
-            index -= 2 * radius + 1;
-            if (index < 2 * radius) {
-               return new ChunkPos(cx + radius, cz - radius + 1 + index);
-            } else {
-               index -= 2 * radius;
-               if (index < 2 * radius) {
-                  return new ChunkPos(cx + radius - 1 - index, cz + radius);
-               } else {
-                  index -= 2 * radius;
-                  return new ChunkPos(cx - radius, cz + radius - 1 - index);
-               }
-            }
-         }
       }
+
+      int cx = center.x;
+      int cz = center.z;
+      if (index < 2 * radius + 1) {
+         return new ChunkPos(cx - radius + index, cz - radius);
+      }
+
+      index -= 2 * radius + 1;
+      if (index < 2 * radius) {
+         return new ChunkPos(cx + radius, cz - radius + 1 + index);
+      }
+
+      index -= 2 * radius;
+      if (index < 2 * radius) {
+         return new ChunkPos(cx + radius - 1 - index, cz + radius);
+      }
+
+      index -= 2 * radius;
+      return new ChunkPos(cx - radius, cz + radius - 1 - index);
    }
 
    private BlockPos fStlZIvY9lS8(ChunkPos chunk) {
       if (duJ6sPeetAcBh6P.world == null || duJ6sPeetAcBh6P.player == null) {
          return null;
-      } else if (!duJ6sPeetAcBh6P.world.isChunkLoaded(chunk.x, chunk.z)) {
+      }
+
+      if (!duJ6sPeetAcBh6P.world.isChunkLoaded(chunk.x, chunk.z)) {
          return null;
+      }
+
+      int minX = chunk.getStartX();
+      int maxX = chunk.getEndX();
+      int minZ = chunk.getStartZ();
+      int maxZ = chunk.getEndZ();
+      BlockPos closest = null;
+      double closestDist = Double.MAX_VALUE;
+      double px = duJ6sPeetAcBh6P.player.getX();
+      double py = duJ6sPeetAcBh6P.player.getY();
+      double pz = duJ6sPeetAcBh6P.player.getZ();
+      if (this.QfZy2gWnKInxFPr.get() == KekNuker.NukerMode.Litematica) {
+         if (!LitematicaHelper.isLoaded()) {
+            return null;
+         }
+
+         int minY = duJ6sPeetAcBh6P.world.getBottomY();
+         int maxY = duJ6sPeetAcBh6P.world.getBottomY() + duJ6sPeetAcBh6P.world.getHeight() - 1;
+
+         for (BlockPos pos : LitematicaHelper.get()
+            .getWrongBlocksInBox(new BlockPos(minX, minY, minZ), new BlockPos(maxX, maxY, maxZ), !(Boolean)this.xileXsbo.get(), 64)) {
+            BlockState state = duJ6sPeetAcBh6P.world.getBlockState(pos);
+            if (this.QfZy2gWnKInxFPr(pos)
+               && BlockUtils.canBreak(pos)
+               && (!(Boolean)this.nOwp0NYl.get() || !oyDPiOVBGKG.fStlZIvY9lS8(pos))
+               && this.fStlZIvY9lS8(state)
+               && this.fStlZIvY9lS8(pos, 8)) {
+               double dist = pos.getSquaredDistance(px, py, pz);
+               if (dist < closestDist) {
+                  closestDist = dist;
+                  closest = pos;
+               }
+            }
+         }
       } else {
-         int minX = chunk.getStartX();
-         int maxX = chunk.getEndX();
-         int minZ = chunk.getStartZ();
-         int maxZ = chunk.getEndZ();
-         BlockPos closest = null;
-         double closestDist = Double.MAX_VALUE;
-         double px = duJ6sPeetAcBh6P.player.getX();
-         double py = duJ6sPeetAcBh6P.player.getY();
-         double pz = duJ6sPeetAcBh6P.player.getZ();
-         if (this.QfZy2gWnKInxFPr.get() == KekNuker.NukerMode.TJImwK2) {
-            if (!LitematicaHelper.isLoaded()) {
+         ISelection[] selections = null;
+         if (this.QfZy2gWnKInxFPr.get() == KekNuker.NukerMode.BaritoneSelection) {
+            selections = BaritoneAPI.getProvider().getPrimaryBaritone().getSelectionManager().getSelections();
+            if (selections == null || selections.length == 0) {
                return null;
             }
+         }
 
-            int minY = duJ6sPeetAcBh6P.world.getBottomY();
-            int maxY = duJ6sPeetAcBh6P.world.getBottomY() + duJ6sPeetAcBh6P.world.getHeight() - 1;
+         int feetY = duJ6sPeetAcBh6P.player.getBlockPos().getY();
+         int r = (int)Math.ceil((Double)this.wSJeYsJcmjNZf.get());
+         int minY = this.j376sIQ.get() == KekNuker.LayerType.Flatten ? feetY : Math.max(duJ6sPeetAcBh6P.world.getBottomY(), feetY - r);
+         int maxY = Math.min(duJ6sPeetAcBh6P.world.getBottomY() + duJ6sPeetAcBh6P.world.getHeight() - 1, feetY + r);
+         Mutable mpos = new Mutable();
 
-            for (BlockPos pos : LitematicaHelper.get()
-               .getWrongBlocksInBox(new BlockPos(minX, minY, minZ), new BlockPos(maxX, maxY, maxZ), !(Boolean)this.xileXsbo.get(), 64)) {
-               BlockState state = duJ6sPeetAcBh6P.world.getBlockState(pos);
-               if (this.QfZy2gWnKInxFPr(pos)
-                  && BlockUtils.canBreak(pos)
-                  && (!(Boolean)this.nOwp0NYl.get() || !oyDPiOVBGKG.fStlZIvY9lS8(pos))
-                  && this.fStlZIvY9lS8(state)
-                  && this.fStlZIvY9lS8(pos, 8)) {
-                  double dist = pos.getSquaredDistance(px, py, pz);
-                  if (dist < closestDist) {
-                     closestDist = dist;
-                     closest = pos;
-                  }
-               }
-            }
-         } else {
-            ISelection[] selections = null;
-            if (this.QfZy2gWnKInxFPr.get() == KekNuker.NukerMode.wSJeYsJcmjNZf) {
-               selections = BaritoneAPI.getProvider().getPrimaryBaritone().getSelectionManager().getSelections();
-               if (selections == null || selections.length == 0) {
-                  return null;
-               }
-            }
-
-            int feetY = duJ6sPeetAcBh6P.player.getBlockPos().getY();
-            int r = (int)Math.ceil((Double)this.wSJeYsJcmjNZf.get());
-            int minY = this.j376sIQ.get() == KekNuker.LayerType.QfZy2gWnKInxFPr ? feetY : Math.max(duJ6sPeetAcBh6P.world.getBottomY(), feetY - r);
-            int maxY = Math.min(duJ6sPeetAcBh6P.world.getBottomY() + duJ6sPeetAcBh6P.world.getHeight() - 1, feetY + r);
-            BlockPos.Mutable mpos = new BlockPos.Mutable();
-
-            for (int x = minX; x <= maxX; x++) {
-               for (int z = minZ; z <= maxZ; z++) {
-                  for (int y = minY; y <= maxY; y++) {
-                     mpos.set(x, y, z);
-                     BlockState state = duJ6sPeetAcBh6P.world.getBlockState(mpos);
-                     if (!state.isAir()
-                        && !state.isLiquid()
-                        && BlockUtils.canBreak(mpos)
-                        && (!(Boolean)this.nOwp0NYl.get() || !oyDPiOVBGKG.fStlZIvY9lS8(mpos))
-                        && this.QfZy2gWnKInxFPr(mpos)
-                        && this.fStlZIvY9lS8(state)
-                        && (selections == null || fStlZIvY9lS8(mpos, selections))
-                        && this.fStlZIvY9lS8(mpos, 8)) {
-                        double dist = mpos.getSquaredDistance(px, py, pz);
-                        if (dist < closestDist) {
-                           closestDist = dist;
-                           closest = mpos.toImmutable();
-                        }
+         for (int x = minX; x <= maxX; x++) {
+            for (int z = minZ; z <= maxZ; z++) {
+               for (int y = minY; y <= maxY; y++) {
+                  mpos.set(x, y, z);
+                  BlockState state = duJ6sPeetAcBh6P.world.getBlockState(mpos);
+                  if (!state.isAir()
+                     && !state.isLiquid()
+                     && BlockUtils.canBreak(mpos)
+                     && (!(Boolean)this.nOwp0NYl.get() || !oyDPiOVBGKG.fStlZIvY9lS8(mpos))
+                     && this.QfZy2gWnKInxFPr(mpos)
+                     && this.fStlZIvY9lS8(state)
+                     && (selections == null || fStlZIvY9lS8(mpos, selections))
+                     && this.fStlZIvY9lS8(mpos, 8)) {
+                     double dist = mpos.getSquaredDistance(px, py, pz);
+                     if (dist < closestDist) {
+                        closestDist = dist;
+                        closest = mpos.toImmutable();
                      }
                   }
                }
             }
          }
-
-         return closest;
       }
+
+      return closest;
    }
 
    private BlockPos fStlZIvY9lS8(BlockPos candidate) {
@@ -686,40 +679,40 @@ public class KekNuker extends Module {
       int dy = playerY - candidate.getY();
       if (dy * dy > rangeSq) {
          return null;
-      } else {
-         BlockPos best = null;
-         double bestDist = Double.MAX_VALUE;
-         BlockPos.Mutable standMut = new BlockPos.Mutable();
-         BlockPos.Mutable groundMut = new BlockPos.Mutable();
+      }
 
-         for (int dx = -r; dx <= r; dx++) {
-            for (int dz = -r; dz <= r; dz++) {
-               if (!(dx * dx + dy * dy + dz * dz > rangeSq)) {
-                  int sx = candidate.getX() + dx;
-                  int sz = candidate.getZ() + dz;
-                  groundMut.set(sx, playerY - 1, sz);
-                  BlockState ground = duJ6sPeetAcBh6P.world.getBlockState(groundMut);
-                  if (!ground.isAir() && !ground.isLiquid()) {
-                     standMut.set(sx, playerY, sz);
-                     double dist = standMut.getSquaredDistance(candidate);
-                     if (dist < bestDist) {
-                        bestDist = dist;
-                        best = standMut.toImmutable();
-                     }
+      BlockPos best = null;
+      double bestDist = Double.MAX_VALUE;
+      Mutable standMut = new Mutable();
+      Mutable groundMut = new Mutable();
+
+      for (int dx = -r; dx <= r; dx++) {
+         for (int dz = -r; dz <= r; dz++) {
+            if (!(dx * dx + dy * dy + dz * dz > rangeSq)) {
+               int sx = candidate.getX() + dx;
+               int sz = candidate.getZ() + dz;
+               groundMut.set(sx, playerY - 1, sz);
+               BlockState ground = duJ6sPeetAcBh6P.world.getBlockState(groundMut);
+               if (!ground.isAir() && !ground.isLiquid()) {
+                  standMut.set(sx, playerY, sz);
+                  double dist = standMut.getSquaredDistance(candidate);
+                  if (dist < bestDist) {
+                     bestDist = dist;
+                     best = standMut.toImmutable();
                   }
                }
             }
          }
-
-         return best;
       }
+
+      return best;
    }
 
    private boolean fStlZIvY9lS8(BlockPos pos, int depth) {
       int bottom = duJ6sPeetAcBh6P.world.getBottomY();
       int x = pos.getX();
       int z = pos.getZ();
-      BlockPos.Mutable check = new BlockPos.Mutable(x, 0, z);
+      Mutable check = new Mutable(x, 0, z);
 
       for (int dy = 1; dy <= depth; dy++) {
          int y = pos.getY() - dy;
@@ -738,16 +731,16 @@ public class KekNuker extends Module {
    }
 
    private boolean QfZy2gWnKInxFPr(BlockPos pos) {
-      return this.j376sIQ.get() == KekNuker.LayerType.QfZy2gWnKInxFPr && pos.getY() < duJ6sPeetAcBh6P.player.getBlockPos().getY()
+      return this.j376sIQ.get() == KekNuker.LayerType.Flatten && pos.getY() < duJ6sPeetAcBh6P.player.getBlockPos().getY()
          ? false
-         : this.j376sIQ.get() != KekNuker.LayerType.TJImwK2 || !LitematicaHelper.isLoaded() || LitematicaHelper.get().isPositionInRenderLayer(pos);
+         : this.j376sIQ.get() != KekNuker.LayerType.LitematicaLayers || !LitematicaHelper.isLoaded() || LitematicaHelper.get().isPositionInRenderLayer(pos);
    }
 
    private boolean fStlZIvY9lS8(BlockState state) {
-      if (this.zkcZ4Xkp9Ez7Y.get() == KekNuker.ListMode.QfZy2gWnKInxFPr) {
+      if (this.zkcZ4Xkp9Ez7Y.get() == KekNuker.ListMode.Whitelist) {
          return ((List)this.flWHzEyn.get()).contains(state.getBlock());
       } else {
-         return this.zkcZ4Xkp9Ez7Y.get() == KekNuker.ListMode.TJImwK2 ? !((List)this.FVjbhYkk53UT.get()).contains(state.getBlock()) : true;
+         return this.zkcZ4Xkp9Ez7Y.get() == KekNuker.ListMode.Blacklist ? !((List)this.FVjbhYkk53UT.get()).contains(state.getBlock()) : true;
       }
    }
 
@@ -775,44 +768,44 @@ public class KekNuker extends Module {
          ISelectionManager selectionManager = baritone.getSelectionManager();
          if (selectionManager.getSelections() == null) {
             return list;
-         } else {
-            for (ISelection selection : selectionManager.getSelections()) {
-               BlockPos min = selection.min();
-               BlockPos max = selection.max();
-               int regionMinX = Math.min(min.getX(), max.getX());
-               int regionMinY = Math.min(min.getY(), max.getY());
-               int regionMinZ = Math.min(min.getZ(), max.getZ());
-               int regionMaxX = Math.max(min.getX(), max.getX());
-               int regionMaxY = Math.max(min.getY(), max.getY());
-               int regionMaxZ = Math.max(min.getZ(), max.getZ());
-               int px = duJ6sPeetAcBh6P.player.getBlockX();
-               int py = duJ6sPeetAcBh6P.player.getBlockY();
-               int pz = duJ6sPeetAcBh6P.player.getBlockZ();
-               int minX = Math.max(regionMinX, px - 12);
-               int minY = Math.max(regionMinY, py - 12);
-               int minZ = Math.max(regionMinZ, pz - 12);
-               int maxX = Math.min(regionMaxX, px + 12);
-               int maxY = Math.min(regionMaxY, py + 12);
-               int maxZ = Math.min(regionMaxZ, pz + 12);
-               if (minX <= maxX && minY <= maxY && minZ <= maxZ) {
-                  for (int x = minX; x <= maxX; x++) {
-                     for (int y = minY; y <= maxY; y++) {
-                        for (int z = minZ; z <= maxZ; z++) {
-                           BlockPos pos = new BlockPos(x, y, z);
-                           if (!duJ6sPeetAcBh6P.world.getBlockState(pos).isAir()
-                              && !duJ6sPeetAcBh6P.world.getBlockState(pos).isLiquid()
-                              && !list.contains(pos)
-                              && oyDPiOVBGKG.fStlZIvY9lS8(pos, (Double)this.wSJeYsJcmjNZf.get())) {
-                              list.add(pos);
-                           }
+         }
+
+         for (ISelection selection : selectionManager.getSelections()) {
+            BlockPos min = selection.min();
+            BlockPos max = selection.max();
+            int regionMinX = Math.min(min.getX(), max.getX());
+            int regionMinY = Math.min(min.getY(), max.getY());
+            int regionMinZ = Math.min(min.getZ(), max.getZ());
+            int regionMaxX = Math.max(min.getX(), max.getX());
+            int regionMaxY = Math.max(min.getY(), max.getY());
+            int regionMaxZ = Math.max(min.getZ(), max.getZ());
+            int px = duJ6sPeetAcBh6P.player.getBlockX();
+            int py = duJ6sPeetAcBh6P.player.getBlockY();
+            int pz = duJ6sPeetAcBh6P.player.getBlockZ();
+            int minX = Math.max(regionMinX, px - 12);
+            int minY = Math.max(regionMinY, py - 12);
+            int minZ = Math.max(regionMinZ, pz - 12);
+            int maxX = Math.min(regionMaxX, px + 12);
+            int maxY = Math.min(regionMaxY, py + 12);
+            int maxZ = Math.min(regionMaxZ, pz + 12);
+            if (minX <= maxX && minY <= maxY && minZ <= maxZ) {
+               for (int x = minX; x <= maxX; x++) {
+                  for (int y = minY; y <= maxY; y++) {
+                     for (int z = minZ; z <= maxZ; z++) {
+                        BlockPos pos = new BlockPos(x, y, z);
+                        if (!duJ6sPeetAcBh6P.world.getBlockState(pos).isAir()
+                           && !duJ6sPeetAcBh6P.world.getBlockState(pos).isLiquid()
+                           && !list.contains(pos)
+                           && oyDPiOVBGKG.fStlZIvY9lS8(pos, (Double)this.wSJeYsJcmjNZf.get())) {
+                           list.add(pos);
                         }
                      }
                   }
                }
             }
-
-            return list;
          }
+
+         return list;
       } else {
          return list;
       }
@@ -836,38 +829,59 @@ public class KekNuker extends Module {
    }
 
    private record EffKey(boolean fStlZIvY9lS8, boolean QfZy2gWnKInxFPr, float TJImwK2) {
+
+
+      @Override
+      public final String toString() {
+         return "EffKey[toolMatch=" + this.fStlZIvY9lS8 + ", insta=" + this.QfZy2gWnKInxFPr + ", delta=" + this.TJImwK2 + "]";
+      }
    }
 
-   private static enum LayerType {
-      fStlZIvY9lS8,
-      QfZy2gWnKInxFPr,
-      TJImwK2;
+   private enum LayerType {
+      Normal,
+      Flatten,
+      LitematicaLayers;
+
+      LayerType() {
+      }
    }
 
-   public static enum ListMode {
-      fStlZIvY9lS8,
-      QfZy2gWnKInxFPr,
-      TJImwK2;
+   public enum ListMode {
+      Disabled,
+      Whitelist,
+      Blacklist;
+
+      ListMode() {
+      }
    }
 
-   public static enum NukerMode {
-      fStlZIvY9lS8,
-      QfZy2gWnKInxFPr,
-      TJImwK2,
-      wSJeYsJcmjNZf;
+   public enum NukerMode {
+      Normal,
+      Highway,
+      Litematica,
+      BaritoneSelection;
+
+      NukerMode() {
+      }
    }
 
-   public static enum Shape {
-      fStlZIvY9lS8,
-      QfZy2gWnKInxFPr;
+   public enum Shape {
+      Cube,
+      Sphere;
+
+      Shape() {
+      }
    }
 
-   public static enum SortMode {
-      fStlZIvY9lS8,
-      QfZy2gWnKInxFPr,
-      TJImwK2,
-      wSJeYsJcmjNZf,
-      i2Nu6XHKic,
-      vGAMA89H;
+   public enum SortMode {
+      None,
+      Efficient,
+      Closest,
+      Furthest,
+      TopDown,
+      BottomUp;
+
+      SortMode() {
+      }
    }
 }

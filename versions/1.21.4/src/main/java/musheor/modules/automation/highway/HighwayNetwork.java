@@ -5,8 +5,8 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map.Entry;
 import java.util.Map;
+import java.util.Map.Entry;
 import musheor.utils.oyDPiOVBGKG;
 import musheor.utils.system.HighwayNetworkManager;
 
@@ -124,11 +124,11 @@ public class HighwayNetwork {
          double det = la[0] * lb[1] - lb[0] * la[1];
          if (Math.abs(det) < 1.0E-9) {
             return null;
-         } else {
-            double x = (la[2] * lb[1] - lb[2] * la[1]) / det;
-            double z = (la[0] * lb[2] - lb[0] * la[2]) / det;
-            return new oyDPiOVBGKG.pvfA15fQSVM(x, z);
          }
+
+         double x = (la[2] * lb[1] - lb[2] * la[1]) / det;
+         double z = (la[0] * lb[2] - lb[0] * la[2]) / det;
+         return new oyDPiOVBGKG.pvfA15fQSVM(x, z);
       } else {
          return null;
       }
@@ -136,9 +136,9 @@ public class HighwayNetwork {
 
    private static double[] QfZy2gWnKInxFPr(HighwayNetwork.Highway hw) {
       return switch (hw.qhulAUwd()) {
-         case fStlZIvY9lS8, TJImwK2, i2Nu6XHKic -> hw.BrmKXSYhWhqoB1() ? new double[]{0.0, 1.0, hw.TXWyNb()} : new double[]{1.0, 0.0, hw.TXWyNb()};
-         case QfZy2gWnKInxFPr -> hw.BrmKXSYhWhqoB1() ? new double[]{1.0, 1.0, hw.TXWyNb()} : new double[]{1.0, -1.0, hw.TXWyNb()};
-         case wSJeYsJcmjNZf -> hw.BrmKXSYhWhqoB1() ? new double[]{1.0, 1.0, hw.TXWyNb()} : new double[]{1.0, -1.0, hw.TXWyNb()};
+         case CARDINAL, RING_ROAD, GRID -> hw.BrmKXSYhWhqoB1() ? new double[]{0.0, 1.0, hw.TXWyNb()} : new double[]{1.0, 0.0, hw.TXWyNb()};
+         case DIAGONAL -> hw.BrmKXSYhWhqoB1() ? new double[]{1.0, 1.0, hw.TXWyNb()} : new double[]{1.0, -1.0, hw.TXWyNb()};
+         case DIAMOND -> hw.BrmKXSYhWhqoB1() ? new double[]{1.0, 1.0, hw.TXWyNb()} : new double[]{1.0, -1.0, hw.TXWyNb()};
       };
    }
 
@@ -189,64 +189,86 @@ public class HighwayNetwork {
    }
 
    public record Edge(int fStlZIvY9lS8, int QfZy2gWnKInxFPr, double TJImwK2, HighwayNetwork.Highway wSJeYsJcmjNZf) {
+
+
+      @Override
+      public final String toString() {
+         return "Edge[from=" + this.fStlZIvY9lS8 + ", to=" + this.QfZy2gWnKInxFPr + ", distance=" + this.TJImwK2 + ", highway=" + this.wSJeYsJcmjNZf + "]";
+      }
    }
 
-   public record Highway(String fStlZIvY9lS8, HighwayNetwork.HighwayType QfZy2gWnKInxFPr, boolean TJImwK2, double wSJeYsJcmjNZf, double i2Nu6XHKic, double vGAMA89H) {
+   public static final class Highway {
+      private final String fStlZIvY9lS8;
+      private final HighwayNetwork.HighwayType QfZy2gWnKInxFPr;
+      private final boolean TJImwK2;
+      private final double wSJeYsJcmjNZf;
+      private final double i2Nu6XHKic;
+      private final double vGAMA89H;
+
+      public Highway(String name, HighwayNetwork.HighwayType type, boolean isHorizontal, double constCoord, double minCoord, double maxCoord) {
+         this.fStlZIvY9lS8 = name;
+         this.QfZy2gWnKInxFPr = type;
+         this.TJImwK2 = isHorizontal;
+         this.wSJeYsJcmjNZf = constCoord;
+         this.i2Nu6XHKic = minCoord;
+         this.vGAMA89H = maxCoord;
+      }
+
       static HighwayNetwork.Highway fStlZIvY9lS8() {
-         return new HighwayNetwork.Highway("+X/-X axis (Z=0)", HighwayNetwork.HighwayType.fStlZIvY9lS8, true, 0.0, -Double.MAX_VALUE, Double.MAX_VALUE);
+         return new HighwayNetwork.Highway("+X/-X axis (Z=0)", HighwayNetwork.HighwayType.CARDINAL, true, 0.0, -Double.MAX_VALUE, Double.MAX_VALUE);
       }
 
       static HighwayNetwork.Highway QfZy2gWnKInxFPr() {
-         return new HighwayNetwork.Highway("+Z/-Z axis (X=0)", HighwayNetwork.HighwayType.fStlZIvY9lS8, false, 0.0, -Double.MAX_VALUE, Double.MAX_VALUE);
+         return new HighwayNetwork.Highway("+Z/-Z axis (X=0)", HighwayNetwork.HighwayType.CARDINAL, false, 0.0, -Double.MAX_VALUE, Double.MAX_VALUE);
       }
 
       static HighwayNetwork.Highway TJImwK2() {
-         return new HighwayNetwork.Highway("diagonal (X=Z)", HighwayNetwork.HighwayType.QfZy2gWnKInxFPr, false, 0.0, -Double.MAX_VALUE, Double.MAX_VALUE);
+         return new HighwayNetwork.Highway("diagonal (X=Z)", HighwayNetwork.HighwayType.DIAGONAL, false, 0.0, -Double.MAX_VALUE, Double.MAX_VALUE);
       }
 
       static HighwayNetwork.Highway wSJeYsJcmjNZf() {
-         return new HighwayNetwork.Highway("diagonal (X=-Z)", HighwayNetwork.HighwayType.QfZy2gWnKInxFPr, true, 0.0, -Double.MAX_VALUE, Double.MAX_VALUE);
+         return new HighwayNetwork.Highway("diagonal (X=-Z)", HighwayNetwork.HighwayType.DIAGONAL, true, 0.0, -Double.MAX_VALUE, Double.MAX_VALUE);
       }
 
       static HighwayNetwork.Highway fStlZIvY9lS8(double coord) {
          double limit = Math.abs(coord);
-         return new HighwayNetwork.Highway(String.format("ring road Z=%.0f", coord), HighwayNetwork.HighwayType.TJImwK2, true, coord, -limit, limit);
+         return new HighwayNetwork.Highway(String.format("ring road Z=%.0f", coord), HighwayNetwork.HighwayType.RING_ROAD, true, coord, -limit, limit);
       }
 
       static HighwayNetwork.Highway QfZy2gWnKInxFPr(double coord) {
          double limit = Math.abs(coord);
-         return new HighwayNetwork.Highway(String.format("ring road X=%.0f", coord), HighwayNetwork.HighwayType.TJImwK2, false, coord, -limit, limit);
+         return new HighwayNetwork.Highway(String.format("ring road X=%.0f", coord), HighwayNetwork.HighwayType.RING_ROAD, false, coord, -limit, limit);
       }
 
       static HighwayNetwork.Highway fStlZIvY9lS8(boolean isSum, double K) {
          double minX = Math.min(0.0, K);
          double maxX = Math.max(0.0, K);
          String eq = isSum ? String.format("diamond X+Z=%.0f", K) : String.format("diamond X-Z=%.0f", K);
-         return new HighwayNetwork.Highway(eq, HighwayNetwork.HighwayType.wSJeYsJcmjNZf, isSum, K, minX, maxX);
+         return new HighwayNetwork.Highway(eq, HighwayNetwork.HighwayType.DIAMOND, isSum, K, minX, maxX);
       }
 
       static HighwayNetwork.Highway TJImwK2(double coord) {
-         return new HighwayNetwork.Highway(String.format("grid Z=%.1f", coord), HighwayNetwork.HighwayType.i2Nu6XHKic, true, coord, -50000.5, 50000.5);
+         return new HighwayNetwork.Highway(String.format("grid Z=%.1f", coord), HighwayNetwork.HighwayType.GRID, true, coord, -50000.5, 50000.5);
       }
 
       static HighwayNetwork.Highway wSJeYsJcmjNZf(double coord) {
-         return new HighwayNetwork.Highway(String.format("grid X=%.1f", coord), HighwayNetwork.HighwayType.i2Nu6XHKic, false, coord, -50000.5, 50000.5);
+         return new HighwayNetwork.Highway(String.format("grid X=%.1f", coord), HighwayNetwork.HighwayType.GRID, false, coord, -50000.5, 50000.5);
       }
 
       boolean i2Nu6XHKic() {
-         return this.QfZy2gWnKInxFPr == HighwayNetwork.HighwayType.QfZy2gWnKInxFPr || this.QfZy2gWnKInxFPr == HighwayNetwork.HighwayType.wSJeYsJcmjNZf;
+         return this.QfZy2gWnKInxFPr == HighwayNetwork.HighwayType.DIAGONAL || this.QfZy2gWnKInxFPr == HighwayNetwork.HighwayType.DIAMOND;
       }
 
       boolean fStlZIvY9lS8(double x, double z, double tol) {
          return switch (this.QfZy2gWnKInxFPr) {
-            case fStlZIvY9lS8, TJImwK2, i2Nu6XHKic -> this.TJImwK2
+            case CARDINAL, RING_ROAD, GRID -> this.TJImwK2
                ? Math.abs(z - this.wSJeYsJcmjNZf) <= tol && x >= this.i2Nu6XHKic - tol && x <= this.vGAMA89H + tol
                : Math.abs(x - this.wSJeYsJcmjNZf) <= tol && z >= this.i2Nu6XHKic - tol && z <= this.vGAMA89H + tol;
-            case QfZy2gWnKInxFPr -> {
+            case DIAGONAL -> {
                double val = this.TJImwK2 ? x + z : x - z;
                yield Math.abs(val - this.wSJeYsJcmjNZf) <= tol;
             }
-            case wSJeYsJcmjNZf -> {
+            case DIAMOND -> {
                double val = this.TJImwK2 ? x + z : x - z;
                yield Math.abs(val - this.wSJeYsJcmjNZf) <= tol && x >= this.i2Nu6XHKic - tol && x <= this.vGAMA89H + tol;
             }
@@ -259,7 +281,7 @@ public class HighwayNetwork {
 
       oyDPiOVBGKG.pvfA15fQSVM fStlZIvY9lS8(double x, double z) {
          return switch (this.QfZy2gWnKInxFPr) {
-            case fStlZIvY9lS8, TJImwK2, i2Nu6XHKic -> {
+            case CARDINAL, RING_ROAD, GRID -> {
                if (this.TJImwK2) {
                   double cx = this.i2Nu6XHKic(x);
                   yield new oyDPiOVBGKG.pvfA15fQSVM(cx, this.wSJeYsJcmjNZf);
@@ -268,17 +290,18 @@ public class HighwayNetwork {
                   yield new oyDPiOVBGKG.pvfA15fQSVM(this.wSJeYsJcmjNZf, cz);
                }
             }
-            case QfZy2gWnKInxFPr -> {
+            case DIAGONAL -> {
                if (this.TJImwK2) {
                   double px = (x - z) / 2.0;
                   double pz = -px;
                   yield new oyDPiOVBGKG.pvfA15fQSVM(px, pz);
                } else {
                   double px = (x + z) / 2.0;
-                  yield new oyDPiOVBGKG.pvfA15fQSVM(px, px);
+                  double pz = px;
+                  yield new oyDPiOVBGKG.pvfA15fQSVM(px, pz);
                }
             }
-            case wSJeYsJcmjNZf -> {
+            case DIAMOND -> {
                boolean isSum = this.TJImwK2;
                double cx = isSum ? (x - z + this.wSJeYsJcmjNZf) / 2.0 : (x + z + this.wSJeYsJcmjNZf) / 2.0;
                cx = this.i2Nu6XHKic(cx);
@@ -303,17 +326,55 @@ public class HighwayNetwork {
       public double TXWyNb() {
          return this.wSJeYsJcmjNZf;
       }
-   
+
+      // Reconstructed from the original ObjectMethods bootstrap, in field order.
+      @Override
+      public final boolean equals(Object value) {
+         if (this == value) return true;
+         if (!(value instanceof Highway other)) return false;
+         return java.util.Objects.equals(this.fStlZIvY9lS8, other.fStlZIvY9lS8)
+      && java.util.Objects.equals(this.QfZy2gWnKInxFPr, other.QfZy2gWnKInxFPr)
+      && this.TJImwK2 == other.TJImwK2
+      && Double.compare(this.wSJeYsJcmjNZf, other.wSJeYsJcmjNZf) == 0
+      && Double.compare(this.i2Nu6XHKic, other.i2Nu6XHKic) == 0
+      && Double.compare(this.vGAMA89H, other.vGAMA89H) == 0;
+      }
+
+      @Override
+      public final int hashCode() {
+         int hash = 0;
+         hash = 31 * hash + java.util.Objects.hashCode(this.fStlZIvY9lS8);
+         hash = 31 * hash + java.util.Objects.hashCode(this.QfZy2gWnKInxFPr);
+         hash = 31 * hash + Boolean.hashCode(this.TJImwK2);
+         hash = 31 * hash + Double.hashCode(this.wSJeYsJcmjNZf);
+         hash = 31 * hash + Double.hashCode(this.i2Nu6XHKic);
+         hash = 31 * hash + Double.hashCode(this.vGAMA89H);
+         return hash;
+      }
+
+      @Override
+      public final String toString() {
+         return "Highway[name=" + this.fStlZIvY9lS8 + ", type=" + this.QfZy2gWnKInxFPr + ", isHorizontal=" + this.TJImwK2 + ", constCoord=" + this.wSJeYsJcmjNZf + ", minCoord=" + this.i2Nu6XHKic + ", maxCoord=" + this.vGAMA89H + "]";
+      }
    }
 
-   public static enum HighwayType {
-      fStlZIvY9lS8,
-      QfZy2gWnKInxFPr,
-      TJImwK2,
-      wSJeYsJcmjNZf,
-      i2Nu6XHKic;
+   public enum HighwayType {
+      CARDINAL,
+      DIAGONAL,
+      RING_ROAD,
+      DIAMOND,
+      GRID;
+
+      HighwayType() {
+      }
    }
 
    public record Intersection(oyDPiOVBGKG.pvfA15fQSVM fStlZIvY9lS8, List<HighwayNetwork.Highway> QfZy2gWnKInxFPr) {
+
+
+      @Override
+      public final String toString() {
+         return "Intersection[pos=" + this.fStlZIvY9lS8 + ", highways=" + this.QfZy2gWnKInxFPr + "]";
+      }
    }
 }

@@ -29,6 +29,9 @@ import net.minecraft.util.math.BlockPos;
 public class LitematicaHelperImpl implements LitematicaHelper {
    private static final MinecraftClient mc = MinecraftClient.getInstance();
 
+   public LitematicaHelperImpl() {
+   }
+
    private static File getSchematicsDirectory() {
       return new File(mc.runDirectory, "schematics");
    }
@@ -38,14 +41,16 @@ public class LitematicaHelperImpl implements LitematicaHelper {
          File schematicsDir = getSchematicsDirectory();
          if (!schematicsDir.exists()) {
             return null;
-         } else if (!name.endsWith(".litematic") && !name.endsWith(".nbt")) {
+         }
+
+         if (!name.endsWith(".litematic") && !name.endsWith(".nbt")) {
             File litematicFile = searchDirectory(schematicsDir, name + ".litematic");
             if (litematicFile != null) {
                return litematicFile;
-            } else {
-               File nbtFile = searchDirectory(schematicsDir, name + ".nbt");
-               return nbtFile != null ? nbtFile : searchDirectory(schematicsDir, name);
             }
+
+            File nbtFile = searchDirectory(schematicsDir, name + ".nbt");
+            return nbtFile != null ? nbtFile : searchDirectory(schematicsDir, name);
          } else {
             return searchDirectory(schematicsDir, name);
          }
@@ -57,45 +62,45 @@ public class LitematicaHelperImpl implements LitematicaHelper {
    private static File searchDirectory(File dir, String fileName) {
       if (!dir.isDirectory()) {
          return null;
-      } else {
-         File[] files = dir.listFiles();
-         if (files == null) {
-            return null;
-         } else {
-            for (File file : files) {
-               if (file.isFile() && file.getName().equalsIgnoreCase(fileName)) {
-                  return file;
-               }
-            }
+      }
 
-            for (File filex : files) {
-               if (filex.isDirectory()) {
-                  File found = searchDirectory(filex, fileName);
-                  if (found != null) {
-                     return found;
-                  }
-               }
-            }
+      File[] files = dir.listFiles();
+      if (files == null) {
+         return null;
+      }
 
-            return null;
+      for (File file : files) {
+         if (file.isFile() && file.getName().equalsIgnoreCase(fileName)) {
+            return file;
          }
       }
+
+      for (File file : files) {
+         if (file.isDirectory()) {
+            File found = searchDirectory(file, fileName);
+            if (found != null) {
+               return found;
+            }
+         }
+      }
+
+      return null;
    }
 
    private static LitematicaSchematic loadSchematic(File file) {
-      FileType fileType = FileType.fromFile(file);
+      FileType fileType = FileType.fromFile(file.toPath());
 
       try {
          Method m = LitematicaSchematic.class.getMethod("createFromFile", Path.class, String.class, FileType.class);
          return (LitematicaSchematic)m.invoke(null, file.getParentFile().toPath(), file.getName(), fileType);
       } catch (NoSuchMethodException var4) {
          try {
-            Method mx = LitematicaSchematic.class.getMethod("createFromFile", File.class, String.class, FileType.class);
-            return (LitematicaSchematic)mx.invoke(null, file.getParentFile(), file.getName(), fileType);
-         } catch (Exception var3) {
+            Method m = LitematicaSchematic.class.getMethod("createFromFile", File.class, String.class, FileType.class);
+            return (LitematicaSchematic)m.invoke(null, file.getParentFile(), file.getName(), fileType);
+         } catch (Exception e) {
             return null;
          }
-      } catch (Exception var5) {
+      } catch (Exception e) {
          return null;
       }
    }
@@ -120,21 +125,21 @@ public class LitematicaHelperImpl implements LitematicaHelper {
          if (file == null) {
             ChatUtils.info("Schematic not found", new Object[0]);
             return false;
-         } else {
-            try {
-               LitematicaSchematic schematic = loadSchematic(file);
-               if (schematic == null) {
-                  return false;
-               } else {
-                  SchematicPlacement placementx = SchematicPlacement.createFor(schematic, pos, file.getName(), true, true);
-                  manager.addSchematicPlacement(placementx, true);
-                  manager.setSelectedSchematicPlacement(placementx);
-                  return true;
-               }
-            } catch (Exception var8) {
-               var8.printStackTrace();
+         }
+
+         try {
+            LitematicaSchematic schematic = loadSchematic(file);
+            if (schematic == null) {
                return false;
             }
+
+            SchematicPlacement placement = SchematicPlacement.createFor(schematic, pos, file.getName(), true, true);
+            manager.addSchematicPlacement(placement, true);
+            manager.setSelectedSchematicPlacement(placement);
+            return true;
+         } catch (Exception e) {
+            e.printStackTrace();
+            return false;
          }
       } else {
          return false;
@@ -164,42 +169,40 @@ public class LitematicaHelperImpl implements LitematicaHelper {
       Map<BlockPos, BlockState> result = new LinkedHashMap<>();
       if (mc.world == null) {
          return result;
-      } else {
-         for (SchematicPlacement placement : DataManager.getSchematicPlacementManager().getAllSchematicsPlacements()) {
-            WorldSchematic worldSchematic = SchematicWorldHandler.getSchematicWorld();
-            if (placement != null && worldSchematic != null) {
-               Map<String, Box> subRegions = placement.getSubRegionBoxes(RequiredEnabled.ANY);
-               if (subRegions != null && !subRegions.isEmpty()) {
-                  label129:
-                  for (Box box : subRegions.values()) {
-                     if (box != null && box.getPos1() != null && box.getPos2() != null) {
-                        BlockPos p1 = box.getPos1();
-                        BlockPos p2 = box.getPos2();
-                        int scanMinX = Math.max(Math.min(p1.getX(), p2.getX()), min.getX());
-                        int scanMaxX = Math.min(Math.max(p1.getX(), p2.getX()), max.getX());
-                        int scanMinY = Math.max(Math.min(p1.getY(), p2.getY()), min.getY());
-                        int scanMaxY = Math.min(Math.max(p1.getY(), p2.getY()), max.getY());
-                        int scanMinZ = Math.max(Math.min(p1.getZ(), p2.getZ()), min.getZ());
-                        int scanMaxZ = Math.min(Math.max(p1.getZ(), p2.getZ()), max.getZ());
-                        if (scanMinX <= scanMaxX && scanMinY <= scanMaxY && scanMinZ <= scanMaxZ) {
-                           for (int x = scanMinX; x <= scanMaxX; x++) {
-                              for (int y = scanMinY; y <= scanMaxY; y++) {
-                                 for (int z = scanMinZ; z <= scanMaxZ; z++) {
-                                    if (result.size() >= maxResults) {
-                                       continue label129;
-                                    }
+      }
 
-                                    BlockPos worldPos = new BlockPos(x, y, z);
-                                    BlockState schematicState = worldSchematic.getBlockState(worldPos);
-                                    if (schematicState != null
-                                       && !schematicState.isAir()
-                                       && (ignoredBlocks == null || !ignoredBlocks.contains(schematicState.getBlock()))) {
-                                       BlockState currentState = mc.world.getBlockState(worldPos);
-                                       if (onlyAir
-                                          ? currentState.getBlock() instanceof AirBlock
-                                          : currentState.getBlock() != schematicState.getBlock()) {
-                                          result.put(worldPos, schematicState);
-                                       }
+      for (SchematicPlacement placement : DataManager.getSchematicPlacementManager().getAllSchematicsPlacements()) {
+         WorldSchematic worldSchematic = SchematicWorldHandler.getSchematicWorld();
+         if (placement != null && worldSchematic != null) {
+            Map<String, Box> subRegions = placement.getSubRegionBoxes(RequiredEnabled.ANY);
+            if (subRegions != null && !subRegions.isEmpty()) {
+               label129:
+               for (Box box : subRegions.values()) {
+                  if (box != null && box.getPos1() != null && box.getPos2() != null) {
+                     BlockPos p1 = box.getPos1();
+                     BlockPos p2 = box.getPos2();
+                     int scanMinX = Math.max(Math.min(p1.getX(), p2.getX()), min.getX());
+                     int scanMaxX = Math.min(Math.max(p1.getX(), p2.getX()), max.getX());
+                     int scanMinY = Math.max(Math.min(p1.getY(), p2.getY()), min.getY());
+                     int scanMaxY = Math.min(Math.max(p1.getY(), p2.getY()), max.getY());
+                     int scanMinZ = Math.max(Math.min(p1.getZ(), p2.getZ()), min.getZ());
+                     int scanMaxZ = Math.min(Math.max(p1.getZ(), p2.getZ()), max.getZ());
+                     if (scanMinX <= scanMaxX && scanMinY <= scanMaxY && scanMinZ <= scanMaxZ) {
+                        for (int x = scanMinX; x <= scanMaxX; x++) {
+                           for (int y = scanMinY; y <= scanMaxY; y++) {
+                              for (int z = scanMinZ; z <= scanMaxZ; z++) {
+                                 if (result.size() >= maxResults) {
+                                    continue label129;
+                                 }
+
+                                 BlockPos worldPos = new BlockPos(x, y, z);
+                                 BlockState schematicState = worldSchematic.getBlockState(worldPos);
+                                 if (schematicState != null
+                                    && !schematicState.isAir()
+                                    && (ignoredBlocks == null || !ignoredBlocks.contains(schematicState.getBlock()))) {
+                                    BlockState currentState = mc.world.getBlockState(worldPos);
+                                    if (onlyAir ? currentState.getBlock() instanceof AirBlock : currentState.getBlock() != schematicState.getBlock()) {
+                                       result.put(worldPos, schematicState);
                                     }
                                  }
                               }
@@ -210,9 +213,9 @@ public class LitematicaHelperImpl implements LitematicaHelper {
                }
             }
          }
-
-         return result;
       }
+
+      return result;
    }
 
    @Override
@@ -220,40 +223,40 @@ public class LitematicaHelperImpl implements LitematicaHelper {
       Map<BlockPos, BlockState> result = new LinkedHashMap<>();
       if (mc.world == null) {
          return result;
-      } else {
-         for (SchematicPlacement placement : DataManager.getSchematicPlacementManager().getAllSchematicsPlacements()) {
-            WorldSchematic worldSchematic = SchematicWorldHandler.getSchematicWorld();
-            if (placement != null && worldSchematic != null) {
-               Map<String, Box> subRegions = placement.getSubRegionBoxes(RequiredEnabled.ANY);
-               if (subRegions != null && !subRegions.isEmpty()) {
-                  label125:
-                  for (Box box : subRegions.values()) {
-                     if (box != null && box.getPos1() != null && box.getPos2() != null) {
-                        BlockPos p1 = box.getPos1();
-                        BlockPos p2 = box.getPos2();
-                        int scanMinX = Math.max(Math.min(p1.getX(), p2.getX()), min.getX());
-                        int scanMaxX = Math.min(Math.max(p1.getX(), p2.getX()), max.getX());
-                        int scanMinY = Math.max(Math.min(p1.getY(), p2.getY()), min.getY());
-                        int scanMaxY = Math.min(Math.max(p1.getY(), p2.getY()), max.getY());
-                        int scanMinZ = Math.max(Math.min(p1.getZ(), p2.getZ()), min.getZ());
-                        int scanMaxZ = Math.min(Math.max(p1.getZ(), p2.getZ()), max.getZ());
-                        if (scanMinX <= scanMaxX && scanMinY <= scanMaxY && scanMinZ <= scanMaxZ) {
-                           for (int x = scanMinX; x <= scanMaxX; x++) {
-                              for (int y = scanMinY; y <= scanMaxY; y++) {
-                                 for (int z = scanMinZ; z <= scanMaxZ; z++) {
-                                    if (result.size() >= maxResults) {
-                                       continue label125;
-                                    }
+      }
 
-                                    BlockPos worldPos = new BlockPos(x, y, z);
-                                    BlockState schematicState = worldSchematic.getBlockState(worldPos);
-                                    if (schematicState != null
-                                       && !schematicState.isAir()
-                                       && (ignoredBlocks == null || !ignoredBlocks.contains(schematicState.getBlock()))) {
-                                       BlockState currentState = mc.world.getBlockState(worldPos);
-                                       if (currentState.getBlock() == schematicState.getBlock() && currentState != schematicState) {
-                                          result.put(worldPos, schematicState);
-                                       }
+      for (SchematicPlacement placement : DataManager.getSchematicPlacementManager().getAllSchematicsPlacements()) {
+         WorldSchematic worldSchematic = SchematicWorldHandler.getSchematicWorld();
+         if (placement != null && worldSchematic != null) {
+            Map<String, Box> subRegions = placement.getSubRegionBoxes(RequiredEnabled.ANY);
+            if (subRegions != null && !subRegions.isEmpty()) {
+               label125:
+               for (Box box : subRegions.values()) {
+                  if (box != null && box.getPos1() != null && box.getPos2() != null) {
+                     BlockPos p1 = box.getPos1();
+                     BlockPos p2 = box.getPos2();
+                     int scanMinX = Math.max(Math.min(p1.getX(), p2.getX()), min.getX());
+                     int scanMaxX = Math.min(Math.max(p1.getX(), p2.getX()), max.getX());
+                     int scanMinY = Math.max(Math.min(p1.getY(), p2.getY()), min.getY());
+                     int scanMaxY = Math.min(Math.max(p1.getY(), p2.getY()), max.getY());
+                     int scanMinZ = Math.max(Math.min(p1.getZ(), p2.getZ()), min.getZ());
+                     int scanMaxZ = Math.min(Math.max(p1.getZ(), p2.getZ()), max.getZ());
+                     if (scanMinX <= scanMaxX && scanMinY <= scanMaxY && scanMinZ <= scanMaxZ) {
+                        for (int x = scanMinX; x <= scanMaxX; x++) {
+                           for (int y = scanMinY; y <= scanMaxY; y++) {
+                              for (int z = scanMinZ; z <= scanMaxZ; z++) {
+                                 if (result.size() >= maxResults) {
+                                    continue label125;
+                                 }
+
+                                 BlockPos worldPos = new BlockPos(x, y, z);
+                                 BlockState schematicState = worldSchematic.getBlockState(worldPos);
+                                 if (schematicState != null
+                                    && !schematicState.isAir()
+                                    && (ignoredBlocks == null || !ignoredBlocks.contains(schematicState.getBlock()))) {
+                                    BlockState currentState = mc.world.getBlockState(worldPos);
+                                    if (currentState.getBlock() == schematicState.getBlock() && currentState != schematicState) {
+                                       result.put(worldPos, schematicState);
                                     }
                                  }
                               }
@@ -264,9 +267,9 @@ public class LitematicaHelperImpl implements LitematicaHelper {
                }
             }
          }
-
-         return result;
       }
+
+      return result;
    }
 
    @Override
@@ -274,37 +277,37 @@ public class LitematicaHelperImpl implements LitematicaHelper {
       Map<Block, Integer> counts = new HashMap<>();
       if (mc.world == null) {
          return counts;
-      } else {
-         for (SchematicPlacement placement : DataManager.getSchematicPlacementManager().getAllSchematicsPlacements()) {
-            WorldSchematic worldSchematic = SchematicWorldHandler.getSchematicWorld();
-            if (placement != null && worldSchematic != null) {
-               Map<String, Box> subRegions = placement.getSubRegionBoxes(RequiredEnabled.ANY);
-               if (subRegions != null && !subRegions.isEmpty()) {
-                  for (Box box : subRegions.values()) {
-                     if (box != null && box.getPos1() != null && box.getPos2() != null) {
-                        BlockPos p1 = box.getPos1();
-                        BlockPos p2 = box.getPos2();
-                        int minX = Math.min(p1.getX(), p2.getX());
-                        int maxX = Math.max(p1.getX(), p2.getX());
-                        int minY = Math.min(p1.getY(), p2.getY());
-                        int maxY = Math.max(p1.getY(), p2.getY());
-                        int minZ = Math.min(p1.getZ(), p2.getZ());
-                        int maxZ = Math.max(p1.getZ(), p2.getZ());
+      }
 
-                        for (int x = minX; x <= maxX; x++) {
-                           for (int z = minZ; z <= maxZ; z++) {
-                              if (mc.world.isChunkLoaded(x >> 4, z >> 4)) {
-                                 for (int y = minY; y <= maxY; y++) {
-                                    BlockPos worldPos = new BlockPos(x, y, z);
-                                    BlockState schematicState = worldSchematic.getBlockState(worldPos);
-                                    if (schematicState != null && !schematicState.isAir()) {
-                                       Block block = schematicState.getBlock();
-                                       if (ignoredBlocks == null || !ignoredBlocks.contains(block)) {
-                                          BlockState currentState = mc.world.getBlockState(worldPos);
-                                          boolean needed = onlyAir ? currentState.getBlock() instanceof AirBlock : currentState.getBlock() != block;
-                                          if (needed) {
-                                             counts.merge(block, 1, Integer::sum);
-                                          }
+      for (SchematicPlacement placement : DataManager.getSchematicPlacementManager().getAllSchematicsPlacements()) {
+         WorldSchematic worldSchematic = SchematicWorldHandler.getSchematicWorld();
+         if (placement != null && worldSchematic != null) {
+            Map<String, Box> subRegions = placement.getSubRegionBoxes(RequiredEnabled.ANY);
+            if (subRegions != null && !subRegions.isEmpty()) {
+               for (Box box : subRegions.values()) {
+                  if (box != null && box.getPos1() != null && box.getPos2() != null) {
+                     BlockPos p1 = box.getPos1();
+                     BlockPos p2 = box.getPos2();
+                     int minX = Math.min(p1.getX(), p2.getX());
+                     int maxX = Math.max(p1.getX(), p2.getX());
+                     int minY = Math.min(p1.getY(), p2.getY());
+                     int maxY = Math.max(p1.getY(), p2.getY());
+                     int minZ = Math.min(p1.getZ(), p2.getZ());
+                     int maxZ = Math.max(p1.getZ(), p2.getZ());
+
+                     for (int x = minX; x <= maxX; x++) {
+                        for (int z = minZ; z <= maxZ; z++) {
+                           if (mc.world.isChunkLoaded(x >> 4, z >> 4)) {
+                              for (int y = minY; y <= maxY; y++) {
+                                 BlockPos worldPos = new BlockPos(x, y, z);
+                                 BlockState schematicState = worldSchematic.getBlockState(worldPos);
+                                 if (schematicState != null && !schematicState.isAir()) {
+                                    Block block = schematicState.getBlock();
+                                    if (ignoredBlocks == null || !ignoredBlocks.contains(block)) {
+                                       BlockState currentState = mc.world.getBlockState(worldPos);
+                                       boolean needed = onlyAir ? currentState.getBlock() instanceof AirBlock : currentState.getBlock() != block;
+                                       if (needed) {
+                                          counts.merge(block, 1, Integer::sum);
                                        }
                                     }
                                  }
@@ -316,9 +319,9 @@ public class LitematicaHelperImpl implements LitematicaHelper {
                }
             }
          }
-
-         return counts;
       }
+
+      return counts;
    }
 
    @Override
@@ -367,45 +370,43 @@ public class LitematicaHelperImpl implements LitematicaHelper {
    public BlockPos findClosestUnplacedBlock(BlockPos center, int radius, boolean onlyAir, List<Block> ignoredBlocks) {
       if (mc.world == null) {
          return null;
-      } else {
-         BlockPos min = center.add(-radius, -radius, -radius);
-         BlockPos max = center.add(radius, radius, radius);
-         BlockPos closest = null;
-         double closestDistSq = Double.MAX_VALUE;
+      }
 
-         for (SchematicPlacement placement : DataManager.getSchematicPlacementManager().getAllSchematicsPlacements()) {
-            WorldSchematic worldSchematic = SchematicWorldHandler.getSchematicWorld();
-            if (placement != null && worldSchematic != null) {
-               Map<String, Box> subRegions = placement.getSubRegionBoxes(RequiredEnabled.ANY);
-               if (subRegions != null && !subRegions.isEmpty()) {
-                  for (Box box : subRegions.values()) {
-                     if (box != null && box.getPos1() != null && box.getPos2() != null) {
-                        BlockPos p1 = box.getPos1();
-                        BlockPos p2 = box.getPos2();
-                        int scanMinX = Math.max(Math.min(p1.getX(), p2.getX()), min.getX());
-                        int scanMaxX = Math.min(Math.max(p1.getX(), p2.getX()), max.getX());
-                        int scanMinY = Math.max(Math.min(p1.getY(), p2.getY()), min.getY());
-                        int scanMaxY = Math.min(Math.max(p1.getY(), p2.getY()), max.getY());
-                        int scanMinZ = Math.max(Math.min(p1.getZ(), p2.getZ()), min.getZ());
-                        int scanMaxZ = Math.min(Math.max(p1.getZ(), p2.getZ()), max.getZ());
-                        if (scanMinX <= scanMaxX && scanMinY <= scanMaxY && scanMinZ <= scanMaxZ) {
-                           for (int x = scanMinX; x <= scanMaxX; x++) {
-                              for (int y = scanMinY; y <= scanMaxY; y++) {
-                                 for (int z = scanMinZ; z <= scanMaxZ; z++) {
-                                    BlockPos worldPos = new BlockPos(x, y, z);
-                                    BlockState schematicState = worldSchematic.getBlockState(worldPos);
-                                    if (schematicState != null
-                                       && !schematicState.isAir()
-                                       && (ignoredBlocks == null || !ignoredBlocks.contains(schematicState.getBlock()))) {
-                                       BlockState currentState = mc.world.getBlockState(worldPos);
-                                       if (onlyAir
-                                          ? currentState.getBlock() instanceof AirBlock
-                                          : currentState.getBlock() != schematicState.getBlock()) {
-                                          double distSq = center.getSquaredDistance(worldPos);
-                                          if (distSq < closestDistSq) {
-                                             closestDistSq = distSq;
-                                             closest = worldPos;
-                                          }
+      BlockPos min = center.add(-radius, -radius, -radius);
+      BlockPos max = center.add(radius, radius, radius);
+      BlockPos closest = null;
+      double closestDistSq = Double.MAX_VALUE;
+
+      for (SchematicPlacement placement : DataManager.getSchematicPlacementManager().getAllSchematicsPlacements()) {
+         WorldSchematic worldSchematic = SchematicWorldHandler.getSchematicWorld();
+         if (placement != null && worldSchematic != null) {
+            Map<String, Box> subRegions = placement.getSubRegionBoxes(RequiredEnabled.ANY);
+            if (subRegions != null && !subRegions.isEmpty()) {
+               for (Box box : subRegions.values()) {
+                  if (box != null && box.getPos1() != null && box.getPos2() != null) {
+                     BlockPos p1 = box.getPos1();
+                     BlockPos p2 = box.getPos2();
+                     int scanMinX = Math.max(Math.min(p1.getX(), p2.getX()), min.getX());
+                     int scanMaxX = Math.min(Math.max(p1.getX(), p2.getX()), max.getX());
+                     int scanMinY = Math.max(Math.min(p1.getY(), p2.getY()), min.getY());
+                     int scanMaxY = Math.min(Math.max(p1.getY(), p2.getY()), max.getY());
+                     int scanMinZ = Math.max(Math.min(p1.getZ(), p2.getZ()), min.getZ());
+                     int scanMaxZ = Math.min(Math.max(p1.getZ(), p2.getZ()), max.getZ());
+                     if (scanMinX <= scanMaxX && scanMinY <= scanMaxY && scanMinZ <= scanMaxZ) {
+                        for (int x = scanMinX; x <= scanMaxX; x++) {
+                           for (int y = scanMinY; y <= scanMaxY; y++) {
+                              for (int z = scanMinZ; z <= scanMaxZ; z++) {
+                                 BlockPos worldPos = new BlockPos(x, y, z);
+                                 BlockState schematicState = worldSchematic.getBlockState(worldPos);
+                                 if (schematicState != null
+                                    && !schematicState.isAir()
+                                    && (ignoredBlocks == null || !ignoredBlocks.contains(schematicState.getBlock()))) {
+                                    BlockState currentState = mc.world.getBlockState(worldPos);
+                                    if (onlyAir ? currentState.getBlock() instanceof AirBlock : currentState.getBlock() != schematicState.getBlock()) {
+                                       double distSq = center.getSquaredDistance(worldPos);
+                                       if (distSq < closestDistSq) {
+                                          closestDistSq = distSq;
+                                          closest = worldPos;
                                        }
                                     }
                                  }
@@ -417,9 +418,9 @@ public class LitematicaHelperImpl implements LitematicaHelper {
                }
             }
          }
-
-         return closest;
       }
+
+      return closest;
    }
 
    @Override
@@ -433,38 +434,38 @@ public class LitematicaHelperImpl implements LitematicaHelper {
       List<BlockPos> result = new ArrayList<>();
       if (mc.world == null) {
          return result;
-      } else {
-         for (SchematicPlacement placement : DataManager.getSchematicPlacementManager().getAllSchematicsPlacements()) {
-            WorldSchematic worldSchematic = SchematicWorldHandler.getSchematicWorld();
-            if (placement != null && worldSchematic != null) {
-               Map<String, Box> subRegions = placement.getSubRegionBoxes(RequiredEnabled.ANY);
-               if (subRegions != null && !subRegions.isEmpty()) {
-                  label122:
-                  for (Box box : subRegions.values()) {
-                     if (box != null && box.getPos1() != null && box.getPos2() != null) {
-                        BlockPos p1 = box.getPos1();
-                        BlockPos p2 = box.getPos2();
-                        int scanMinX = Math.max(Math.min(p1.getX(), p2.getX()), min.getX());
-                        int scanMaxX = Math.min(Math.max(p1.getX(), p2.getX()), max.getX());
-                        int scanMinY = Math.max(Math.min(p1.getY(), p2.getY()), min.getY());
-                        int scanMaxY = Math.min(Math.max(p1.getY(), p2.getY()), max.getY());
-                        int scanMinZ = Math.max(Math.min(p1.getZ(), p2.getZ()), min.getZ());
-                        int scanMaxZ = Math.min(Math.max(p1.getZ(), p2.getZ()), max.getZ());
-                        if (scanMinX <= scanMaxX && scanMinY <= scanMaxY && scanMinZ <= scanMaxZ) {
-                           for (int x = scanMinX; x <= scanMaxX; x++) {
-                              for (int y = scanMinY; y <= scanMaxY; y++) {
-                                 for (int z = scanMinZ; z <= scanMaxZ; z++) {
-                                    if (result.size() >= maxResults) {
-                                       continue label122;
-                                    }
+      }
 
-                                    BlockPos worldPos = new BlockPos(x, y, z);
-                                    BlockState currentState = mc.world.getBlockState(worldPos);
-                                    if (!currentState.isAir()) {
-                                       BlockState schematicState = worldSchematic.getBlockState(worldPos);
-                                       if ((!ignoreAir || schematicState != null && !schematicState.isAir()) && schematicState != currentState) {
-                                          result.add(worldPos);
-                                       }
+      for (SchematicPlacement placement : DataManager.getSchematicPlacementManager().getAllSchematicsPlacements()) {
+         WorldSchematic worldSchematic = SchematicWorldHandler.getSchematicWorld();
+         if (placement != null && worldSchematic != null) {
+            Map<String, Box> subRegions = placement.getSubRegionBoxes(RequiredEnabled.ANY);
+            if (subRegions != null && !subRegions.isEmpty()) {
+               label122:
+               for (Box box : subRegions.values()) {
+                  if (box != null && box.getPos1() != null && box.getPos2() != null) {
+                     BlockPos p1 = box.getPos1();
+                     BlockPos p2 = box.getPos2();
+                     int scanMinX = Math.max(Math.min(p1.getX(), p2.getX()), min.getX());
+                     int scanMaxX = Math.min(Math.max(p1.getX(), p2.getX()), max.getX());
+                     int scanMinY = Math.max(Math.min(p1.getY(), p2.getY()), min.getY());
+                     int scanMaxY = Math.min(Math.max(p1.getY(), p2.getY()), max.getY());
+                     int scanMinZ = Math.max(Math.min(p1.getZ(), p2.getZ()), min.getZ());
+                     int scanMaxZ = Math.min(Math.max(p1.getZ(), p2.getZ()), max.getZ());
+                     if (scanMinX <= scanMaxX && scanMinY <= scanMaxY && scanMinZ <= scanMaxZ) {
+                        for (int x = scanMinX; x <= scanMaxX; x++) {
+                           for (int y = scanMinY; y <= scanMaxY; y++) {
+                              for (int z = scanMinZ; z <= scanMaxZ; z++) {
+                                 if (result.size() >= maxResults) {
+                                    continue label122;
+                                 }
+
+                                 BlockPos worldPos = new BlockPos(x, y, z);
+                                 BlockState currentState = mc.world.getBlockState(worldPos);
+                                 if (!currentState.isAir()) {
+                                    BlockState schematicState = worldSchematic.getBlockState(worldPos);
+                                    if ((!ignoreAir || schematicState != null && !schematicState.isAir()) && schematicState != currentState) {
+                                       result.add(worldPos);
                                     }
                                  }
                               }
@@ -475,49 +476,49 @@ public class LitematicaHelperImpl implements LitematicaHelper {
                }
             }
          }
-
-         return result;
       }
+
+      return result;
    }
 
    @Override
    public boolean hasRemainingPositions(Block block, boolean onlyAir, List<Block> ignoredBlocks) {
       if (mc.world == null) {
          return false;
-      } else {
-         for (SchematicPlacement placement : DataManager.getSchematicPlacementManager().getAllSchematicsPlacements()) {
-            WorldSchematic worldSchematic = SchematicWorldHandler.getSchematicWorld();
-            if (placement != null && worldSchematic != null) {
-               Map<String, Box> subRegions = placement.getSubRegionBoxes(RequiredEnabled.ANY);
-               if (subRegions != null && !subRegions.isEmpty()) {
-                  for (Box box : subRegions.values()) {
-                     if (box != null && box.getPos1() != null && box.getPos2() != null) {
-                        BlockPos p1 = box.getPos1();
-                        BlockPos p2 = box.getPos2();
-                        int minX = Math.min(p1.getX(), p2.getX());
-                        int maxX = Math.max(p1.getX(), p2.getX());
-                        int minY = Math.min(p1.getY(), p2.getY());
-                        int maxY = Math.max(p1.getY(), p2.getY());
-                        int minZ = Math.min(p1.getZ(), p2.getZ());
-                        int maxZ = Math.max(p1.getZ(), p2.getZ());
+      }
 
-                        for (int x = minX; x <= maxX; x++) {
-                           for (int y = minY; y <= maxY; y++) {
-                              for (int z = minZ; z <= maxZ; z++) {
-                                 BlockPos worldPos = new BlockPos(x, y, z);
-                                 BlockState schematicState = worldSchematic.getBlockState(worldPos);
-                                 if (schematicState != null
-                                    && !schematicState.isAir()
-                                    && schematicState.getBlock() == block
-                                    && (ignoredBlocks == null || !ignoredBlocks.contains(block))) {
-                                    BlockState currentState = mc.world.getBlockState(worldPos);
-                                    if (onlyAir) {
-                                       if (currentState.getBlock() instanceof AirBlock) {
-                                          return true;
-                                       }
-                                    } else if (currentState.getBlock() != block) {
+      for (SchematicPlacement placement : DataManager.getSchematicPlacementManager().getAllSchematicsPlacements()) {
+         WorldSchematic worldSchematic = SchematicWorldHandler.getSchematicWorld();
+         if (placement != null && worldSchematic != null) {
+            Map<String, Box> subRegions = placement.getSubRegionBoxes(RequiredEnabled.ANY);
+            if (subRegions != null && !subRegions.isEmpty()) {
+               for (Box box : subRegions.values()) {
+                  if (box != null && box.getPos1() != null && box.getPos2() != null) {
+                     BlockPos p1 = box.getPos1();
+                     BlockPos p2 = box.getPos2();
+                     int minX = Math.min(p1.getX(), p2.getX());
+                     int maxX = Math.max(p1.getX(), p2.getX());
+                     int minY = Math.min(p1.getY(), p2.getY());
+                     int maxY = Math.max(p1.getY(), p2.getY());
+                     int minZ = Math.min(p1.getZ(), p2.getZ());
+                     int maxZ = Math.max(p1.getZ(), p2.getZ());
+
+                     for (int x = minX; x <= maxX; x++) {
+                        for (int y = minY; y <= maxY; y++) {
+                           for (int z = minZ; z <= maxZ; z++) {
+                              BlockPos worldPos = new BlockPos(x, y, z);
+                              BlockState schematicState = worldSchematic.getBlockState(worldPos);
+                              if (schematicState != null
+                                 && !schematicState.isAir()
+                                 && schematicState.getBlock() == block
+                                 && (ignoredBlocks == null || !ignoredBlocks.contains(block))) {
+                                 BlockState currentState = mc.world.getBlockState(worldPos);
+                                 if (onlyAir) {
+                                    if (currentState.getBlock() instanceof AirBlock) {
                                        return true;
                                     }
+                                 } else if (currentState.getBlock() != block) {
+                                    return true;
                                  }
                               }
                            }
@@ -527,9 +528,9 @@ public class LitematicaHelperImpl implements LitematicaHelper {
                }
             }
          }
-
-         return false;
       }
+
+      return false;
    }
 
    @Override
@@ -545,16 +546,8 @@ public class LitematicaHelperImpl implements LitematicaHelper {
                   BlockPos p2 = box.getPos2();
                   bounds.add(
                      new BlockPos[]{
-                        new BlockPos(
-                           Math.min(p1.getX(), p2.getX()),
-                           Math.min(p1.getY(), p2.getY()),
-                           Math.min(p1.getZ(), p2.getZ())
-                        ),
-                        new BlockPos(
-                           Math.max(p1.getX(), p2.getX()),
-                           Math.max(p1.getY(), p2.getY()),
-                           Math.max(p1.getZ(), p2.getZ())
-                        )
+                        new BlockPos(Math.min(p1.getX(), p2.getX()), Math.min(p1.getY(), p2.getY()), Math.min(p1.getZ(), p2.getZ())),
+                        new BlockPos(Math.max(p1.getX(), p2.getX()), Math.max(p1.getY(), p2.getY()), Math.max(p1.getZ(), p2.getZ()))
                      }
                   );
                }

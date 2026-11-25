@@ -20,7 +20,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-@Mixin({HandledScreen.class})
+@Mixin(HandledScreen.class)
 public abstract class ScreenHandlerMixin<T extends ScreenHandler> extends Screen implements ScreenHandlerProvider<T> {
    @Shadow
    protected T handler;
@@ -36,10 +36,7 @@ public abstract class ScreenHandlerMixin<T extends ScreenHandler> extends Screen
       super(title);
    }
 
-   @Inject(
-      method = {"init"},
-      at = {@At("TAIL")}
-   )
+   @Inject(method = "init", at = @At("TAIL"))
    private void onInit(CallbackInfo info) {
       ContainerTweaks ct = (ContainerTweaks)Modules.get().get(ContainerTweaks.class);
       if (ct.isActive() && (Boolean)ct.QfZy2gWnKInxFPr.get()) {
@@ -74,17 +71,13 @@ public abstract class ScreenHandlerMixin<T extends ScreenHandler> extends Screen
       }
 
       for (CustomHudButton btn : MusheorSystem.get().customButtons) {
-         if (btn.I3psabmOrOI.fStlZIvY9lS8(CustomHudButton.ScreenTarget.fStlZIvY9lS8)) {
+         if (btn.I3psabmOrOI.fStlZIvY9lS8(CustomHudButton.ScreenTarget.Inventory)) {
             this.addDrawableChild(btn.fStlZIvY9lS8(this.getScreenHandler()));
          }
       }
    }
 
-   @Inject(
-      method = {"onMouseClick"},
-      at = {@At("HEAD")},
-      cancellable = true
-   )
+   @Inject(method = "onMouseClick", at = @At("HEAD"), cancellable = true)
    private void onMouseClick(Slot slot, int slotId, int button, SlotActionType actionType, CallbackInfo ci) {
       if (ContainerTweaks.fStlZIvY9lS8.isActive() && (Boolean)MusheorSystem.Manager.noPacketKick.get() && !jU8xXhmkg.QfZy2gWnKInxFPr()) {
          ci.cancel();

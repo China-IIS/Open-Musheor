@@ -11,30 +11,25 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-@Mixin({Entity.class})
+@Mixin(Entity.class)
 public class MixinPlayerOutline {
-   @Inject(
-      method = {"isGlowing"},
-      at = {@At("HEAD")},
-      cancellable = true
-   )
+   public MixinPlayerOutline() {
+   }
+
+   @Inject(method = "isGlowing", at = @At("HEAD"), cancellable = true)
    private void makeGlow(CallbackInfoReturnable<Boolean> cir) {
       if (!(Boolean)MusheorSystem.Manager.disableMutuals.get()) {
-         Entity entity = (Entity)this;
+         Entity entity = (Entity)(Object)this;
          if (entity instanceof PlayerEntity player && MutualManager.mutualManager.shouldGlow(player) && !MinecraftClient.getInstance().options.hudHidden) {
             cir.setReturnValue(true);
          }
       }
    }
 
-   @Inject(
-      method = {"getTeamColorValue"},
-      at = {@At("HEAD")},
-      cancellable = true
-   )
+   @Inject(method = "getTeamColorValue", at = @At("HEAD"), cancellable = true)
    private void getTeamColorValue(CallbackInfoReturnable<Integer> cir) {
       if (!(Boolean)MusheorSystem.Manager.disableMutuals.get()) {
-         Entity entity = (Entity)this;
+         Entity entity = (Entity)(Object)this;
          if (entity instanceof PlayerEntity player) {
             if (MutualManager.mutualManager.isPost(player)) {
                cir.setReturnValue(Formatting.GREEN.getColorValue());

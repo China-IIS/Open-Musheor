@@ -9,15 +9,14 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-@Mixin({Entity.class})
+@Mixin(Entity.class)
 public class MixinPearlOutline {
-   @Inject(
-      method = {"isGlowing"},
-      at = {@At("HEAD")},
-      cancellable = true
-   )
+   public MixinPearlOutline() {
+   }
+
+   @Inject(method = "isGlowing", at = @At("HEAD"), cancellable = true)
    private void onIsGlowing(CallbackInfoReturnable<Boolean> cir) {
-      Entity entity = (Entity)this;
+      Entity entity = (Entity)(Object)this;
       if (entity instanceof EnderPearlEntity pearl) {
          MoreTags moreTags = (MoreTags)Modules.get().get(MoreTags.class);
          if (moreTags != null && moreTags.fStlZIvY9lS8(pearl)) {
@@ -26,13 +25,9 @@ public class MixinPearlOutline {
       }
    }
 
-   @Inject(
-      method = {"getTeamColorValue"},
-      at = {@At("HEAD")},
-      cancellable = true
-   )
+   @Inject(method = "getTeamColorValue", at = @At("HEAD"), cancellable = true)
    private void onGetTeamColorValue(CallbackInfoReturnable<Integer> cir) {
-      Entity entity = (Entity)this;
+      Entity entity = (Entity)(Object)this;
       if (entity instanceof EnderPearlEntity pearl) {
          MoreTags moreTags = (MoreTags)Modules.get().get(MoreTags.class);
          if (moreTags != null && moreTags.fStlZIvY9lS8(pearl)) {

@@ -15,13 +15,12 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-@Mixin({ClientConnection.class})
+@Mixin(ClientConnection.class)
 public abstract class MixinClientConnection {
-   @Inject(
-      method = {"send"},
-      at = {@At("HEAD")},
-      cancellable = true
-   )
+   public MixinClientConnection() {
+   }
+
+   @Inject(method = "send", at = @At("HEAD"), cancellable = true)
    private void onSendPacket(Packet<?> packet, CallbackInfo ci) {
       if (packet instanceof ClickSlotC2SPacket || packet instanceof CreativeInventoryActionC2SPacket || packet instanceof ButtonClickC2SPacket) {
          if (ContainerTweaks.fStlZIvY9lS8.isActive() && (Boolean)MusheorSystem.Manager.noPacketKick.get() && !jU8xXhmkg.QfZy2gWnKInxFPr()) {

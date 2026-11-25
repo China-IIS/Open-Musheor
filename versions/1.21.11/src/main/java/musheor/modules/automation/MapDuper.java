@@ -6,9 +6,9 @@ import java.util.LinkedHashSet;
 import java.util.Set;
 import java.util.function.Predicate;
 import meteordevelopment.meteorclient.events.world.TickEvent.Pre;
-import meteordevelopment.meteorclient.settings.IntSetting.Builder;
 import meteordevelopment.meteorclient.settings.Setting;
 import meteordevelopment.meteorclient.settings.SettingGroup;
+import meteordevelopment.meteorclient.settings.IntSetting.Builder;
 import meteordevelopment.meteorclient.systems.modules.Module;
 import meteordevelopment.orbit.EventHandler;
 import musheor.musheor;
@@ -113,7 +113,7 @@ public class MapDuper extends Module {
                .visible(() -> (Boolean)this.BrmKXSYhWhqoB1.get() && (Boolean)this.duJ6sPeetAcBh6P.get()))
             .build()
       );
-   private MapDuper.Stage V7zKJ4n6D = MapDuper.Stage.wSJeYsJcmjNZf;
+   private MapDuper.Stage V7zKJ4n6D = MapDuper.Stage.Done;
    private final Set<MapIdComponent> voxTwgNzyrpaAnP = new LinkedHashSet<>();
    private final Deque<MapIdComponent> xileXsbo = new ArrayDeque<>();
    private int nOwp0NYl;
@@ -140,7 +140,7 @@ public class MapDuper extends Module {
    }
 
    private void fStlZIvY9lS8() {
-      this.V7zKJ4n6D = MapDuper.Stage.wSJeYsJcmjNZf;
+      this.V7zKJ4n6D = MapDuper.Stage.Done;
       this.voxTwgNzyrpaAnP.clear();
       this.xileXsbo.clear();
       this.nOwp0NYl = 0;
@@ -164,17 +164,17 @@ public class MapDuper extends Module {
       if (this.mc.player != null && this.mc.world != null && this.mc.interactionManager != null) {
          CartographyTableScreenHandler handler = this.TJImwK2();
          if (handler == null) {
-            if (this.V7zKJ4n6D != MapDuper.Stage.wSJeYsJcmjNZf) {
+            if (this.V7zKJ4n6D != MapDuper.Stage.Done) {
                this.QfZy2gWnKInxFPr("Cartography table closed");
             }
          } else {
-            if (this.V7zKJ4n6D == MapDuper.Stage.wSJeYsJcmjNZf) {
+            if (this.V7zKJ4n6D == MapDuper.Stage.Done) {
                if (handler.syncId == this.ZlNrrNcv3Ylc) {
                   return;
                }
 
                this.fStlZIvY9lS8(handler);
-               if (this.V7zKJ4n6D == MapDuper.Stage.wSJeYsJcmjNZf) {
+               if (this.V7zKJ4n6D == MapDuper.Stage.Done) {
                   return;
                }
             }
@@ -214,7 +214,7 @@ public class MapDuper extends Module {
       } else {
          this.jbUe84V1vykfK = this.voxTwgNzyrpaAnP.size();
          if (bundled) {
-            this.V7zKJ4n6D = MapDuper.Stage.fStlZIvY9lS8;
+            this.V7zKJ4n6D = MapDuper.Stage.Extract;
          } else {
             this.QfZy2gWnKInxFPr(handler);
          }
@@ -239,15 +239,15 @@ public class MapDuper extends Module {
       }
 
       this.nOwp0NYl = (Integer)this.TJImwK2.get();
-      this.V7zKJ4n6D = MapDuper.Stage.QfZy2gWnKInxFPr;
+      this.V7zKJ4n6D = MapDuper.Stage.Copy;
    }
 
    private boolean TJImwK2(CartographyTableScreenHandler handler) {
       return switch (this.V7zKJ4n6D) {
-         case fStlZIvY9lS8 -> this.wSJeYsJcmjNZf(handler);
-         case QfZy2gWnKInxFPr -> this.vGAMA89H(handler);
-         case TJImwK2 -> this.BrmKXSYhWhqoB1(handler);
-         case wSJeYsJcmjNZf -> false;
+         case Extract -> this.wSJeYsJcmjNZf(handler);
+         case Copy -> this.vGAMA89H(handler);
+         case Store -> this.BrmKXSYhWhqoB1(handler);
+         case Done -> false;
       };
    }
 
@@ -261,7 +261,7 @@ public class MapDuper extends Module {
          }
 
          acted = true;
-         if (this.TJImwK2() == null || this.V7zKJ4n6D != MapDuper.Stage.fStlZIvY9lS8 || !hadPitch && this.zbN84Osn9p5lD) {
+         if (this.TJImwK2() == null || this.V7zKJ4n6D != MapDuper.Stage.Extract || !hadPitch && this.zbN84Osn9p5lD) {
             break;
          }
       }
@@ -271,7 +271,7 @@ public class MapDuper extends Module {
 
    private boolean i2Nu6XHKic(CartographyTableScreenHandler handler) {
       if (fStlZIvY9lS8(handler.getCursorStack()) != null) {
-         int free = this.fStlZIvY9lS8((ScreenHandler)handler) > 4 ? this.QfZy2gWnKInxFPr((ScreenHandler)handler) : -1;
+         int free = this.countFreeInventorySlots(handler) > 4 ? this.findFreeInventorySlot(handler) : -1;
          if (free >= 0) {
             this.fStlZIvY9lS8(handler, free, 0, SlotActionType.PICKUP);
             return true;
@@ -299,42 +299,46 @@ public class MapDuper extends Module {
    private boolean vGAMA89H(CartographyTableScreenHandler handler) {
       if (this.I3psabmOrOI(handler)) {
          return true;
-      } else if (this.fStlZIvY9lS8((ScreenHandler)handler) < 2) {
-         return this.fStlZIvY9lS8(handler, true) ? true : this.fStlZIvY9lS8("Inventory full and nothing left that can be put away");
-      } else {
-         MapIdComponent id = this.xileXsbo.peekFirst();
-         if (id == null) {
-            this.V7zKJ4n6D = MapDuper.Stage.TJImwK2;
-            return true;
-         } else if (handler.getSlot(2).hasStack()) {
-            this.fStlZIvY9lS8(handler, 2, 0, SlotActionType.QUICK_MOVE);
-            if (this.umvNbb7iD9UpR) {
-               this.umvNbb7iD9UpR = false;
-               if (--this.nOwp0NYl <= 0) {
-                  this.fStlZIvY9lS8(id);
-               }
-            }
+      }
 
-            return true;
-         } else if (fStlZIvY9lS8(handler.getSlot(0).getStack()) != null) {
-            if (this.qhulAUwd(handler)) {
-               return true;
-            } else {
-               this.umvNbb7iD9UpR = true;
-               return false;
+      if (this.countFreeInventorySlots(handler) < 2) {
+         return this.fStlZIvY9lS8(handler, true) ? true : this.fStlZIvY9lS8("Inventory full and nothing left that can be put away");
+      }
+
+      MapIdComponent id = this.xileXsbo.peekFirst();
+      if (id == null) {
+         this.V7zKJ4n6D = MapDuper.Stage.Store;
+         return true;
+      }
+
+      if (handler.getSlot(2).hasStack()) {
+         this.fStlZIvY9lS8(handler, 2, 0, SlotActionType.QUICK_MOVE);
+         if (this.umvNbb7iD9UpR) {
+            this.umvNbb7iD9UpR = false;
+            if (--this.nOwp0NYl <= 0) {
+               this.fStlZIvY9lS8(id);
             }
-         } else if (this.qhulAUwd(handler)) {
+         }
+
+         return true;
+      } else if (fStlZIvY9lS8(handler.getSlot(0).getStack()) != null) {
+         if (this.qhulAUwd(handler)) {
+            return true;
+         }
+
+         this.umvNbb7iD9UpR = true;
+         return false;
+      } else if (this.qhulAUwd(handler)) {
+         return true;
+      } else {
+         int slot = this.fStlZIvY9lS8(handler, stack -> id.equals(fStlZIvY9lS8(stack)));
+         if (slot < 0) {
+            this.fStlZIvY9lS8(id);
             return true;
          } else {
-            int slot = this.fStlZIvY9lS8((ScreenHandler)handler, (Predicate<ItemStack>)(stack -> id.equals(fStlZIvY9lS8(stack))));
-            if (slot < 0) {
-               this.fStlZIvY9lS8(id);
-               return true;
-            } else {
-               this.fStlZIvY9lS8(handler, slot, 0, SlotActionType.QUICK_MOVE);
-               this.umvNbb7iD9UpR = true;
-               return true;
-            }
+            this.fStlZIvY9lS8(handler, slot, 0, SlotActionType.QUICK_MOVE);
+            this.umvNbb7iD9UpR = true;
+            return true;
          }
       }
    }
@@ -350,7 +354,7 @@ public class MapDuper extends Module {
       if (handler.getSlot(1).hasStack()) {
          return false;
       } else {
-         int empty = this.fStlZIvY9lS8((ScreenHandler)handler, (Predicate<ItemStack>)(stack -> stack.isOf(Items.MAP)));
+         int empty = this.fStlZIvY9lS8(handler, stack -> stack.isOf(Items.MAP));
          if (empty < 0) {
             this.fStlZIvY9lS8("Out of empty maps");
             return true;
@@ -364,11 +368,11 @@ public class MapDuper extends Module {
    private boolean BrmKXSYhWhqoB1(CartographyTableScreenHandler handler) {
       if (this.fStlZIvY9lS8(handler, false)) {
          return true;
-      } else if (this.TJImwK2((ScreenHandler)handler) && this.fStlZIvY9lS8((ScreenHandler)handler) > 4) {
-         this.V7zKJ4n6D = MapDuper.Stage.fStlZIvY9lS8;
+      } else if (this.hasUnfinishedMapsInSourceBundle(handler) && this.countFreeInventorySlots(handler) > 4) {
+         this.V7zKJ4n6D = MapDuper.Stage.Extract;
          return true;
       } else {
-         this.QfZy2gWnKInxFPr(null);
+         this.QfZy2gWnKInxFPr((String)null);
          return false;
       }
    }
@@ -390,7 +394,7 @@ public class MapDuper extends Module {
       ItemStack cursor = handler.getCursorStack();
       if (fStlZIvY9lS8(cursor) != null) {
          if (cursor.getCount() > 1) {
-            int free = this.QfZy2gWnKInxFPr((ScreenHandler)handler);
+            int free = this.findFreeInventorySlot(handler);
             if (free >= 0) {
                this.fStlZIvY9lS8(handler, free, 1, SlotActionType.PICKUP);
                return true;
@@ -405,9 +409,11 @@ public class MapDuper extends Module {
             this.Nt3xeF = -1;
             return this.I3psabmOrOI(handler);
          }
-      } else if (this.I3psabmOrOI(handler)) {
-         return true;
       } else {
+         if (this.I3psabmOrOI(handler)) {
+            return true;
+         }
+
          for (int slot = 3; slot < handler.slots.size(); slot++) {
             MapIdComponent id = fStlZIvY9lS8(handler.getSlot(slot).getStack());
             if (id != null && this.voxTwgNzyrpaAnP.contains(id) && (!onlyCompleted || this.flWHzEyn.contains(id))) {
@@ -453,24 +459,24 @@ public class MapDuper extends Module {
    private boolean fStlZIvY9lS8(CartographyTableScreenHandler handler, int slot) {
       if (!this.fStlZIvY9lS8((ScreenHandler)handler, slot)) {
          return false;
-      } else {
-         int limit = slot == this.FVjbhYkk53UT ? 64 : (Integer)this.j376sIQ.get();
-         return this.TJImwK2(handler, slot) < limit;
       }
+
+      int limit = slot == this.FVjbhYkk53UT ? 64 : (Integer)this.j376sIQ.get();
+      return this.TJImwK2(handler, slot) < limit;
    }
 
    private boolean I3psabmOrOI(CartographyTableScreenHandler handler) {
       if (handler.getCursorStack().isEmpty()) {
          return false;
-      } else {
-         int free = this.QfZy2gWnKInxFPr((ScreenHandler)handler);
-         if (free < 0) {
-            return false;
-         } else {
-            this.fStlZIvY9lS8(handler, free, 0, SlotActionType.PICKUP);
-            return true;
-         }
       }
+
+      int free = this.findFreeInventorySlot(handler);
+      if (free < 0) {
+         return false;
+      }
+
+      this.fStlZIvY9lS8(handler, free, 0, SlotActionType.PICKUP);
+      return true;
    }
 
    private void fStlZIvY9lS8(ScreenHandler handler, int slot, int button, SlotActionType action) {
@@ -533,7 +539,7 @@ public class MapDuper extends Module {
       return -1;
    }
 
-   private int fStlZIvY9lS8(ScreenHandler handler) {
+   private int countFreeInventorySlots(ScreenHandler handler) {
       int count = 0;
 
       for (int slot = 3; slot < handler.slots.size(); slot++) {
@@ -545,7 +551,7 @@ public class MapDuper extends Module {
       return count;
    }
 
-   private int QfZy2gWnKInxFPr(ScreenHandler handler) {
+   private int findFreeInventorySlot(ScreenHandler handler) {
       for (int slot = 3; slot < handler.slots.size(); slot++) {
          if (!handler.getSlot(slot).hasStack()) {
             return slot;
@@ -567,17 +573,17 @@ public class MapDuper extends Module {
       BundleContentsComponent contents = QfZy2gWnKInxFPr(handler, slot);
       if (contents == null) {
          return 0;
-      } else {
-         int count = 0;
-
-         for (ItemStack inner : contents.iterate()) {
-            if (fStlZIvY9lS8(inner) != null) {
-               count += inner.getCount();
-            }
-         }
-
-         return count;
       }
+
+      int count = 0;
+
+      for (ItemStack inner : contents.iterate()) {
+         if (fStlZIvY9lS8(inner) != null) {
+            count += inner.getCount();
+         }
+      }
+
+      return count;
    }
 
    private boolean wSJeYsJcmjNZf(ScreenHandler handler, int slot) {
@@ -599,24 +605,24 @@ public class MapDuper extends Module {
       return this.fStlZIvY9lS8(handler, slot) && this.TJImwK2(handler, slot) > 0;
    }
 
-   private boolean TJImwK2(ScreenHandler handler) {
+   private boolean hasUnfinishedMapsInSourceBundle(ScreenHandler handler) {
       if (!this.fStlZIvY9lS8(handler, this.FVjbhYkk53UT)) {
          return false;
-      } else {
-         BundleContentsComponent contents = QfZy2gWnKInxFPr(handler, this.FVjbhYkk53UT);
-         if (contents == null) {
-            return false;
-         } else {
-            for (ItemStack inner : contents.iterate()) {
-               MapIdComponent id = fStlZIvY9lS8(inner);
-               if (id != null && !this.flWHzEyn.contains(id)) {
-                  return true;
-               }
-            }
+      }
 
-            return false;
+      BundleContentsComponent contents = QfZy2gWnKInxFPr(handler, this.FVjbhYkk53UT);
+      if (contents == null) {
+         return false;
+      }
+
+      for (ItemStack inner : contents.iterate()) {
+         MapIdComponent id = fStlZIvY9lS8(inner);
+         if (id != null && !this.flWHzEyn.contains(id)) {
+            return true;
          }
       }
+
+      return false;
    }
 
    private int duJ6sPeetAcBh6P(CartographyTableScreenHandler handler) {
@@ -633,21 +639,21 @@ public class MapDuper extends Module {
       Set<MapIdComponent> ids = new LinkedHashSet<>();
       if (this.FVjbhYkk53UT < 0) {
          return ids;
-      } else {
-         BundleContentsComponent contents = QfZy2gWnKInxFPr(handler, this.FVjbhYkk53UT);
-         if (contents == null) {
-            return ids;
-         } else {
-            for (ItemStack inner : contents.iterate()) {
-               MapIdComponent id = fStlZIvY9lS8(inner);
-               if (id != null) {
-                  ids.add(id);
-               }
-            }
+      }
 
-            return ids;
+      BundleContentsComponent contents = QfZy2gWnKInxFPr(handler, this.FVjbhYkk53UT);
+      if (contents == null) {
+         return ids;
+      }
+
+      for (ItemStack inner : contents.iterate()) {
+         MapIdComponent id = fStlZIvY9lS8(inner);
+         if (id != null) {
+            ids.add(id);
          }
       }
+
+      return ids;
    }
 
    private Set<MapIdComponent> V7zKJ4n6D(CartographyTableScreenHandler handler) {
@@ -664,13 +670,16 @@ public class MapDuper extends Module {
    }
 
    public String getInfoString() {
-      return this.V7zKJ4n6D == MapDuper.Stage.wSJeYsJcmjNZf ? null : this.V7zKJ4n6D.name().toLowerCase();
+      return this.V7zKJ4n6D == MapDuper.Stage.Done ? null : this.V7zKJ4n6D.name().toLowerCase();
    }
 
-   private static enum Stage {
-      fStlZIvY9lS8,
-      QfZy2gWnKInxFPr,
-      TJImwK2,
-      wSJeYsJcmjNZf;
+   private enum Stage {
+      Extract,
+      Copy,
+      Store,
+      Done;
+
+      Stage() {
+      }
    }
 }

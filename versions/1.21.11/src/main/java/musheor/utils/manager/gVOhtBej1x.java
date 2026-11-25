@@ -13,14 +13,14 @@ import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.network.PlayerListEntry;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EquipmentSlot;
-import net.minecraft.entity.data.DataTracker.SerializedEntry;
 import net.minecraft.entity.data.TrackedDataHandler;
+import net.minecraft.entity.data.DataTracker.SerializedEntry;
 import net.minecraft.entity.projectile.FireworkRocketEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
-import net.minecraft.network.packet.c2s.play.ClientCommandC2SPacket.Mode;
 import net.minecraft.network.packet.c2s.play.ClientCommandC2SPacket;
 import net.minecraft.network.packet.c2s.play.PlayerInteractItemC2SPacket;
+import net.minecraft.network.packet.c2s.play.ClientCommandC2SPacket.Mode;
 import net.minecraft.network.packet.s2c.play.EntityTrackerUpdateS2CPacket;
 import net.minecraft.network.packet.s2c.play.PlayerPositionLookS2CPacket;
 import net.minecraft.screen.slot.SlotActionType;
@@ -71,48 +71,50 @@ public class gVOhtBej1x {
    private static boolean zkcZ4Xkp9Ez7Y() {
       if (!fStlZIvY9lS8()) {
          return false;
-      } else if (JhujBv5.fStlZIvY9lS8.player.isOnGround()) {
+      }
+
+      if (JhujBv5.fStlZIvY9lS8.player.isOnGround()) {
          QfZy2gWnKInxFPr();
          return true;
-      } else {
-         BrmKXSYhWhqoB1++;
-         if (qhulAUwd && ++TXWyNb > 8) {
-            fStlZIvY9lS8(true);
-         }
+      }
 
-         if (flWHzEyn() && jU8xXhmkg.wSJeYsJcmjNZf() > 4) {
-            boolean wearingElytra = JhujBv5.fStlZIvY9lS8.player.getEquippedStack(EquipmentSlot.CHEST).isOf(Items.ELYTRA);
-            int elytraSlot = wearingElytra ? -1 : i2Nu6XHKic();
-            if (wearingElytra || elytraSlot != -1 && JhujBv5.fStlZIvY9lS8.player.currentScreenHandler == JhujBv5.fStlZIvY9lS8.player.playerScreenHandler) {
-               boolean swapped = false;
-               fStlZIvY9lS8(false);
-               vGAMA89H = false;
-               i2Nu6XHKic = true;
-               BrmKXSYhWhqoB1 = 0;
-               if (!wearingElytra) {
-                  fStlZIvY9lS8(elytraSlot);
-                  swapped = true;
-               }
+      BrmKXSYhWhqoB1++;
+      if (qhulAUwd && ++TXWyNb > 8) {
+         fStlZIvY9lS8(true);
+      }
 
-               umvNbb7iD9UpR();
-               if (TJImwK2) {
-                  TJImwK2 = false;
-                  if (pvfA15fQSVM.TJImwK2(Items.FIREWORK_ROCKET) != -1) {
-                     xileXsbo();
-                  }
-               }
-
-               if (swapped) {
-                  fStlZIvY9lS8(elytraSlot);
-               }
-
-               return true;
-            } else {
-               return true;
+      if (flWHzEyn() && jU8xXhmkg.wSJeYsJcmjNZf() > 4) {
+         boolean wearingElytra = JhujBv5.fStlZIvY9lS8.player.getEquippedStack(EquipmentSlot.CHEST).isOf(Items.ELYTRA);
+         int elytraSlot = wearingElytra ? -1 : i2Nu6XHKic();
+         if (wearingElytra || elytraSlot != -1 && JhujBv5.fStlZIvY9lS8.player.currentScreenHandler == JhujBv5.fStlZIvY9lS8.player.playerScreenHandler) {
+            boolean swapped = false;
+            fStlZIvY9lS8(false);
+            vGAMA89H = false;
+            i2Nu6XHKic = true;
+            BrmKXSYhWhqoB1 = 0;
+            if (!wearingElytra) {
+               fStlZIvY9lS8(elytraSlot);
+               swapped = true;
             }
+
+            umvNbb7iD9UpR();
+            if (TJImwK2) {
+               TJImwK2 = false;
+               if (pvfA15fQSVM.TJImwK2(Items.FIREWORK_ROCKET) != -1) {
+                  xileXsbo();
+               }
+            }
+
+            if (swapped) {
+               fStlZIvY9lS8(elytraSlot);
+            }
+
+            return true;
          } else {
             return true;
          }
+      } else {
+         return true;
       }
    }
 
@@ -148,12 +150,12 @@ public class gVOhtBej1x {
          if (!(event.packet instanceof PlayerPositionLookS2CPacket)) {
             if (event.packet instanceof EntityTrackerUpdateS2CPacket packet && i2Nu6XHKic) {
                ClientPlayerEntity player = JhujBv5.fStlZIvY9lS8.player;
-               if (player != null && packet.comp_1127() == player.getId()) {
-                  List<DataTracker.SerializedEntry<?>> values = packet.comp_1128();
+               if (player != null && packet.id() == player.getId()) {
+                  List<SerializedEntry<?>> values = packet.trackedValues();
 
                   for (int i = 0; i < values.size(); i++) {
-                     DataTracker.SerializedEntry<?> entry = values.get(i);
-                     if (entry.comp_1115() == 0 && entry.comp_1117() instanceof Byte flags) {
+                     SerializedEntry<?> entry = values.get(i);
+                     if (entry.id() == 0 && entry.value() instanceof Byte flags) {
                         if ((flags & -128) != 0) {
                            return;
                         }
@@ -163,11 +165,11 @@ public class gVOhtBej1x {
                            return;
                         }
 
-                        TrackedDataHandler<Byte> handler = entry.comp_1116();
+                        TrackedDataHandler<Byte> handler = (TrackedDataHandler<Byte>)(TrackedDataHandler<?>)entry.handler();
                         synchronized (wSJeYsJcmjNZf) {
                            try {
-                              values.set(i, new DataTracker.SerializedEntry(entry.comp_1115(), handler, (byte)(flags | -128)));
-                           } catch (UnsupportedOperationException var11) {
+                              values.set(i, new SerializedEntry(entry.id(), handler, (byte)(flags | -128)));
+                           } catch (UnsupportedOperationException e) {
                               return;
                            }
 
@@ -288,12 +290,12 @@ public class gVOhtBej1x {
    public static boolean qhulAUwd() {
       if (JhujBv5.fStlZIvY9lS8.player == null) {
          return true;
-      } else {
-         ItemStack worn = JhujBv5.fStlZIvY9lS8.player.getEquippedStack(EquipmentSlot.CHEST);
-         return worn.isOf(Items.ELYTRA) && worn.getMaxDamage() - worn.getDamage() > ElytraTweakz.QfZy2gWnKInxFPr.fStlZIvY9lS8.get()
-            ? false
-            : pvfA15fQSVM.vGAMA89H() == -1;
       }
+
+      ItemStack worn = JhujBv5.fStlZIvY9lS8.player.getEquippedStack(EquipmentSlot.CHEST);
+      return worn.isOf(Items.ELYTRA) && worn.getMaxDamage() - worn.getDamage() > ElytraTweakz.QfZy2gWnKInxFPr.fStlZIvY9lS8.get()
+         ? false
+         : pvfA15fQSVM.vGAMA89H() == -1;
    }
 
    public static void BrmKXSYhWhqoB1() {
@@ -396,7 +398,7 @@ public class gVOhtBej1x {
    public static void umvNbb7iD9UpR() {
       JhujBv5.fStlZIvY9lS8
          .interactionManager
-         .sendSequencedPacket(JhujBv5.fStlZIvY9lS8.world, sequence -> new ClientCommandC2SPacket(JhujBv5.fStlZIvY9lS8.player, ClientCommandC2SPacket.Mode.START_FALL_FLYING));
+         .sendSequencedPacket(JhujBv5.fStlZIvY9lS8.world, sequence -> new ClientCommandC2SPacket(JhujBv5.fStlZIvY9lS8.player, Mode.START_FALL_FLYING));
       JhujBv5.fStlZIvY9lS8.player.startGliding();
       duJ6sPeetAcBh6P();
    }

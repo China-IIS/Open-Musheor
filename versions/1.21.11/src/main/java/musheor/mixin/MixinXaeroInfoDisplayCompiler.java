@@ -16,23 +16,17 @@ import xaero.hud.minimap.info.InfoDisplay;
 import xaero.hud.minimap.info.render.compile.InfoDisplayCompiler;
 import xaero.hud.minimap.module.MinimapSession;
 
-@Mixin(
-   value = {InfoDisplayCompiler.class},
-   remap = false
-)
+@Mixin(value = InfoDisplayCompiler.class, remap = false)
 public abstract class MixinXaeroInfoDisplayCompiler {
    @Shadow
    @Final
    private List<Text> compiledLines;
 
-   @Inject(
-      method = {"compile"},
-      at = {@At("HEAD")},
-      cancellable = true
-   )
-   private void musheor$hideCoords(
-      InfoDisplay<?> infoDisplay, MinimapSession session, int size, BlockPos playerPos, CallbackInfoReturnable<List<Text>> cir
-   ) {
+   public MixinXaeroInfoDisplayCompiler() {
+   }
+
+   @Inject(method = "compile", at = @At("HEAD"), cancellable = true)
+   private void musheor$hideCoords(InfoDisplay<?> infoDisplay, MinimapSession session, int size, BlockPos playerPos, CallbackInfoReturnable<List<Text>> cir) {
       if (infoDisplay == BuiltInInfoDisplays.COORDINATES
          || infoDisplay == BuiltInInfoDisplays.OVERWORLD_COORDINATES
          || infoDisplay == BuiltInInfoDisplays.CHUNK_COORDINATES) {

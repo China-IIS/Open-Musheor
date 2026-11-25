@@ -1,12 +1,11 @@
 package musheor.modules.tech;
 
 import meteordevelopment.meteorclient.events.world.TickEvent.Pre;
-import meteordevelopment.meteorclient.settings.IntSetting.Builder;
 import meteordevelopment.meteorclient.settings.Setting;
 import meteordevelopment.meteorclient.settings.SettingGroup;
+import meteordevelopment.meteorclient.settings.IntSetting.Builder;
 import meteordevelopment.meteorclient.systems.modules.Module;
 import meteordevelopment.orbit.EventHandler;
-import musheor.musheor;
 import musheor.utils.irzXX;
 import net.minecraft.client.MinecraftClient;
 
@@ -31,7 +30,7 @@ public class Whisper extends Module {
       );
 
    public Whisper() {
-      super(musheor.MAIN, "TPA", "Used for sending TP requests to stasis-bots");
+      super(musheor.musheor.MAIN, "TPA", "Used for sending TP requests to stasis-bots");
    }
 
    @EventHandler

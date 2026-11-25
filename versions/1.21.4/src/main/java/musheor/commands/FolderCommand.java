@@ -43,8 +43,8 @@ public class FolderCommand extends Command {
    private void fStlZIvY9lS8(File folder) {
       try {
          new ProcessBuilder("explorer.exe", folder.getAbsolutePath()).start();
-      } catch (IOException var3) {
-         this.error("Failed to open folder: " + var3.getMessage(), new Object[0]);
+      } catch (IOException e) {
+         this.error("Failed to open folder: " + e.getMessage(), new Object[0]);
       }
    }
 }

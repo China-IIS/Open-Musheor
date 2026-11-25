@@ -12,18 +12,15 @@ import xaero.map.gui.IRightClickableElement;
 import xaero.map.gui.MapTileSelection;
 import xaero.map.gui.dropdown.rightclick.RightClickOption;
 
-@Mixin(
-   value = {GuiMap.class},
-   remap = false
-)
+@Mixin(value = GuiMap.class, remap = false)
 public abstract class MixinXearoGuiMap implements IRightClickableElement {
    @Shadow
    private MapTileSelection mapTileSelection;
 
-   @Inject(
-      method = {"getRightClickOptions"},
-      at = {@At("RETURN")}
-   )
+   public MixinXearoGuiMap() {
+   }
+
+   @Inject(method = "getRightClickOptions", at = @At("RETURN"))
    private void musheor$addOptions(CallbackInfoReturnable<ArrayList<RightClickOption>> cir) {
       MapTileSelection sel = this.mapTileSelection;
       if (sel != null) {

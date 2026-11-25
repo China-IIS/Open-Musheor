@@ -3,9 +3,9 @@ package musheor.modules.features;
 import meteordevelopment.meteorclient.events.game.GameJoinedEvent;
 import meteordevelopment.meteorclient.events.game.GameLeftEvent;
 import meteordevelopment.meteorclient.events.world.TickEvent.Pre;
-import meteordevelopment.meteorclient.settings.DoubleSetting.Builder;
 import meteordevelopment.meteorclient.settings.Setting;
 import meteordevelopment.meteorclient.settings.SettingGroup;
+import meteordevelopment.meteorclient.settings.DoubleSetting.Builder;
 import meteordevelopment.meteorclient.systems.modules.Module;
 import meteordevelopment.orbit.EventHandler;
 import musheor.musheor;
@@ -115,29 +115,29 @@ public class HorseFly extends Module {
    public boolean fStlZIvY9lS8(Entity e) {
       if (!this.QfZy2gWnKInxFPr(e)) {
          return false;
-      } else {
-         double f = (this.mc.options.forwardKey.isPressed() ? 1 : 0) - (this.mc.options.backKey.isPressed() ? 1 : 0);
-         double s = (this.mc.options.leftKey.isPressed() ? 1 : 0) - (this.mc.options.rightKey.isPressed() ? 1 : 0);
-         double x = 0.0;
-         double z = 0.0;
-         double len = Math.sqrt(s * s + f * f);
-         if (len > 1.0E-4) {
-            s /= len;
-            f /= len;
-            double yaw = Math.toRadians(this.mc.player.getYaw());
-            double sin = Math.sin(yaw);
-            double cos = Math.cos(yaw);
-            x = (s * cos - f * sin) * (Double)this.fStlZIvY9lS8.get();
-            z = (f * cos + s * sin) * (Double)this.fStlZIvY9lS8.get();
-         }
-
-         boolean up = this.mc.options.jumpKey.isPressed();
-         boolean down = this.mc.options.sprintKey.isPressed();
-         double y = up == down ? -(Double)this.TJImwK2.get() : (up ? (Double)this.QfZy2gWnKInxFPr.get() : -(Double)this.QfZy2gWnKInxFPr.get());
-         e.setVelocity(x, y, z);
-         e.move(MovementType.SELF, e.getVelocity());
-         e.onLanding();
-         return true;
       }
+
+      double f = (this.mc.options.forwardKey.isPressed() ? 1 : 0) - (this.mc.options.backKey.isPressed() ? 1 : 0);
+      double s = (this.mc.options.leftKey.isPressed() ? 1 : 0) - (this.mc.options.rightKey.isPressed() ? 1 : 0);
+      double x = 0.0;
+      double z = 0.0;
+      double len = Math.sqrt(s * s + f * f);
+      if (len > 1.0E-4) {
+         s /= len;
+         f /= len;
+         double yaw = Math.toRadians(this.mc.player.getYaw());
+         double sin = Math.sin(yaw);
+         double cos = Math.cos(yaw);
+         x = (s * cos - f * sin) * (Double)this.fStlZIvY9lS8.get();
+         z = (f * cos + s * sin) * (Double)this.fStlZIvY9lS8.get();
+      }
+
+      boolean up = this.mc.options.jumpKey.isPressed();
+      boolean down = this.mc.options.sprintKey.isPressed();
+      double y = up == down ? -(Double)this.TJImwK2.get() : (up ? (Double)this.QfZy2gWnKInxFPr.get() : -(Double)this.QfZy2gWnKInxFPr.get());
+      e.setVelocity(x, y, z);
+      e.move(MovementType.SELF, e.getVelocity());
+      e.onLanding();
+      return true;
    }
 }

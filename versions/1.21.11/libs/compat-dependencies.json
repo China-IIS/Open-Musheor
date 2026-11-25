@@ -1,0 +1,80 @@
+[
+  {
+    "project": "litematica",
+    "version": "0.26.16",
+    "id": "mengBR9D",
+    "file": "litematica-fabric-1.21.11-0.26.16.jar",
+    "url": "https://cdn.modrinth.com/data/bEpr0Arc/versions/mengBR9D/litematica-fabric-1.21.11-0.26.16.jar",
+    "bytes": 1966804,
+    "sha256": "69df83a3d229a1fe77ddbeb54071a5ac07c2284ed4d623ea075d04e5f0a6d328",
+    "sha512": "c7d8e4ee3a1a4eacb825b19d389a06e17f6c4b78c3074fd929eb1bb1f5eabdbd77bd09545229b042e50f47aa78deac4005809a4c4bf554537e816e40e2885005"
+  },
+  {
+    "project": "malilib",
+    "version": "0.27.20",
+    "id": "loabWpyU",
+    "file": "malilib-fabric-1.21.11-0.27.20.jar",
+    "url": "https://cdn.modrinth.com/data/GcWjdA9I/versions/loabWpyU/malilib-fabric-1.21.11-0.27.20.jar",
+    "bytes": 2161348,
+    "sha256": "48461c24a560c68afc4042545b654d8d5ea3796a9339681485aed76a326f6ef3",
+    "sha512": "c6a0cbc407962b43316e52b15d928aa2137efa86963cdcea29699f43efa6442519206bdbfac23e4c6c36237931006ecd12b9c6450a4efd1a9a20689e50b5622a"
+  },
+  {
+    "project": "xaeros-minimap",
+    "version": "fabric-1.21.11-25.3.5",
+    "id": "ImVKd3Zp",
+    "file": "xaerominimap-fabric-1.21.11-25.3.5.jar",
+    "url": "https://cdn.modrinth.com/data/1bokaNcj/versions/ImVKd3Zp/xaerominimap-fabric-1.21.11-25.3.5.jar",
+    "bytes": 2133305,
+    "sha256": "7658b6026fa5df2c3dacfdcd2951e156c75fbc5acea846e0639147b8f4236b52",
+    "sha512": "b7b48b1658b42ab9cf657469727750ec26e77b4b3211060f32bb8b2fabd7b86b5f806649dfa76c034bae16cad9ee4160b7e16dfca9e3b8dbdd968e59736bc528"
+  },
+  {
+    "project": "xaeros-world-map",
+    "version": "fabric-1.21.11-1.40.6",
+    "id": "Ljqxh4kI",
+    "file": "xaeroworldmap-fabric-1.21.11-1.40.6.jar",
+    "url": "https://cdn.modrinth.com/data/NcUtCpym/versions/Ljqxh4kI/xaeroworldmap-fabric-1.21.11-1.40.6.jar",
+    "bytes": 1426980,
+    "sha256": "c3896b938d6d1af796a3ff96135c63a610a34adc263ec6900ad8b039432a2d3b",
+    "sha512": "2750d204ae9e0f94200e4300104c2af94c272290e64427b5b9452e22973c8500c42932ea5120564ee091a509224676d65a0b75a70dceb0dde88b1cfa2d0669e8"
+  },
+  {
+    "project": "xaeroplus",
+    "version": "2.30.3+fabric-1.21.11",
+    "id": "7jG8IncF",
+    "file": "XaeroPlus-2.30.3+fabric-1.21.11-WM1.40.6-MM25.3.5.jar",
+    "url": "https://cdn.modrinth.com/data/EnPUzSTg/versions/7jG8IncF/XaeroPlus-2.30.3%2Bfabric-1.21.11-WM1.40.6-MM25.3.5.jar",
+    "bytes": 7794703,
+    "sha256": "9151d3a0934b089136b0503b819a12edead9141aaed7fcc8b4e6cf66b46f8000",
+    "sha512": "8658dfe6e3e0949a2254050d7161e310df6c38b2ac7fd112b0d17dd3cabc5e7a8e6ca73bf9f38a0c3bff753551ca061783186643c5f5ff8700d8254af3e428c6"
+  },
+  {
+    "project": "viafabricplus",
+    "version": "4.4.15",
+    "id": "RM6hveoK",
+    "file": "ViaFabricPlus-4.4.15.jar",
+    "url": "https://cdn.modrinth.com/data/rIC2XJV4/versions/RM6hveoK/ViaFabricPlus-4.4.15.jar",
+    "bytes": 27015009,
+    "sha256": "002308aba61f85ff236f9cda391e93c158a9b197674c5a1c75db2afd185f224e",
+    "sha512": "6762685c0243a9c7ec43321f2bc011030fd6566797a647219ed275d956c2272777dae0ff43ebd82a77368350494394f5b0c1d98284ffd762a4876fcfd68958c4"
+  },
+  {
+    "project": "viaversion",
+    "file": "viaversion-common-5.12.0-SNAPSHOT.jar",
+    "embeddedIn": "ViaFabricPlus-4.4.15.jar",
+    "url": "https://cdn.modrinth.com/data/rIC2XJV4/versions/RM6hveoK/ViaFabricPlus-4.4.15.jar!/META-INF/jars/viaversion-common-5.12.0-SNAPSHOT.jar",
+    "bytes": 6219457,
+    "sha256": "965c97babf44839ee8dde8f5762e646659ad17d3de87c7585db4d66c616d0df7",
+    "sha512": "e7edfb41deebccab43c608abde68feb9c4479b9e5b2d14aec3ce01b1a5efd13c6bf2c2ccd5cdabefd536e219fb27eb6c13f9e3af88ca01a7ed7cbe6767a0c075"
+  },
+  {
+    "project": "xaerolib",
+    "file": "xaerolib-fabric-1.21.11-1.0.45.jar",
+    "embeddedIn": "xaerominimap-fabric-1.21.11-25.3.5.jar",
+    "url": "https://cdn.modrinth.com/data/1bokaNcj/versions/ImVKd3Zp/xaerominimap-fabric-1.21.11-25.3.5.jar!/META-INF/jars/xaerolib-fabric-1.21.11-1.0.45.jar",
+    "bytes": 568915,
+    "sha256": "532bb8bc3b137539c8150e1244212d457cbaef8bc2557476a4aff608ba76a642",
+    "sha512": "179259bf348af0ad853b950701043ec675e9b9314d220710c52f685fd99e7708920c0771502af520d5e9a6fed14e73308415b33e93c1759786ea0787c8a196f0"
+  }
+]

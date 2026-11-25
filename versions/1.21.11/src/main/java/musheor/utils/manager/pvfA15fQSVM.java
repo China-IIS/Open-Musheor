@@ -5,9 +5,9 @@ import baritone.api.pathing.goals.GoalBlock;
 import java.util.List;
 import java.util.Objects;
 import meteordevelopment.meteorclient.mixin.ContainerComponentAccessor;
-import meteordevelopment.meteorclient.settings.IntSetting.Builder;
 import meteordevelopment.meteorclient.settings.Setting;
 import meteordevelopment.meteorclient.settings.SettingGroup;
+import meteordevelopment.meteorclient.settings.IntSetting.Builder;
 import meteordevelopment.meteorclient.systems.modules.Module;
 import meteordevelopment.meteorclient.systems.modules.Modules;
 import meteordevelopment.meteorclient.systems.modules.player.AutoEat;
@@ -22,7 +22,6 @@ import musheor.modules.automation.ElytraTweakz;
 import musheor.modules.automation.HighwayBuilder;
 import musheor.modules.automation.KekNuker;
 import musheor.modules.features.KekMine;
-import musheor.musheor;
 import musheor.utils.WOGVSBb;
 import musheor.utils.irzXX;
 import musheor.utils.oyDPiOVBGKG;
@@ -180,7 +179,7 @@ public class pvfA15fQSVM extends Module {
       );
 
    public pvfA15fQSVM() {
-      super(musheor.AUTOMATION, "inventory-manager", "Manager module for inventory related stuff");
+      super(musheor.musheor.AUTOMATION, "inventory-manager", "Manager module for inventory related stuff");
       I3psabmOrOI = this;
    }
 
@@ -211,7 +210,7 @@ public class pvfA15fQSVM extends Module {
       fStlZIvY9lS8 = null;
       QfZy2gWnKInxFPr = false;
       state.QfZy2gWnKInxFPr(false);
-      state.fStlZIvY9lS8(null);
+      state.fStlZIvY9lS8((WOGVSBb)null);
       i2Nu6XHKic = 0;
       state.I3psabmOrOI(false);
       EVSMbf = 0;
@@ -223,11 +222,11 @@ public class pvfA15fQSVM extends Module {
 
    public static void QfZy2gWnKInxFPr() {
       obf.U6PQSXqW state = obf.U6PQSXqW.fStlZIvY9lS8();
-      if (HighwayBuilder.TJImwK2.fStlZIvY9lS8.get() != HighwayBuilder.Mode.TJImwK2) {
-         if (HighwayBuilder.qhulAUwd() == HighwayBuilder.BuildMode.fStlZIvY9lS8) {
+      if (HighwayBuilder.TJImwK2.fStlZIvY9lS8.get() != HighwayBuilder.Mode.Manual) {
+         if (HighwayBuilder.qhulAUwd() == HighwayBuilder.BuildMode.Pave) {
             if (HighwayBuilder.ZlNrrNcv3Ylc() && HighwayBuilder.pF16zz4NJECfg7() && QfZy2gWnKInxFPr(DataComponentTypes.TOOL) == null && TJImwK2(false) == 0) {
                QfZy2gWnKInxFPr = true;
-               state.fStlZIvY9lS8(WOGVSBb.QfZy2gWnKInxFPr);
+               state.fStlZIvY9lS8(WOGVSBb.PICKAXE_NON_SILK);
                i2Nu6XHKic = TXWyNb;
                state.BrmKXSYhWhqoB1(true);
                MusheorSystem.debug("Tool shulker restocking process started");
@@ -239,7 +238,7 @@ public class pvfA15fQSVM extends Module {
                && qhulAUwd(Items.ENDER_CHEST) == null
                && qhulAUwd(HighwayBuilder.V7zKJ4n6D().asItem()) == null) {
                QfZy2gWnKInxFPr = true;
-               state.fStlZIvY9lS8(WOGVSBb.fStlZIvY9lS8);
+               state.fStlZIvY9lS8(WOGVSBb.PAVEMENT);
                i2Nu6XHKic = BrmKXSYhWhqoB1;
                state.BrmKXSYhWhqoB1(true);
                MusheorSystem.debug("Echest shulker restocking process started");
@@ -251,7 +250,7 @@ public class pvfA15fQSVM extends Module {
                && i2Nu6XHKic(Items.ENDER_CHEST) <= 8
                && (qhulAUwd(Items.ENDER_CHEST) != null || qhulAUwd(HighwayBuilder.V7zKJ4n6D().asItem()) != null)) {
                QfZy2gWnKInxFPr = true;
-               state.fStlZIvY9lS8(WOGVSBb.fStlZIvY9lS8);
+               state.fStlZIvY9lS8(WOGVSBb.PAVEMENT);
                i2Nu6XHKic = duJ6sPeetAcBh6P() / 2;
                state.TXWyNb(true);
                MusheorSystem.debug("Material restocking process started");
@@ -260,7 +259,7 @@ public class pvfA15fQSVM extends Module {
 
             if (HighwayBuilder.jbUe84V1vykfK() && QfZy2gWnKInxFPr(DataComponentTypes.TOOL) != null && TJImwK2(false) < 1) {
                QfZy2gWnKInxFPr = true;
-               state.fStlZIvY9lS8(WOGVSBb.QfZy2gWnKInxFPr);
+               state.fStlZIvY9lS8(WOGVSBb.PICKAXE_NON_SILK);
                i2Nu6XHKic = vGAMA89H;
                state.TXWyNb(true);
                MusheorSystem.debug("Pickaxe restocking process started");
@@ -269,7 +268,7 @@ public class pvfA15fQSVM extends Module {
 
             if (HighwayBuilder.jbUe84V1vykfK() && !HighwayBuilder.QfZy2gWnKInxFPr() && QfZy2gWnKInxFPr(DataComponentTypes.FOOD) != null) {
                QfZy2gWnKInxFPr = true;
-               state.fStlZIvY9lS8(WOGVSBb.wSJeYsJcmjNZf);
+               state.fStlZIvY9lS8(WOGVSBb.FOOD);
                i2Nu6XHKic = qhulAUwd;
                state.TXWyNb(true);
                MusheorSystem.debug("Food restocking process started");
@@ -277,10 +276,10 @@ public class pvfA15fQSVM extends Module {
             }
          }
 
-         if (HighwayBuilder.qhulAUwd() == HighwayBuilder.BuildMode.QfZy2gWnKInxFPr) {
+         if (HighwayBuilder.qhulAUwd() == HighwayBuilder.BuildMode.Tunnel) {
             if (HighwayBuilder.ZlNrrNcv3Ylc() && HighwayBuilder.pF16zz4NJECfg7() && QfZy2gWnKInxFPr(DataComponentTypes.TOOL) == null && TJImwK2(true) == 0) {
                QfZy2gWnKInxFPr = true;
-               state.fStlZIvY9lS8(WOGVSBb.TJImwK2);
+               state.fStlZIvY9lS8(WOGVSBb.PICKAXE_SILK);
                i2Nu6XHKic = TXWyNb;
                state.BrmKXSYhWhqoB1(true);
                MusheorSystem.debug("Tool shulker restocking process started");
@@ -289,7 +288,7 @@ public class pvfA15fQSVM extends Module {
 
             if (HighwayBuilder.jbUe84V1vykfK() && QfZy2gWnKInxFPr(DataComponentTypes.TOOL) != null && TJImwK2(true) == 0) {
                QfZy2gWnKInxFPr = true;
-               state.fStlZIvY9lS8(WOGVSBb.TJImwK2);
+               state.fStlZIvY9lS8(WOGVSBb.PICKAXE_SILK);
                i2Nu6XHKic = TXWyNb;
                state.TXWyNb(true);
                MusheorSystem.debug("Tool restocking process started");
@@ -298,7 +297,7 @@ public class pvfA15fQSVM extends Module {
 
             if (HighwayBuilder.jbUe84V1vykfK() && !HighwayBuilder.QfZy2gWnKInxFPr()) {
                QfZy2gWnKInxFPr = true;
-               state.fStlZIvY9lS8(WOGVSBb.wSJeYsJcmjNZf);
+               state.fStlZIvY9lS8(WOGVSBb.FOOD);
                i2Nu6XHKic = qhulAUwd;
                state.TXWyNb(true);
                MusheorSystem.debug("Food restocking process started");
@@ -321,26 +320,30 @@ public class pvfA15fQSVM extends Module {
    public static boolean TJImwK2() {
       if (ZlNrrNcv3Ylc.player == null) {
          return false;
-      } else {
-         ScreenHandler handler = ZlNrrNcv3Ylc.player.currentScreenHandler;
-         return handler instanceof GenericContainerScreenHandler || handler instanceof ShulkerBoxScreenHandler;
       }
+
+      ScreenHandler handler = ZlNrrNcv3Ylc.player.currentScreenHandler;
+      return handler instanceof GenericContainerScreenHandler || handler instanceof ShulkerBoxScreenHandler;
    }
 
    public static boolean fStlZIvY9lS8(BlockPos pos) {
       if (ZlNrrNcv3Ylc.player == null || ZlNrrNcv3Ylc.world == null) {
          return false;
-      } else if (!TJImwK2(pos)) {
-         return false;
-      } else if (TJImwK2()) {
-         return true;
-      } else {
-         Vec3d hitVec = Vec3d.ofCenter(pos);
-         oyDPiOVBGKG.QfZy2gWnKInxFPr(pos);
-         BlockHitResult hitResult = new BlockHitResult(hitVec, Direction.UP, pos, false);
-         fStlZIvY9lS8(hitResult);
+      }
+
+      if (!TJImwK2(pos)) {
          return false;
       }
+
+      if (TJImwK2()) {
+         return true;
+      }
+
+      Vec3d hitVec = Vec3d.ofCenter(pos);
+      oyDPiOVBGKG.QfZy2gWnKInxFPr(pos);
+      BlockHitResult hitResult = new BlockHitResult(hitVec, Direction.UP, pos, false);
+      fStlZIvY9lS8(hitResult);
+      return false;
    }
 
    public static void fStlZIvY9lS8(BlockHitResult bhr) {
@@ -388,50 +391,49 @@ public class pvfA15fQSVM extends Module {
    public static int wSJeYsJcmjNZf() {
       if (ZlNrrNcv3Ylc.player == null) {
          return 8;
-      } else {
-         for (int i = 0; i <= 8; i++) {
-            ItemStack current = ZlNrrNcv3Ylc.player.getInventory().getStack(i);
-            if (current.isEmpty()) {
-               return i;
-            }
-         }
-
-         return Utils.random(1, 7);
       }
+
+      for (int i = 0; i <= 8; i++) {
+         ItemStack current = ZlNrrNcv3Ylc.player.getInventory().getStack(i);
+         if (current.isEmpty()) {
+            return i;
+         }
+      }
+
+      return Utils.random(1, 7);
    }
 
    public static int i2Nu6XHKic() {
       if (ZlNrrNcv3Ylc.player == null) {
          return 35;
-      } else {
-         for (int i = 9; i < 36; i++) {
-            ItemStack current = ZlNrrNcv3Ylc.player.getInventory().getStack(i);
-            if (current.isEmpty()) {
-               return i;
-            }
-         }
-
-         return Utils.random(9, 35);
       }
+
+      for (int i = 9; i < 36; i++) {
+         ItemStack current = ZlNrrNcv3Ylc.player.getInventory().getStack(i);
+         if (current.isEmpty()) {
+            return i;
+         }
+      }
+
+      return Utils.random(9, 35);
    }
 
    public static boolean fStlZIvY9lS8(int slot, Runnable action) {
       if (ZlNrrNcv3Ylc.player == null || action == null) {
          return false;
-      } else if (slot >= 0 && slot <= 35) {
+      }
+
+      if (slot >= 0 && slot <= 35) {
          boolean swapped = QfZy2gWnKInxFPr(slot);
 
-         boolean var3;
          try {
             action.run();
-            var3 = true;
+            return true;
          } finally {
             if (swapped) {
                QfZy2gWnKInxFPr(slot);
             }
          }
-
-         return var3;
       } else {
          return false;
       }
@@ -441,18 +443,18 @@ public class pvfA15fQSVM extends Module {
       int currentSlot = ZlNrrNcv3Ylc.player.getInventory().selectedSlot;
       if (slot == currentSlot) {
          return false;
-      } else {
-         int screenSlot = TJImwK2(slot);
-         ZlNrrNcv3Ylc.interactionManager
-            .clickSlot(ZlNrrNcv3Ylc.player.currentScreenHandler.syncId, screenSlot, currentSlot, SlotActionType.SWAP, ZlNrrNcv3Ylc.player);
-         MusheorSystem.debug(
-            "Swapped slot %d to selected in screen %s with ID: %d",
-            slot,
-            ZlNrrNcv3Ylc.player.currentScreenHandler.toString(),
-            ZlNrrNcv3Ylc.player.currentScreenHandler.syncId
-         );
-         return true;
       }
+
+      int screenSlot = TJImwK2(slot);
+      ZlNrrNcv3Ylc.interactionManager
+         .clickSlot(ZlNrrNcv3Ylc.player.currentScreenHandler.syncId, screenSlot, currentSlot, SlotActionType.SWAP, ZlNrrNcv3Ylc.player);
+      MusheorSystem.debug(
+         "Swapped slot %d to selected in screen %s with ID: %d",
+         slot,
+         ZlNrrNcv3Ylc.player.currentScreenHandler.toString(),
+         ZlNrrNcv3Ylc.player.currentScreenHandler.syncId
+      );
+      return true;
    }
 
    public static int TJImwK2(int slot) {
@@ -484,8 +486,7 @@ public class pvfA15fQSVM extends Module {
    public static int vGAMA89H() {
       for (int i = 0; i < Objects.requireNonNull(ZlNrrNcv3Ylc.player).getInventory().main.size(); i++) {
          ItemStack stack = ZlNrrNcv3Ylc.player.getInventory().getStack(i);
-         if (stack.getItem() == Items.ELYTRA
-            && stack.getMaxDamage() - stack.getDamage() > (Integer)ElytraTweakz.QfZy2gWnKInxFPr.fStlZIvY9lS8.get()) {
+         if (stack.getItem() == Items.ELYTRA && stack.getMaxDamage() - stack.getDamage() > (Integer)ElytraTweakz.QfZy2gWnKInxFPr.fStlZIvY9lS8.get()) {
             return i;
          }
       }
@@ -496,19 +497,19 @@ public class pvfA15fQSVM extends Module {
    public static int qhulAUwd() {
       if (ZlNrrNcv3Ylc.player == null) {
          return -1;
-      } else {
-         PlayerInventory inventory = ZlNrrNcv3Ylc.player.getInventory();
-
-         for (int i = 0; i < inventory.main.size(); i++) {
-            ItemStack stack = inventory.getStack(i);
-            EquippableComponent equippable = (EquippableComponent)stack.get(DataComponentTypes.EQUIPPABLE);
-            if (equippable != null && equippable.comp_3174() == EquipmentSlot.CHEST && !stack.isOf(Items.ELYTRA)) {
-               return i;
-            }
-         }
-
-         return -1;
       }
+
+      PlayerInventory inventory = ZlNrrNcv3Ylc.player.getInventory();
+
+      for (int i = 0; i < inventory.main.size(); i++) {
+         ItemStack stack = inventory.getStack(i);
+         EquippableComponent equippable = (EquippableComponent)stack.get(DataComponentTypes.EQUIPPABLE);
+         if (equippable != null && equippable.slot() == EquipmentSlot.CHEST && !stack.isOf(Items.ELYTRA)) {
+            return i;
+         }
+      }
+
+      return -1;
    }
 
    public static void fStlZIvY9lS8(int slot, boolean entireStack) {
@@ -524,7 +525,7 @@ public class pvfA15fQSVM extends Module {
          int chest = qhulAUwd();
          InvUtils.move().from(chest).toArmor(2);
       } else if (currentItem.contains(DataComponentTypes.EQUIPPABLE)
-         && ((EquippableComponent)currentItem.get(DataComponentTypes.EQUIPPABLE)).comp_3174().getEntitySlotId() == EquipmentSlot.CHEST.getEntitySlotId()) {
+         && ((EquippableComponent)currentItem.get(DataComponentTypes.EQUIPPABLE)).slot().getEntitySlotId() == EquipmentSlot.CHEST.getEntitySlotId()) {
          int elytra = vGAMA89H();
          InvUtils.move().from(elytra).toArmor(2);
       } else {
@@ -607,9 +608,7 @@ public class pvfA15fQSVM extends Module {
    public static ItemStack qhulAUwd(Item item) {
       for (int i = 0; i < Objects.requireNonNull(ZlNrrNcv3Ylc.player).getInventory().main.size(); i++) {
          ItemStack stack = ZlNrrNcv3Ylc.player.getInventory().getStack(i);
-         if (stack.getItem() instanceof BlockItem && ((BlockItem)stack.getItem()).getBlock() instanceof ShulkerBoxBlock && QfZy2gWnKInxFPr(stack, item)
-            )
-          {
+         if (stack.getItem() instanceof BlockItem && ((BlockItem)stack.getItem()).getBlock() instanceof ShulkerBoxBlock && QfZy2gWnKInxFPr(stack, item)) {
             return stack;
          }
       }
@@ -658,9 +657,7 @@ public class pvfA15fQSVM extends Module {
    public static ItemStack QfZy2gWnKInxFPr(ComponentType<?> component) {
       for (int i = 0; i < Objects.requireNonNull(ZlNrrNcv3Ylc.player).getInventory().main.size(); i++) {
          ItemStack stack = ZlNrrNcv3Ylc.player.getInventory().getStack(i);
-         if (stack.getItem() instanceof BlockItem
-            && ((BlockItem)stack.getItem()).getBlock() instanceof ShulkerBoxBlock
-            && QfZy2gWnKInxFPr(stack, component)) {
+         if (stack.getItem() instanceof BlockItem && ((BlockItem)stack.getItem()).getBlock() instanceof ShulkerBoxBlock && QfZy2gWnKInxFPr(stack, component)) {
             return stack;
          }
       }
@@ -710,18 +707,18 @@ public class pvfA15fQSVM extends Module {
       ComponentMap components = shulker.getComponents();
       if (!components.contains(DataComponentTypes.CONTAINER)) {
          return false;
-      } else {
-         ContainerComponentAccessor container = (ContainerComponentAccessor)components.get(DataComponentTypes.CONTAINER);
-         if (container != null) {
-            for (ItemStack stack : VersionHelper.get().getStacks(container)) {
-               if (!stack.isEmpty()) {
-                  return false;
-               }
+      }
+
+      ContainerComponentAccessor container = (ContainerComponentAccessor)(Object)components.get(DataComponentTypes.CONTAINER);
+      if (container != null) {
+         for (ItemStack stack : VersionHelper.get().getStacks(container)) {
+            if (!stack.isEmpty()) {
+               return false;
             }
          }
-
-         return true;
       }
+
+      return true;
    }
 
    public static void TXWyNb(Item item) {
@@ -730,7 +727,6 @@ public class pvfA15fQSVM extends Module {
 
    public static void fStlZIvY9lS8(Item item, boolean silent) {
       assert ZlNrrNcv3Ylc.player != null;
-
       FindItemResult result = InvUtils.findInHotbar(itemStack -> itemStack.getItem() == item);
       if (result.found()) {
          InvUtils.swap(result.slot(), silent);
@@ -743,19 +739,17 @@ public class pvfA15fQSVM extends Module {
 
    public static boolean I3psabmOrOI(Item item) {
       assert ZlNrrNcv3Ylc.player != null;
-
       if (ZlNrrNcv3Ylc.player.getMainHandStack().getItem() == item) {
          return true;
-      } else {
-         boolean silent = (Boolean)MusheorSystem.Manager.silentPlace.get();
-         fStlZIvY9lS8(item, silent);
-         return silent && ZlNrrNcv3Ylc.player.getMainHandStack().getItem() == item;
       }
+
+      boolean silent = (Boolean)MusheorSystem.Manager.silentPlace.get();
+      fStlZIvY9lS8(item, silent);
+      return silent && ZlNrrNcv3Ylc.player.getMainHandStack().getItem() == item;
    }
 
    public static void QfZy2gWnKInxFPr(boolean silkTouch) {
       assert ZlNrrNcv3Ylc.player != null;
-
       double bestScore = -1.0;
       int bestSlot = -1;
 
@@ -778,28 +772,27 @@ public class pvfA15fQSVM extends Module {
    public static ItemStack fStlZIvY9lS8(BlockState state) {
       if (ZlNrrNcv3Ylc.player == null) {
          return ItemStack.EMPTY;
-      } else {
-         ItemStack bestStack = ZlNrrNcv3Ylc.player.getMainHandStack();
-         float bestSpeed = 1.0F;
+      }
 
-         for (int i = 0; i < ZlNrrNcv3Ylc.player.getInventory().size(); i++) {
-            ItemStack stack = ZlNrrNcv3Ylc.player.getInventory().getStack(i);
-            if (!(Boolean)KekMine.duJ6sPeetAcBh6P.fStlZIvY9lS8.get() || fStlZIvY9lS8(stack)) {
-               float speed = stack.getMiningSpeedMultiplier(state);
-               if (speed > bestSpeed) {
-                  bestSpeed = speed;
-                  bestStack = stack;
-               }
+      ItemStack bestStack = ZlNrrNcv3Ylc.player.getMainHandStack();
+      float bestSpeed = 1.0F;
+
+      for (int i = 0; i < ZlNrrNcv3Ylc.player.getInventory().size(); i++) {
+         ItemStack stack = ZlNrrNcv3Ylc.player.getInventory().getStack(i);
+         if (!(Boolean)KekMine.duJ6sPeetAcBh6P.fStlZIvY9lS8.get() || fStlZIvY9lS8(stack)) {
+            float speed = stack.getMiningSpeedMultiplier(state);
+            if (speed > bestSpeed) {
+               bestSpeed = speed;
+               bestStack = stack;
             }
          }
-
-         return bestStack;
       }
+
+      return bestStack;
    }
 
    public static void QfZy2gWnKInxFPr(BlockPos blockPos) {
       assert ZlNrrNcv3Ylc.world != null && ZlNrrNcv3Ylc.player != null && blockPos != null;
-
       BlockState state = ZlNrrNcv3Ylc.world.getBlockState(blockPos);
       float bestSpeed = 1.0F;
       int bestSlot = -1;
@@ -820,13 +813,13 @@ public class pvfA15fQSVM extends Module {
       } else if (VersionHelper.get().isTool(ZlNrrNcv3Ylc.player.getMainHandStack()) && !fStlZIvY9lS8(ZlNrrNcv3Ylc.player.getMainHandStack())) {
          InvUtils.move().from(ZlNrrNcv3Ylc.player.getInventory().selectedSlot).to(i2Nu6XHKic());
       } else {
-         for (int ix = 9; ix < ZlNrrNcv3Ylc.player.getInventory().main.size(); ix++) {
-            ItemStack itemStack = ZlNrrNcv3Ylc.player.getInventory().getStack(ix);
+         for (int i = 9; i < ZlNrrNcv3Ylc.player.getInventory().main.size(); i++) {
+            ItemStack itemStack = ZlNrrNcv3Ylc.player.getInventory().getStack(i);
             if (!itemStack.isEmpty() && (!(Boolean)KekMine.duJ6sPeetAcBh6P.fStlZIvY9lS8.get() || fStlZIvY9lS8(itemStack))) {
                float speed = itemStack.getMiningSpeedMultiplier(state);
                if (speed > bestSpeed && itemStack.isSuitableFor(state)) {
                   bestSpeed = speed;
-                  bestSlot = ix;
+                  bestSlot = i;
                }
             }
          }
@@ -840,7 +833,6 @@ public class pvfA15fQSVM extends Module {
 
    public static int TJImwK2(boolean allowSilkTouch) {
       assert ZlNrrNcv3Ylc.player != null;
-
       int count = 0;
 
       for (int i = 0; i < ZlNrrNcv3Ylc.player.getInventory().size(); i++) {
@@ -869,7 +861,6 @@ public class pvfA15fQSVM extends Module {
 
    public static int TXWyNb() {
       assert ZlNrrNcv3Ylc.player != null;
-
       int count = 0;
 
       for (int i = 0; i < ZlNrrNcv3Ylc.player.getInventory().main.size(); i++) {
@@ -900,7 +891,6 @@ public class pvfA15fQSVM extends Module {
 
    public static int duJ6sPeetAcBh6P() {
       int emptyCount = 0;
-
       assert ZlNrrNcv3Ylc.player != null;
 
       for (ItemStack itemStack : ZlNrrNcv3Ylc.player.getInventory().main) {
@@ -930,18 +920,20 @@ public class pvfA15fQSVM extends Module {
       if (stack == null) {
          MusheorSystem.debug("No shulker with " + itemInShulker.toString() + " found in the inventory");
          return false;
-      } else {
-         int slot = ZlNrrNcv3Ylc.player.getInventory().getSlotWithStack(stack);
-         if (slot == hotbarSlot) {
-            return true;
-         } else if (slot == -1) {
-            return false;
-         } else {
-            InvUtils.move().from(slot).to(hotbarSlot);
-            MusheorSystem.debug("Moving shulker with " + itemInShulker.toString() + " to slot " + hotbarSlot);
-            return wSJeYsJcmjNZf(ZlNrrNcv3Ylc.player.getInventory().getStack(hotbarSlot));
-         }
       }
+
+      int slot = ZlNrrNcv3Ylc.player.getInventory().getSlotWithStack(stack);
+      if (slot == hotbarSlot) {
+         return true;
+      }
+
+      if (slot == -1) {
+         return false;
+      }
+
+      InvUtils.move().from(slot).to(hotbarSlot);
+      MusheorSystem.debug("Moving shulker with " + itemInShulker.toString() + " to slot " + hotbarSlot);
+      return wSJeYsJcmjNZf(ZlNrrNcv3Ylc.player.getInventory().getStack(hotbarSlot));
    }
 
    public static boolean fStlZIvY9lS8(ComponentType<?> type, int hotbarSlot) {
@@ -949,18 +941,20 @@ public class pvfA15fQSVM extends Module {
       if (stack == null) {
          MusheorSystem.debug("No shulker with " + type.toString() + " found in the inventory");
          return false;
-      } else {
-         int slot = ZlNrrNcv3Ylc.player.getInventory().getSlotWithStack(stack);
-         if (slot == hotbarSlot) {
-            return true;
-         } else if (slot == -1) {
-            return false;
-         } else {
-            InvUtils.move().from(slot).to(hotbarSlot);
-            MusheorSystem.debug("Moving shulker with " + type.toString() + " to slot " + hotbarSlot);
-            return wSJeYsJcmjNZf(ZlNrrNcv3Ylc.player.getInventory().getStack(hotbarSlot));
-         }
       }
+
+      int slot = ZlNrrNcv3Ylc.player.getInventory().getSlotWithStack(stack);
+      if (slot == hotbarSlot) {
+         return true;
+      }
+
+      if (slot == -1) {
+         return false;
+      }
+
+      InvUtils.move().from(slot).to(hotbarSlot);
+      MusheorSystem.debug("Moving shulker with " + type.toString() + " to slot " + hotbarSlot);
+      return wSJeYsJcmjNZf(ZlNrrNcv3Ylc.player.getInventory().getStack(hotbarSlot));
    }
 
    public static Item fStlZIvY9lS8(double radius) {
@@ -1006,14 +1000,14 @@ public class pvfA15fQSVM extends Module {
                } else if (!RE8q1TMDRWx) {
                   boolean moved = false;
                   switch (type) {
-                     case TJImwK2:
-                     case QfZy2gWnKInxFPr:
+                     case PICKAXE_SILK:
+                     case PICKAXE_NON_SILK:
                         moved = fStlZIvY9lS8(DataComponentTypes.TOOL, 8);
                         break;
-                     case wSJeYsJcmjNZf:
+                     case FOOD:
                         moved = fStlZIvY9lS8(DataComponentTypes.FOOD, 8);
                         break;
-                     case fStlZIvY9lS8:
+                     case PAVEMENT:
                         Item item = null;
                         if (qhulAUwd(HighwayBuilder.V7zKJ4n6D().asItem()) != null) {
                            item = HighwayBuilder.V7zKJ4n6D().asItem();
@@ -1053,13 +1047,9 @@ public class pvfA15fQSVM extends Module {
                               EVSMbf = JAj4YwE2MVx;
                               return;
                            } else {
-                              MusheorSystem.debug(
-                                 "Placing shulkerbox at x: %s y: %s z: %s", JPp6VyZP9f.getX(), JPp6VyZP9f.getY(), JPp6VyZP9f.getZ()
-                              );
+                              MusheorSystem.debug("Placing shulkerbox at x: %s y: %s z: %s", JPp6VyZP9f.getX(), JPp6VyZP9f.getY(), JPp6VyZP9f.getZ());
                               fStlZIvY9lS8(8);
-                              obf.irzXX.fStlZIvY9lS8(
-                                 JPp6VyZP9f, Direction.UP, state.QfZy2gWnKInxFPr(), (Boolean)MusheorSystem.Manager.silentPlace.get()
-                              );
+                              obf.irzXX.fStlZIvY9lS8(JPp6VyZP9f, Direction.UP, state.QfZy2gWnKInxFPr(), (Boolean)MusheorSystem.Manager.silentPlace.get());
                               return;
                            }
                         }
@@ -1084,9 +1074,7 @@ public class pvfA15fQSVM extends Module {
                               Hand.MAIN_HAND, new BlockHitResult(Vec3d.ofCenter(JPp6VyZP9f), Direction.UP, JPp6VyZP9f, false), sequence
                            )
                         );
-                     MusheorSystem.debug(
-                        "Opening shulkerbox at x: %s y: %s z: %s", JPp6VyZP9f.getX(), JPp6VyZP9f.getY(), JPp6VyZP9f.getZ()
-                     );
+                     MusheorSystem.debug("Opening shulkerbox at x: %s y: %s z: %s", JPp6VyZP9f.getX(), JPp6VyZP9f.getY(), JPp6VyZP9f.getZ());
                      EVSMbf = WGmfQKK;
                   } else if (pF16zz4NJECfg7 > 0) {
                      pF16zz4NJECfg7--;
@@ -1140,38 +1128,38 @@ public class pvfA15fQSVM extends Module {
       ItemStack stack = handler.getSlot(slot).getStack();
       if (!fStlZIvY9lS8(type, stack)) {
          return false;
-      } else {
-         String stolen = stack.getItem().getName().getString();
-         InvUtils.shiftClick().slotId(slot);
-         if ((type == WOGVSBb.QfZy2gWnKInxFPr || type == WOGVSBb.TJImwK2) && HighwayBuilder.zbN84Osn9p5lD()) {
-            int brokenPickaxeSlot = I3psabmOrOI();
-            if (brokenPickaxeSlot != -1) {
-               InvUtils.shiftClick().slotId(brokenPickaxeSlot);
-            }
-         }
-
-         MusheorSystem.debug("Stealing {%s} from slot [%s]", stolen, slot);
-         return true;
       }
+
+      String stolen = stack.getItem().getName().getString();
+      InvUtils.shiftClick().slotId(slot);
+      if ((type == WOGVSBb.PICKAXE_NON_SILK || type == WOGVSBb.PICKAXE_SILK) && HighwayBuilder.zbN84Osn9p5lD()) {
+         int brokenPickaxeSlot = I3psabmOrOI();
+         if (brokenPickaxeSlot != -1) {
+            InvUtils.shiftClick().slotId(brokenPickaxeSlot);
+         }
+      }
+
+      MusheorSystem.debug("Stealing {%s} from slot [%s]", stolen, slot);
+      return true;
    }
 
    private static boolean fStlZIvY9lS8(WOGVSBb type, ItemStack stack) {
       if (stack.isEmpty()) {
          return false;
-      } else {
-         return switch (type) {
-            case TJImwK2 -> VersionHelper.get().isPickaxe(stack)
-               && Utils.hasEnchantments(stack, new RegistryKey[]{Enchantments.SILK_TOUCH})
-               && fStlZIvY9lS8(stack);
-            case QfZy2gWnKInxFPr -> VersionHelper.get().isPickaxe(stack)
-               && !Utils.hasEnchantments(stack, new RegistryKey[]{Enchantments.SILK_TOUCH})
-               && fStlZIvY9lS8(stack);
-            case wSJeYsJcmjNZf -> stack.getComponents().contains(DataComponentTypes.FOOD)
-               && !((List)((AutoEat)Modules.get().get(AutoEat.class)).blacklist.get()).contains(stack.getItem());
-            case fStlZIvY9lS8 -> stack.getItem() == HighwayBuilder.V7zKJ4n6D().asItem()
-               || HighwayBuilder.V7zKJ4n6D() == Blocks.OBSIDIAN && stack.getItem() == Items.ENDER_CHEST;
-         };
       }
+
+      return switch (type) {
+         case PICKAXE_SILK -> VersionHelper.get().isPickaxe(stack)
+            && Utils.hasEnchantments(stack, new RegistryKey[]{Enchantments.SILK_TOUCH})
+            && fStlZIvY9lS8(stack);
+         case PICKAXE_NON_SILK -> VersionHelper.get().isPickaxe(stack)
+            && !Utils.hasEnchantments(stack, new RegistryKey[]{Enchantments.SILK_TOUCH})
+            && fStlZIvY9lS8(stack);
+         case FOOD -> stack.getComponents().contains(DataComponentTypes.FOOD)
+            && !((List)((AutoEat)Modules.get().get(AutoEat.class)).blacklist.get()).contains(stack.getItem());
+         case PAVEMENT -> stack.getItem() == HighwayBuilder.V7zKJ4n6D().asItem()
+            || HighwayBuilder.V7zKJ4n6D() == Blocks.OBSIDIAN && stack.getItem() == Items.ENDER_CHEST;
+      };
    }
 
    public static void QfZy2gWnKInxFPr(WOGVSBb type, int shulkers) {
@@ -1227,9 +1215,7 @@ public class pvfA15fQSVM extends Module {
                         }
 
                         if (BlockUtils.canPlace(JPp6VyZP9f, true) || ZlNrrNcv3Ylc.world.getBlockState(JPp6VyZP9f).isReplaceable()) {
-                           MusheorSystem.debug(
-                              "Placing enderchest at x: %s y: %s z: %s", JPp6VyZP9f.getX(), JPp6VyZP9f.getY(), JPp6VyZP9f.getZ()
-                           );
+                           MusheorSystem.debug("Placing enderchest at x: %s y: %s z: %s", JPp6VyZP9f.getX(), JPp6VyZP9f.getY(), JPp6VyZP9f.getZ());
                            fStlZIvY9lS8(Items.ENDER_CHEST, (Boolean)MusheorSystem.Manager.silentPlace.get());
                            obf.irzXX.fStlZIvY9lS8(JPp6VyZP9f, Direction.DOWN, state.QfZy2gWnKInxFPr(), (Boolean)MusheorSystem.Manager.silentPlace.get());
                            state.PVlYDeNipUe().put(JPp6VyZP9f, state.pF16zz4NJECfg7());
@@ -1256,9 +1242,7 @@ public class pvfA15fQSVM extends Module {
                               Hand.MAIN_HAND, new BlockHitResult(Vec3d.ofCenter(JPp6VyZP9f), Direction.UP, JPp6VyZP9f, false), sequence
                            )
                         );
-                     MusheorSystem.debug(
-                        "Opening enderchest at x: %s y: %s z: %s", JPp6VyZP9f.getX(), JPp6VyZP9f.getY(), JPp6VyZP9f.getZ()
-                     );
+                     MusheorSystem.debug("Opening enderchest at x: %s y: %s z: %s", JPp6VyZP9f.getX(), JPp6VyZP9f.getY(), JPp6VyZP9f.getZ());
                      EVSMbf = WGmfQKK;
                   } else if (pF16zz4NJECfg7 > 0) {
                      pF16zz4NJECfg7--;
@@ -1311,68 +1295,68 @@ public class pvfA15fQSVM extends Module {
    private static boolean QfZy2gWnKInxFPr(WOGVSBb type, ItemStack shulker) {
       if (!wSJeYsJcmjNZf(shulker)) {
          return false;
-      } else {
-         ItemStack[] contents = new ItemStack[27];
-         Utils.getItemsInContainerItem(shulker, contents);
-
-         for (ItemStack stack : contents) {
-            if (stack != null && fStlZIvY9lS8(type, stack)) {
-               return true;
-            }
-         }
-
-         return false;
       }
+
+      ItemStack[] contents = new ItemStack[27];
+      Utils.getItemsInContainerItem(shulker, contents);
+
+      for (ItemStack stack : contents) {
+         if (stack != null && fStlZIvY9lS8(type, stack)) {
+            return true;
+         }
+      }
+
+      return false;
    }
 
    private static boolean QfZy2gWnKInxFPr(WOGVSBb type, ScreenHandler handler, int slot) {
       if (!obf.gVOhtBej1x.fStlZIvY9lS8(slot)) {
          return false;
-      } else {
-         ItemStack stack = handler.getSlot(slot).getStack();
-         if (!QfZy2gWnKInxFPr(type, stack)) {
-            return false;
-         } else {
-            String stolen = stack.getItem().getName().getString();
-            InvUtils.shiftClick().slotId(slot);
-            MusheorSystem.debug("Grabbing shulker {%s} from echest slot [%s]", stolen, slot);
-            return true;
-         }
       }
+
+      ItemStack stack = handler.getSlot(slot).getStack();
+      if (!QfZy2gWnKInxFPr(type, stack)) {
+         return false;
+      }
+
+      String stolen = stack.getItem().getName().getString();
+      InvUtils.shiftClick().slotId(slot);
+      MusheorSystem.debug("Grabbing shulker {%s} from echest slot [%s]", stolen, slot);
+      return true;
    }
 
    public static boolean j376sIQ() {
       if (ZlNrrNcv3Ylc.player == null) {
          return false;
-      } else {
-         BlockState echest = Blocks.ENDER_CHEST.getDefaultState();
-         int bestSlot = -1;
-         float bestSpeed = -1.0F;
+      }
 
-         for (int i = 0; i < ZlNrrNcv3Ylc.player.getInventory().main.size(); i++) {
-            ItemStack stack = ZlNrrNcv3Ylc.player.getInventory().getStack(i);
-            if (VersionHelper.get().isPickaxe(stack)) {
-               float speed = stack.getMiningSpeedMultiplier(echest);
-               if (speed > bestSpeed) {
-                  bestSpeed = speed;
-                  bestSlot = i;
-               }
+      BlockState echest = Blocks.ENDER_CHEST.getDefaultState();
+      int bestSlot = -1;
+      float bestSpeed = -1.0F;
+
+      for (int i = 0; i < ZlNrrNcv3Ylc.player.getInventory().main.size(); i++) {
+         ItemStack stack = ZlNrrNcv3Ylc.player.getInventory().getStack(i);
+         if (VersionHelper.get().isPickaxe(stack)) {
+            float speed = stack.getMiningSpeedMultiplier(echest);
+            if (speed > bestSpeed) {
+               bestSpeed = speed;
+               bestSlot = i;
             }
-         }
-
-         if (bestSlot == -1) {
-            return false;
-         } else {
-            if (bestSlot < 9) {
-               InvUtils.swap(bestSlot, false);
-            } else {
-               int hotbarSlot = QfZy2gWnKInxFPr(ZlNrrNcv3Ylc.player.getInventory().getStack(bestSlot));
-               fStlZIvY9lS8(hotbarSlot);
-            }
-
-            return true;
          }
       }
+
+      if (bestSlot == -1) {
+         return false;
+      }
+
+      if (bestSlot < 9) {
+         InvUtils.swap(bestSlot, false);
+      } else {
+         int hotbarSlot = QfZy2gWnKInxFPr(ZlNrrNcv3Ylc.player.getInventory().getStack(bestSlot));
+         fStlZIvY9lS8(hotbarSlot);
+      }
+
+      return true;
    }
 
    public static void V7zKJ4n6D() {

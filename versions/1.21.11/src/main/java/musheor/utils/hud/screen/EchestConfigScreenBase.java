@@ -45,33 +45,29 @@ public abstract class EchestConfigScreenBase extends Screen {
       int slot = this.fStlZIvY9lS8(mouseX, mouseY);
       if (slot == -1) {
          return false;
-      } else {
-         if (button == 0) {
-            gVOhtBej1x.TJImwK2(slot);
-         } else if (button == 1) {
-            gVOhtBej1x.wSJeYsJcmjNZf(slot);
-         }
-
-         return true;
       }
+
+      if (button == 0) {
+         gVOhtBej1x.TJImwK2(slot);
+      } else if (button == 1) {
+         gVOhtBej1x.wSJeYsJcmjNZf(slot);
+      }
+
+      return true;
    }
 
-   public void renderBackground(DrawContext context, int mouseX, int mouseY, float delta) {
+   public void renderBackground(DrawContext context, int mouseX, int mouseY, float deltaTicks) {
       context.fill(0, 0, this.width, this.height, -1072689136);
    }
 
-   public void render(DrawContext context, int mouseX, int mouseY, float delta) {
-      super.render(context, mouseX, mouseY, delta);
+   public void render(DrawContext context, int mouseX, int mouseY, float deltaTicks) {
+      super.render(context, mouseX, mouseY, deltaTicks);
       int gridW = 162;
       int gridH = 54;
       context.fill(this.QfZy2gWnKInxFPr - 8, this.TJImwK2 - 8, this.QfZy2gWnKInxFPr + gridW + 8, this.TJImwK2 + gridH + 8, -266856424);
       context.drawCenteredTextWithShadow(this.textRenderer, this.title, this.width / 2, this.TJImwK2 - 8 - 28, -1);
       context.drawCenteredTextWithShadow(
-         this.textRenderer,
-         Text.literal("Left-click = whitelist (green)   |   Right-click = blacklist (red)"),
-         this.width / 2,
-         this.TJImwK2 - 8 - 14,
-         -5592406
+         this.textRenderer, Text.literal("Left-click = whitelist (green)   |   Right-click = blacklist (red)"), this.width / 2, this.TJImwK2 - 8 - 14, -5592406
       );
       DefaultedList<ItemStack> items = this.fStlZIvY9lS8();
       if (items == null) {

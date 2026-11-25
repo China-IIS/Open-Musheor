@@ -2,18 +2,17 @@ package musheor.modules.hud;
 
 import java.util.ArrayDeque;
 import java.util.Deque;
-import meteordevelopment.meteorclient.settings.DoubleSetting.Builder;
 import meteordevelopment.meteorclient.settings.Setting;
+import meteordevelopment.meteorclient.settings.DoubleSetting.Builder;
 import meteordevelopment.meteorclient.systems.hud.HudElement;
 import meteordevelopment.meteorclient.systems.hud.HudElementInfo;
 import meteordevelopment.meteorclient.systems.hud.HudRenderer;
 import meteordevelopment.meteorclient.utils.render.color.Color;
-import musheor.musheor;
 import musheor.utils.system.MusheorSystem;
 
 public class HudInfoPlus extends HudElement {
    public static final HudElementInfo<HudInfoPlus> INFO = new HudElementInfo(
-      musheor.MUSHEOR_HUD, "packet-limits", "A hud module that displays how many packets you are sending to the server", HudInfoPlus::new
+      musheor.musheor.MUSHEOR_HUD, "packet-limits", "A hud module that displays how many packets you are sending to the server", HudInfoPlus::new
    );
    private final Setting<Double> fStlZIvY9lS8 = this.settings.getDefaultGroup().add(((Builder)new Builder().name("scale")).defaultValue(1.0).build());
    private static final Deque<Long> QfZy2gWnKInxFPr = new ArrayDeque<>();

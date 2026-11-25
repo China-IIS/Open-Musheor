@@ -37,7 +37,7 @@ public class MusheorTab extends Tab {
          }
       }
 
-      public void tick() {
+      public void method_25393() {
          if (MusheorSystem.Manager.update) {
             MusheorSystem.Manager.update = false;
             this.reload();

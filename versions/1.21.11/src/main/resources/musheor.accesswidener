@@ -6,9 +6,9 @@ accessible	field	net/minecraft/entity/player/PlayerInventory	selectedSlot	I
 mutable	field	net/minecraft/entity/player/PlayerInventory	selectedSlot	I
 accessible	field	net/minecraft/network/packet/c2s/play/PlayerInteractEntityC2SPacket	entityId	I
 mutable	field	net/minecraft/network/packet/c2s/play/PlayerInteractEntityC2SPacket	entityId	I
-accessible	class	net/minecraft/network/packet/c2s/play/PlayerInteractEntityC2SPacket/InteractTypeHandler
-accessible	class	net/minecraft/network/packet/c2s/play/PlayerInteractEntityC2SPacket/InteractAtHandler
-accessible	class	net/minecraft/network/packet/c2s/play/PlayerInteractEntityC2SPacket/InteractHandler
-accessible	method	net/minecraft/network/packet/c2s/play/PlayerInteractEntityC2SPacket/InteractAtHandler	<init>	(Lnet/minecraft/util/Hand;Lnet/minecraft/util/math/Vec3d;)V
-accessible	method	net/minecraft/network/packet/c2s/play/PlayerInteractEntityC2SPacket/InteractHandler	<init>	(Lnet/minecraft/util/Hand;)V
-accessible	method	net/minecraft/network/packet/c2s/play/PlayerInteractEntityC2SPacket	<init>	(IZLnet/minecraft/network/packet/c2s/play/PlayerInteractEntityC2SPacket/InteractTypeHandler;)V
+accessible	class	net/minecraft/network/packet/c2s/play/PlayerInteractEntityC2SPacket$InteractTypeHandler
+accessible	class	net/minecraft/network/packet/c2s/play/PlayerInteractEntityC2SPacket$InteractAtHandler
+accessible	class	net/minecraft/network/packet/c2s/play/PlayerInteractEntityC2SPacket$InteractHandler
+accessible	method	net/minecraft/network/packet/c2s/play/PlayerInteractEntityC2SPacket$InteractAtHandler	<init>	(Lnet/minecraft/util/Hand;Lnet/minecraft/util/math/Vec3d;)V
+accessible	method	net/minecraft/network/packet/c2s/play/PlayerInteractEntityC2SPacket$InteractHandler	<init>	(Lnet/minecraft/util/Hand;)V
+accessible	method	net/minecraft/network/packet/c2s/play/PlayerInteractEntityC2SPacket	<init>	(IZLnet/minecraft/network/packet/c2s/play/PlayerInteractEntityC2SPacket$InteractTypeHandler;)V

@@ -93,8 +93,8 @@ public class GyhoRo {
          }
 
          Files.writeString(fStlZIvY9lS8, QfZy2gWnKInxFPr.toJson(arr));
-      } catch (IOException var4) {
-         var4.printStackTrace();
+      } catch (IOException e) {
+         e.printStackTrace();
       }
    }
 
@@ -113,8 +113,8 @@ public class GyhoRo {
                int z = obj.get("z").getAsInt();
                TJImwK2.add(new GyhoRo.gVOhtBej1x(owner, new BlockPos(x, y, z), entityId));
             }
-         } catch (Exception var10) {
-            var10.printStackTrace();
+         } catch (Exception e) {
+            e.printStackTrace();
          }
       }
    }

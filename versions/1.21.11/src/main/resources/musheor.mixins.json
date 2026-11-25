@@ -27,6 +27,8 @@
     "MixinLivingEntity",
     "MixinPearlOutline",
     "MixinPlayerOutline",
+    "MixinXaeroGuiMapCoords",
+    "MixinXaeroInfoDisplayCompiler",
     "meteor.BaritonePathManagerMixin",
     "meteor.BetterTabMixin",
     "meteor.MixinAutoGap",

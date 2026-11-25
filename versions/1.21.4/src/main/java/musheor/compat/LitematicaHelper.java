@@ -45,7 +45,10 @@ public interface LitematicaHelper {
       LitematicaHelper.LitematicaHelperHolder.INSTANCE = instance;
    }
 
-   public static class LitematicaHelperHolder {
+   class LitematicaHelperHolder {
       static LitematicaHelper INSTANCE = null;
+
+      public LitematicaHelperHolder() {
+      }
    }
 }

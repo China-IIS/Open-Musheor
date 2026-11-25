@@ -1,16 +1,16 @@
 package musheor.modules.features;
 
 import meteordevelopment.meteorclient.events.render.Render3DEvent;
-import meteordevelopment.meteorclient.settings.IntSetting.Builder;
 import meteordevelopment.meteorclient.settings.Setting;
 import meteordevelopment.meteorclient.settings.SettingGroup;
+import meteordevelopment.meteorclient.settings.IntSetting.Builder;
 import meteordevelopment.meteorclient.systems.modules.Module;
 import meteordevelopment.meteorclient.utils.player.PlayerUtils;
 import meteordevelopment.meteorclient.utils.render.color.Color;
 import meteordevelopment.meteorclient.utils.render.color.SettingColor;
 import meteordevelopment.orbit.EventHandler;
-import musheor.modules.automation.highway.HighwayNetwork;
 import musheor.musheor;
+import musheor.modules.automation.highway.HighwayNetwork;
 import net.minecraft.util.math.Vec3d;
 
 public class AxisViewer extends Module {
@@ -54,7 +54,7 @@ public class AxisViewer extends Module {
          ((meteordevelopment.meteorclient.settings.EnumSetting.Builder)((meteordevelopment.meteorclient.settings.EnumSetting.Builder)((meteordevelopment.meteorclient.settings.EnumSetting.Builder)new meteordevelopment.meteorclient.settings.EnumSetting.Builder()
                      .name("render"))
                   .description("Which axes to display."))
-               .defaultValue(AxisViewer.AxisType.wSJeYsJcmjNZf))
+               .defaultValue(AxisViewer.AxisType.None))
             .build()
       );
    private final Setting<Integer> I3psabmOrOI = this.QfZy2gWnKInxFPr
@@ -62,7 +62,7 @@ public class AxisViewer extends Module {
          ((Builder)((Builder)((Builder)new Builder().name("height")).defaultValue(63))
                .sliderMin(-64)
                .sliderMax(319)
-               .visible(() -> this.TXWyNb.get() != AxisViewer.AxisType.wSJeYsJcmjNZf))
+               .visible(() -> this.TXWyNb.get() != AxisViewer.AxisType.None))
             .build()
       );
    private final Setting<SettingColor> duJ6sPeetAcBh6P = this.QfZy2gWnKInxFPr
@@ -71,7 +71,7 @@ public class AxisViewer extends Module {
                      .name("color"))
                   .description("The line color."))
                .defaultValue(new SettingColor(25, 25, 225, 255))
-               .visible(() -> this.TXWyNb.get() != AxisViewer.AxisType.wSJeYsJcmjNZf))
+               .visible(() -> this.TXWyNb.get() != AxisViewer.AxisType.None))
             .build()
       );
    private final Setting<AxisViewer.AxisType> j376sIQ = this.TJImwK2
@@ -79,7 +79,7 @@ public class AxisViewer extends Module {
          ((meteordevelopment.meteorclient.settings.EnumSetting.Builder)((meteordevelopment.meteorclient.settings.EnumSetting.Builder)((meteordevelopment.meteorclient.settings.EnumSetting.Builder)new meteordevelopment.meteorclient.settings.EnumSetting.Builder()
                      .name("render"))
                   .description("Which axes to display."))
-               .defaultValue(AxisViewer.AxisType.fStlZIvY9lS8))
+               .defaultValue(AxisViewer.AxisType.Both))
             .build()
       );
    private final Setting<Integer> V7zKJ4n6D = this.TJImwK2
@@ -87,7 +87,7 @@ public class AxisViewer extends Module {
          ((Builder)((Builder)((Builder)new Builder().name("height")).defaultValue(120))
                .sliderMin(0)
                .sliderMax(255)
-               .visible(() -> this.j376sIQ.get() != AxisViewer.AxisType.wSJeYsJcmjNZf))
+               .visible(() -> this.j376sIQ.get() != AxisViewer.AxisType.None))
             .build()
       );
    private final Setting<SettingColor> voxTwgNzyrpaAnP = this.TJImwK2
@@ -96,7 +96,7 @@ public class AxisViewer extends Module {
                      .name("color"))
                   .description("The line color."))
                .defaultValue(new SettingColor(225, 25, 25, 255))
-               .visible(() -> this.j376sIQ.get() != AxisViewer.AxisType.wSJeYsJcmjNZf))
+               .visible(() -> this.j376sIQ.get() != AxisViewer.AxisType.None))
             .build()
       );
    private final Setting<AxisViewer.AxisType> xileXsbo = this.wSJeYsJcmjNZf
@@ -104,7 +104,7 @@ public class AxisViewer extends Module {
          ((meteordevelopment.meteorclient.settings.EnumSetting.Builder)((meteordevelopment.meteorclient.settings.EnumSetting.Builder)((meteordevelopment.meteorclient.settings.EnumSetting.Builder)new meteordevelopment.meteorclient.settings.EnumSetting.Builder()
                      .name("render"))
                   .description("Which axes to display."))
-               .defaultValue(AxisViewer.AxisType.wSJeYsJcmjNZf))
+               .defaultValue(AxisViewer.AxisType.None))
             .build()
       );
    private final Setting<Integer> nOwp0NYl = this.wSJeYsJcmjNZf
@@ -112,7 +112,7 @@ public class AxisViewer extends Module {
          ((Builder)((Builder)((Builder)new Builder().name("height")).defaultValue(64))
                .sliderMin(0)
                .sliderMax(255)
-               .visible(() -> this.xileXsbo.get() != AxisViewer.AxisType.wSJeYsJcmjNZf))
+               .visible(() -> this.xileXsbo.get() != AxisViewer.AxisType.None))
             .build()
       );
    private final Setting<SettingColor> umvNbb7iD9UpR = this.wSJeYsJcmjNZf
@@ -121,7 +121,7 @@ public class AxisViewer extends Module {
                      .name("color"))
                   .description("The line color."))
                .defaultValue(new SettingColor(225, 25, 25, 255))
-               .visible(() -> this.xileXsbo.get() != AxisViewer.AxisType.wSJeYsJcmjNZf))
+               .visible(() -> this.xileXsbo.get() != AxisViewer.AxisType.None))
             .build()
       );
 
@@ -155,7 +155,7 @@ public class AxisViewer extends Module {
                throw new IllegalStateException("Unexpected value: " + PlayerUtils.getDimension());
          }
 
-         if (axisType != AxisViewer.AxisType.wSJeYsJcmjNZf) {
+         if (axisType != AxisViewer.AxisType.None) {
             double renderY = y;
             double range = ((Integer)this.i2Nu6XHKic.get()).intValue();
             double rangeSq = range * range;
@@ -215,10 +215,7 @@ public class AxisViewer extends Module {
          double halfChord = Math.sqrt(range * range - distToLineSq);
          double spread = halfChord / Math.sqrt(2.0);
          this.fStlZIvY9lS8(
-            event,
-            new Vec3d(cx - spread, y, cz - (isPositive ? spread : -spread)),
-            new Vec3d(cx + spread, y, cz + (isPositive ? spread : -spread)),
-            color
+            event, new Vec3d(cx - spread, y, cz - (isPositive ? spread : -spread)), new Vec3d(cx + spread, y, cz + (isPositive ? spread : -spread)), color
          );
       }
    }
@@ -285,16 +282,16 @@ public class AxisViewer extends Module {
          double spread = halfChord / Math.sqrt(2.0);
          double x1 = cx - spread;
          if (isSum) {
-            double var10000 = K - x1;
+            double z1 = K - x1;
          } else {
-            double var49 = x1 - K;
+            double z1 = x1 - K;
          }
 
          double x2 = cx + spread;
          if (isSum) {
-            double var50 = K - x2;
+            double z2 = K - x2;
          } else {
-            double var51 = x2 - K;
+            double z2 = x2 - K;
          }
 
          double lowerX = xMustBePositive ? 0.0 : -Math.abs(K);
@@ -313,18 +310,21 @@ public class AxisViewer extends Module {
       event.renderer.line(start.getX(), start.getY(), start.getZ(), end.getX(), end.getY(), end.getZ(), color);
    }
 
-   public static enum AxisType {
-      fStlZIvY9lS8,
-      QfZy2gWnKInxFPr,
-      TJImwK2,
-      wSJeYsJcmjNZf;
+   public enum AxisType {
+      Both,
+      Cardinals,
+      Diagonals,
+      None;
+
+      AxisType() {
+      }
 
       boolean fStlZIvY9lS8() {
-         return this == fStlZIvY9lS8 || this == QfZy2gWnKInxFPr;
+         return this == Both || this == Cardinals;
       }
 
       boolean QfZy2gWnKInxFPr() {
-         return this == fStlZIvY9lS8 || this == TJImwK2;
+         return this == Both || this == Diagonals;
       }
    }
 }

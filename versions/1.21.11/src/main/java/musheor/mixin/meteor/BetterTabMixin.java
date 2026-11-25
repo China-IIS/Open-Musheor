@@ -1,8 +1,8 @@
 package musheor.mixin.meteor;
 
-import meteordevelopment.meteorclient.settings.EnumSetting.Builder;
 import meteordevelopment.meteorclient.settings.Setting;
 import meteordevelopment.meteorclient.settings.SettingGroup;
+import meteordevelopment.meteorclient.settings.EnumSetting.Builder;
 import meteordevelopment.meteorclient.systems.modules.render.BetterTab;
 import musheor.accessor.BetterTabAccessor;
 import musheor.utils.system.MusheorSystem;
@@ -14,10 +14,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-@Mixin(
-   value = {BetterTab.class},
-   remap = false
-)
+@Mixin(value = BetterTab.class, remap = false)
 public abstract class BetterTabMixin implements BetterTabAccessor {
    @Final
    @Shadow
@@ -27,10 +24,10 @@ public abstract class BetterTabMixin implements BetterTabAccessor {
    @Unique
    private Setting<Double> musheor$scale;
 
-   @Inject(
-      method = {"<init>"},
-      at = {@At("TAIL")}
-   )
+   public BetterTabMixin() {
+   }
+
+   @Inject(method = "<init>", at = @At("TAIL"))
    private void onInit(CallbackInfo ci) {
       this.musheor$displayMode = this.sgGeneral
          .add(

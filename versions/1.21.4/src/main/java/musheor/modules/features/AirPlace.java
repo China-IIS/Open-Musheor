@@ -2,13 +2,12 @@ package musheor.modules.features;
 
 import meteordevelopment.meteorclient.events.render.Render3DEvent;
 import meteordevelopment.meteorclient.events.world.TickEvent.Post;
-import meteordevelopment.meteorclient.settings.BoolSetting.Builder;
 import meteordevelopment.meteorclient.settings.Setting;
 import meteordevelopment.meteorclient.settings.SettingGroup;
+import meteordevelopment.meteorclient.settings.BoolSetting.Builder;
 import meteordevelopment.meteorclient.systems.modules.Module;
 import meteordevelopment.meteorclient.utils.world.BlockUtils;
 import meteordevelopment.orbit.EventHandler;
-import musheor.musheor;
 import musheor.utils.jU8xXhmkg;
 import musheor.utils.oyDPiOVBGKG;
 import net.minecraft.block.Block;
@@ -47,7 +46,7 @@ public class AirPlace extends Module {
    private int BrmKXSYhWhqoB1 = 0;
 
    public AirPlace() {
-      super(musheor.MAIN, "airplace", "Place blocks mid-air");
+      super(musheor.musheor.MAIN, "airplace", "Place blocks mid-air");
    }
 
    public void onActivate() {
@@ -90,14 +89,16 @@ public class AirPlace extends Module {
          double r = this.wSJeYsJcmjNZf.get() ? (Double)this.i2Nu6XHKic.get() : QfZy2gWnKInxFPr.player.getBlockInteractionRange();
          if (QfZy2gWnKInxFPr.getCameraEntity() == null) {
             return null;
-         } else if (QfZy2gWnKInxFPr.getCameraEntity().raycast(r, 0.0F, false) instanceof BlockHitResult bhr) {
+         }
+
+         if (QfZy2gWnKInxFPr.getCameraEntity().raycast(r, 0.0F, false) instanceof BlockHitResult bhr) {
             BlockPos hitPos = bhr.getBlockPos();
             if (QfZy2gWnKInxFPr.world.getBlockState(hitPos).isReplaceable()) {
                return hitPos;
-            } else {
-               BlockPos adjacent = hitPos.offset(bhr.getSide());
-               return QfZy2gWnKInxFPr.world.getBlockState(adjacent).isReplaceable() ? adjacent : null;
             }
+
+            BlockPos adjacent = hitPos.offset(bhr.getSide());
+            return QfZy2gWnKInxFPr.world.getBlockState(adjacent).isReplaceable() ? adjacent : null;
          } else {
             return null;
          }

@@ -3,16 +3,15 @@ package musheor.modules.hud;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import meteordevelopment.meteorclient.settings.DoubleSetting.Builder;
 import meteordevelopment.meteorclient.settings.Setting;
 import meteordevelopment.meteorclient.settings.SettingGroup;
+import meteordevelopment.meteorclient.settings.DoubleSetting.Builder;
 import meteordevelopment.meteorclient.systems.hud.HudElement;
 import meteordevelopment.meteorclient.systems.hud.HudElementInfo;
 import meteordevelopment.meteorclient.systems.hud.HudRenderer;
 import meteordevelopment.meteorclient.utils.render.color.Color;
 import meteordevelopment.meteorclient.utils.render.color.SettingColor;
 import musheor.modules.automation.HighwayBuilder;
-import musheor.musheor;
 import musheor.utils.oX7ku;
 import net.minecraft.client.MinecraftClient;
 import obf.U6PQSXqW;
@@ -20,7 +19,7 @@ import obf.U6PQSXqW;
 public class StatsViewer extends HudElement {
    private final SettingGroup fStlZIvY9lS8 = this.settings.getDefaultGroup();
    public static final HudElementInfo<StatsViewer> INFO = new HudElementInfo(
-      musheor.MUSHEOR_HUD, "stats-viewer", "View your stats while using the HighwayBuilder module.", StatsViewer::new
+      musheor.musheor.MUSHEOR_HUD, "stats-viewer", "View your stats while using the HighwayBuilder module.", StatsViewer::new
    );
    private final Setting<Double> QfZy2gWnKInxFPr = this.fStlZIvY9lS8
       .add(((Builder)((Builder)new Builder().name("scale")).description("I mean cmon do I really have to explain??")).defaultValue(1.0).build());

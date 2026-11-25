@@ -16,8 +16,8 @@ import net.minecraft.client.network.PlayerListEntry;
 import net.minecraft.client.render.BufferBuilder;
 import net.minecraft.client.render.BufferRenderer;
 import net.minecraft.client.render.Tessellator;
-import net.minecraft.client.render.VertexFormat.DrawMode;
 import net.minecraft.client.render.VertexFormats;
+import net.minecraft.client.render.VertexFormat.DrawMode;
 import net.minecraft.client.render.model.json.ModelVariantMap;
 import net.minecraft.client.texture.NativeImage;
 import net.minecraft.client.texture.NativeImageBackedTexture;
@@ -44,6 +44,9 @@ import org.lwjgl.opengl.GL11;
 
 public class VersionHelperImpl implements VersionHelper {
    private static final MinecraftClient mc = MinecraftClient.getInstance();
+
+   public VersionHelperImpl() {
+   }
 
    @Override
    public Gson getGson() {
@@ -168,7 +171,7 @@ public class VersionHelperImpl implements VersionHelper {
       RenderSystem.setShaderTexture(0, textureId);
       RenderSystem.enableBlend();
       Matrix4f matrix = new Matrix4f();
-      BufferBuilder buf = Tessellator.getInstance().begin(net.minecraft.client.render.VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_TEXTURE);
+      BufferBuilder buf = Tessellator.getInstance().begin(DrawMode.QUADS, VertexFormats.POSITION_TEXTURE);
       buf.vertex(matrix, x, y + h, 0.0F).texture(0.0F, 1.0F);
       buf.vertex(matrix, x + w, y + h, 0.0F).texture(1.0F, 1.0F);
       buf.vertex(matrix, x + w, y, 0.0F).texture(1.0F, 0.0F);

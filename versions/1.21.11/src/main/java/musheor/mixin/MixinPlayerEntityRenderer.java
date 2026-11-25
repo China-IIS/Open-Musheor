@@ -19,12 +19,12 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-@Mixin({PlayerEntityRenderer.class})
+@Mixin(PlayerEntityRenderer.class)
 public class MixinPlayerEntityRenderer {
-   @Inject(
-      method = {"updateRenderState"},
-      at = {@At("TAIL")}
-   )
+   public MixinPlayerEntityRenderer() {
+   }
+
+   @Inject(method = "updateRenderState", at = @At("TAIL"))
    private void applyServerRotation(PlayerLikeEntity player, PlayerEntityRenderState state, float tickDelta, CallbackInfo ci) {
       if (player == JhujBv5.fStlZIvY9lS8.player) {
          if (RotationManager.isActive()) {
@@ -54,12 +54,10 @@ public class MixinPlayerEntityRenderer {
       }
    }
 
-   @Inject(
-      method = {"renderLabelIfPresent"},
-      at = {@At("HEAD")},
-      cancellable = true
-   )
-   private void cancelDefaultNametag(PlayerEntityRenderState state, MatrixStack matrixStack, OrderedRenderCommandQueue queue, CameraRenderState cameraRenderState, CallbackInfo ci) {
+   @Inject(method = "renderLabelIfPresent", at = @At("HEAD"), cancellable = true)
+   private void cancelDefaultNametag(
+      PlayerEntityRenderState state, MatrixStack matrixStack, OrderedRenderCommandQueue queue, CameraRenderState cameraRenderState, CallbackInfo ci
+   ) {
       MoreTags module = (MoreTags)Modules.get().get(MoreTags.class);
       if (module != null && module.isActive() && (Boolean)module.fStlZIvY9lS8.get()) {
          ci.cancel();

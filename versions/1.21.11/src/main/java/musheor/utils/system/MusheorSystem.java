@@ -5,10 +5,10 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import meteordevelopment.meteorclient.renderer.ShapeMode;
-import meteordevelopment.meteorclient.settings.BoolSetting.Builder;
 import meteordevelopment.meteorclient.settings.Setting;
 import meteordevelopment.meteorclient.settings.SettingGroup;
 import meteordevelopment.meteorclient.settings.Settings;
+import meteordevelopment.meteorclient.settings.BoolSetting.Builder;
 import meteordevelopment.meteorclient.systems.System;
 import meteordevelopment.meteorclient.systems.Systems;
 import meteordevelopment.meteorclient.utils.misc.Keybind;
@@ -58,7 +58,7 @@ public class MusheorSystem extends System<MusheorSystem> {
                   .defaultValue(MusheorSystem.PlacementType.Airplace))
                .onChanged(val -> {
                   U6PQSXqW.fStlZIvY9lS8().fStlZIvY9lS8(val == MusheorSystem.PlacementType.AirPlaceSwap);
-                  U6PQSXqW.fStlZIvY9lS8().fStlZIvY9lS8(val);
+                  U6PQSXqW.fStlZIvY9lS8().fStlZIvY9lS8((MusheorSystem.PlacementType)val);
                }))
             .build()
       );
@@ -421,19 +421,28 @@ public class MusheorSystem extends System<MusheorSystem> {
       }
    }
 
-   public static enum PlacementType {
+   public enum PlacementType {
       Airplace,
       AirPlaceSwap,
       Rotate;
+
+      PlacementType() {
+      }
    }
 
-   public static enum RenderType {
+   public enum RenderType {
       Static,
       Mapped;
+
+      RenderType() {
+      }
    }
 
-   public static enum TabListMode {
+   public enum TabListMode {
       All,
       Friends;
+
+      TabListMode() {
+      }
    }
 }

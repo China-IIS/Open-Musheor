@@ -6,8 +6,8 @@ import baritone.api.pathing.goals.GoalXZ;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map.Entry;
 import java.util.Map;
+import java.util.Map.Entry;
 import meteordevelopment.meteorclient.renderer.ShapeMode;
 import meteordevelopment.meteorclient.systems.modules.Module;
 import meteordevelopment.meteorclient.systems.modules.Modules;
@@ -48,6 +48,9 @@ public class JhujBv5 {
    private static final int V7zKJ4n6D = 40;
    private static final int voxTwgNzyrpaAnP = 24;
 
+   public JhujBv5() {
+   }
+
    public static void fStlZIvY9lS8() {
       obf.U6PQSXqW state = obf.U6PQSXqW.fStlZIvY9lS8();
       irzXX.fStlZIvY9lS8(EchestFarmer.class, "self-toggle", true);
@@ -60,7 +63,6 @@ public class JhujBv5 {
       } else {
          if (!state.Nt3xeF()) {
             assert fStlZIvY9lS8.player != null;
-
             int remaining = musheor.utils.manager.pvfA15fQSVM.i2Nu6XHKic(Items.ENDER_CHEST) - 8;
             if (remaining > 0) {
                irzXX.fStlZIvY9lS8(EchestFarmer.class, "amount", Math.min(remaining, musheor.utils.manager.pvfA15fQSVM.duJ6sPeetAcBh6P() * 8));
@@ -98,7 +100,6 @@ public class JhujBv5 {
 
    public static void TJImwK2() {
       assert fStlZIvY9lS8.player != null && fStlZIvY9lS8.world != null;
-
       obf.U6PQSXqW state = obf.U6PQSXqW.fStlZIvY9lS8();
       if (state.TJImwK2() != null && state.qhulAUwd() != null && state.BrmKXSYhWhqoB1() != null && state.TXWyNb() != null) {
          if (!fStlZIvY9lS8(state)) {
@@ -117,7 +118,7 @@ public class JhujBv5 {
                   oyDPiOVBGKG.i2Nu6XHKic();
                }
 
-               if (HighwayBuilder.WGmfQKK() && HighwayBuilder.BrmKXSYhWhqoB1() == HighwayBuilder.Mode.QfZy2gWnKInxFPr) {
+               if (HighwayBuilder.WGmfQKK() && HighwayBuilder.BrmKXSYhWhqoB1() == HighwayBuilder.Mode.Semi) {
                   if (vGAMA89H > 0) {
                      vGAMA89H--;
                      return;
@@ -143,7 +144,7 @@ public class JhujBv5 {
                   }
                }
 
-               if (HighwayBuilder.BrmKXSYhWhqoB1() == HighwayBuilder.Mode.QfZy2gWnKInxFPr) {
+               if (HighwayBuilder.BrmKXSYhWhqoB1() == HighwayBuilder.Mode.Semi) {
                   irzXX.I3psabmOrOI();
                   oyDPiOVBGKG.TXWyNb();
                   irzXX.i2Nu6XHKic();
@@ -162,7 +163,7 @@ public class JhujBv5 {
                BlockPos nonObsidianBlock = null;
                boolean foundBlockage = false;
                BlockPos blockage = null;
-               if (HighwayBuilder.BrmKXSYhWhqoB1() == HighwayBuilder.Mode.QfZy2gWnKInxFPr) {
+               if (HighwayBuilder.BrmKXSYhWhqoB1() == HighwayBuilder.Mode.Semi) {
                   for (BlockPos currentPos : gVOhtBej1x.fStlZIvY9lS8(-3, 5, HighwayBuilder.xileXsbo(), HighwayBuilder.nOwp0NYl())) {
                      Block block = fStlZIvY9lS8.world.getBlockState(currentPos).getBlock();
                      if ((HighwayBuilder.j376sIQ() || block != Blocks.CRYING_OBSIDIAN)
@@ -176,25 +177,25 @@ public class JhujBv5 {
                   }
 
                   if (HighwayBuilder.zXcO5rZ()) {
-                     for (BlockPos currentPosx : gVOhtBej1x.QfZy2gWnKInxFPr(-3, 4, HighwayBuilder.xileXsbo(), HighwayBuilder.nOwp0NYl())) {
-                        Block block = fStlZIvY9lS8.world.getBlockState(currentPosx).getBlock();
+                     for (BlockPos currentPos : gVOhtBej1x.QfZy2gWnKInxFPr(-3, 4, HighwayBuilder.xileXsbo(), HighwayBuilder.nOwp0NYl())) {
+                        Block block = fStlZIvY9lS8.world.getBlockState(currentPos).getBlock();
                         if ((HighwayBuilder.j376sIQ() || block != Blocks.CRYING_OBSIDIAN)
                            && block != Blocks.BEDROCK
                            && block == Blocks.AIR
                            && oX7ku.QfZy2gWnKInxFPr() > 10
                            && !blacklistedBlocks.contains(block)) {
                            state.vGAMA89H(true);
-                           nonObsidianBlock = currentPosx;
+                           nonObsidianBlock = currentPos;
                            break;
                         }
                      }
                   }
 
-                  for (BlockPos currentPosxx : gVOhtBej1x.fStlZIvY9lS8()) {
-                     Block block = fStlZIvY9lS8.world.getBlockState(currentPosxx).getBlock();
+                  for (BlockPos currentPos : gVOhtBej1x.fStlZIvY9lS8()) {
+                     Block block = fStlZIvY9lS8.world.getBlockState(currentPos).getBlock();
                      if (!(block instanceof AirBlock) && oX7ku.QfZy2gWnKInxFPr() > 10 && !blacklistedBlocks.contains(block)) {
                         foundBlockage = true;
-                        blockage = currentPosxx;
+                        blockage = currentPos;
                         break;
                      }
                   }
@@ -203,14 +204,13 @@ public class JhujBv5 {
                if (foundBlockage) {
                   irzXX.fStlZIvY9lS8(false);
                   MusheorSystem.debug("Detected blockage behind player... %s", fStlZIvY9lS8.world.getBlockState(blockage).getBlock().getName());
-
                   assert blockage != null;
 
                   Goal baritoneGoal = switch (HighwayBuilder.i2Nu6XHKic()) {
-                     case i2Nu6XHKic -> new GoalBlock(state.qhulAUwd(), state.BrmKXSYhWhqoB1(), blockage.getZ() + 2);
-                     case qhulAUwd -> new GoalBlock(blockage.getX() - 2, state.BrmKXSYhWhqoB1(), state.TXWyNb());
-                     case fStlZIvY9lS8 -> new GoalBlock(state.qhulAUwd(), state.BrmKXSYhWhqoB1(), blockage.getZ() - 2);
-                     case TJImwK2 -> new GoalBlock(blockage.getX() + 2, state.BrmKXSYhWhqoB1(), state.TXWyNb());
+                     case NORTH -> new GoalBlock(state.qhulAUwd(), state.BrmKXSYhWhqoB1(), blockage.getZ() + 2);
+                     case EAST -> new GoalBlock(blockage.getX() - 2, state.BrmKXSYhWhqoB1(), state.TXWyNb());
+                     case SOUTH -> new GoalBlock(state.qhulAUwd(), state.BrmKXSYhWhqoB1(), blockage.getZ() - 2);
+                     case WEST -> new GoalBlock(blockage.getX() + 2, state.BrmKXSYhWhqoB1(), state.TXWyNb());
                      default -> new GoalBlock(state.qhulAUwd(), state.BrmKXSYhWhqoB1(), state.TXWyNb());
                   };
                   obf.GyhoRo.fStlZIvY9lS8(baritoneGoal);
@@ -218,11 +218,11 @@ public class JhujBv5 {
                   if (state.xileXsbo()) {
                      irzXX.fStlZIvY9lS8(false);
                      MusheorSystem.debug("Found missing block, going back...");
-
                      assert nonObsidianBlock != null;
+
                      Goal baritoneGoal = switch (HighwayBuilder.i2Nu6XHKic()) {
-                        case i2Nu6XHKic, fStlZIvY9lS8 -> new GoalBlock(state.qhulAUwd(), state.BrmKXSYhWhqoB1(), nonObsidianBlock.getZ());
-                        case qhulAUwd, TJImwK2 -> new GoalBlock(nonObsidianBlock.getX(), state.BrmKXSYhWhqoB1(), state.TXWyNb());
+                        case NORTH, SOUTH -> new GoalBlock(state.qhulAUwd(), state.BrmKXSYhWhqoB1(), nonObsidianBlock.getZ());
+                        case EAST, WEST -> new GoalBlock(nonObsidianBlock.getX(), state.BrmKXSYhWhqoB1(), state.TXWyNb());
                         default -> new GoalBlock(nonObsidianBlock.getX(), state.BrmKXSYhWhqoB1(), nonObsidianBlock.getZ());
                      };
                      obf.GyhoRo.fStlZIvY9lS8(baritoneGoal);
@@ -239,10 +239,10 @@ public class JhujBv5 {
                         }
                      }
 
-                     for (BlockPos posx : gVOhtBej1x.fStlZIvY9lS8(3, 2)) {
-                        Block block = fStlZIvY9lS8.world.getBlockState(posx).getBlock();
-                        if (block != Blocks.NETHER_PORTAL && block != Blocks.BEDROCK && oyDPiOVBGKG.fStlZIvY9lS8(posx, Blocks.AIR)) {
-                           KekNuker.vGAMA89H.add(posx.toImmutable());
+                     for (BlockPos pos : gVOhtBej1x.fStlZIvY9lS8(3, 2)) {
+                        Block block = fStlZIvY9lS8.world.getBlockState(pos).getBlock();
+                        if (block != Blocks.NETHER_PORTAL && block != Blocks.BEDROCK && oyDPiOVBGKG.fStlZIvY9lS8(pos, Blocks.AIR)) {
+                           KekNuker.vGAMA89H.add(pos.toImmutable());
                         }
                      }
                   }
@@ -272,7 +272,6 @@ public class JhujBv5 {
 
    public static void wSJeYsJcmjNZf() {
       assert fStlZIvY9lS8.player != null && fStlZIvY9lS8.world != null;
-
       obf.U6PQSXqW state = obf.U6PQSXqW.fStlZIvY9lS8();
       if (state.TJImwK2() != null && state.qhulAUwd() != null && state.BrmKXSYhWhqoB1() != null && state.TXWyNb() != null) {
          if (!fStlZIvY9lS8(state)) {
@@ -301,7 +300,7 @@ public class JhujBv5 {
                   oyDPiOVBGKG.i2Nu6XHKic();
                }
 
-               if (HighwayBuilder.WGmfQKK() && HighwayBuilder.BrmKXSYhWhqoB1() == HighwayBuilder.Mode.QfZy2gWnKInxFPr) {
+               if (HighwayBuilder.WGmfQKK() && HighwayBuilder.BrmKXSYhWhqoB1() == HighwayBuilder.Mode.Semi) {
                   if (vGAMA89H > 0) {
                      vGAMA89H--;
                      return;
@@ -327,7 +326,7 @@ public class JhujBv5 {
                   }
                }
 
-               if (HighwayBuilder.BrmKXSYhWhqoB1() == HighwayBuilder.Mode.QfZy2gWnKInxFPr) {
+               if (HighwayBuilder.BrmKXSYhWhqoB1() == HighwayBuilder.Mode.Semi) {
                   irzXX.TXWyNb();
                   oyDPiOVBGKG.TXWyNb();
                   irzXX.i2Nu6XHKic();
@@ -336,7 +335,7 @@ public class JhujBv5 {
                List<Block> blacklistedBlocks = KekNuker.QfZy2gWnKInxFPr();
                boolean foundBlockage = false;
                BlockPos blockage = null;
-               if (HighwayBuilder.BrmKXSYhWhqoB1() == HighwayBuilder.Mode.QfZy2gWnKInxFPr) {
+               if (HighwayBuilder.BrmKXSYhWhqoB1() == HighwayBuilder.Mode.Semi) {
                   for (BlockPos currentPos : gVOhtBej1x.QfZy2gWnKInxFPr(-2, 5)) {
                      Block block = fStlZIvY9lS8.world.getBlockState(currentPos).getBlock();
                      if (!(block instanceof AirBlock) && oX7ku.QfZy2gWnKInxFPr() > 10 && !blacklistedBlocks.contains(block)) {
@@ -349,19 +348,16 @@ public class JhujBv5 {
                   if (foundBlockage) {
                      irzXX.fStlZIvY9lS8(false);
                      MusheorSystem.debug(
-                        "Detected blockage behind player... "
-                           + Registries.BLOCK.getId(fStlZIvY9lS8.world.getBlockState(blockage).getBlock()).getPath()
+                        "Detected blockage behind player... " + Registries.BLOCK.getId(fStlZIvY9lS8.world.getBlockState(blockage).getBlock()).getPath()
                      );
-
                      assert blockage != null;
-
                      int distance = 4;
 
                      Goal baritoneGoal = switch (HighwayBuilder.i2Nu6XHKic()) {
-                        case vGAMA89H -> new GoalBlock(state.qhulAUwd() - distance, state.BrmKXSYhWhqoB1(), state.TXWyNb() + distance);
-                        case wSJeYsJcmjNZf -> new GoalBlock(state.qhulAUwd() + distance, state.BrmKXSYhWhqoB1(), state.TXWyNb() + distance);
-                        case BrmKXSYhWhqoB1 -> new GoalBlock(state.qhulAUwd() - distance, state.BrmKXSYhWhqoB1(), state.TXWyNb() - distance);
-                        case QfZy2gWnKInxFPr -> new GoalBlock(state.qhulAUwd() + distance, state.BrmKXSYhWhqoB1(), state.TXWyNb() - distance);
+                        case NORTH_EAST -> new GoalBlock(state.qhulAUwd() - distance, state.BrmKXSYhWhqoB1(), state.TXWyNb() + distance);
+                        case NORTH_WEST -> new GoalBlock(state.qhulAUwd() + distance, state.BrmKXSYhWhqoB1(), state.TXWyNb() + distance);
+                        case SOUTH_EAST -> new GoalBlock(state.qhulAUwd() - distance, state.BrmKXSYhWhqoB1(), state.TXWyNb() - distance);
+                        case SOUTH_WEST -> new GoalBlock(state.qhulAUwd() + distance, state.BrmKXSYhWhqoB1(), state.TXWyNb() - distance);
                         default -> new GoalBlock(blockage.getX(), state.BrmKXSYhWhqoB1(), blockage.getZ());
                      };
                      obf.GyhoRo.fStlZIvY9lS8(baritoneGoal);
@@ -371,8 +367,8 @@ public class JhujBv5 {
                   state.vGAMA89H(false);
                   BlockPos nonObsidianBlock = null;
 
-                  for (BlockPos currentPosx : gVOhtBej1x.TJImwK2(-3, 4, HighwayBuilder.xileXsbo(), HighwayBuilder.nOwp0NYl())) {
-                     Block block = fStlZIvY9lS8.world.getBlockState(currentPosx).getBlock();
+                  for (BlockPos currentPos : gVOhtBej1x.TJImwK2(-3, 4, HighwayBuilder.xileXsbo(), HighwayBuilder.nOwp0NYl())) {
+                     Block block = fStlZIvY9lS8.world.getBlockState(currentPos).getBlock();
                      if ((HighwayBuilder.j376sIQ() || block != Blocks.CRYING_OBSIDIAN)
                         && block != HighwayBuilder.V7zKJ4n6D()
                         && oX7ku.QfZy2gWnKInxFPr() > 10
@@ -380,20 +376,20 @@ public class JhujBv5 {
                         && block != Blocks.BEDROCK
                         && !blacklistedBlocks.contains(block)) {
                         state.vGAMA89H(true);
-                        nonObsidianBlock = currentPosx;
+                        nonObsidianBlock = currentPos;
                         break;
                      }
                   }
 
                   if (HighwayBuilder.zXcO5rZ()) {
-                     for (BlockPos currentPosxx : gVOhtBej1x.wSJeYsJcmjNZf(-3, 4, HighwayBuilder.xileXsbo(), HighwayBuilder.nOwp0NYl())) {
-                        Block block = fStlZIvY9lS8.world.getBlockState(currentPosxx).getBlock();
+                     for (BlockPos currentPos : gVOhtBej1x.wSJeYsJcmjNZf(-3, 4, HighwayBuilder.xileXsbo(), HighwayBuilder.nOwp0NYl())) {
+                        Block block = fStlZIvY9lS8.world.getBlockState(currentPos).getBlock();
                         if ((HighwayBuilder.j376sIQ() || block != Blocks.CRYING_OBSIDIAN)
                            && block == Blocks.AIR
                            && oX7ku.QfZy2gWnKInxFPr() > 10
                            && !blacklistedBlocks.contains(block)) {
                            state.vGAMA89H(true);
-                           nonObsidianBlock = currentPosxx;
+                           nonObsidianBlock = currentPos;
                            break;
                         }
                      }
@@ -402,16 +398,14 @@ public class JhujBv5 {
                   if (state.xileXsbo()) {
                      irzXX.fStlZIvY9lS8(false);
                      MusheorSystem.debug("Found missing block, going back...");
-
                      assert nonObsidianBlock != null;
-
                      RenderUtils.renderTickingBlock(nonObsidianBlock, Color.WHITE, Color.WHITE, ShapeMode.Lines, 0, 20, true, false);
 
                      Goal baritoneGoal = switch (HighwayBuilder.i2Nu6XHKic()) {
-                        case vGAMA89H -> new GoalBlock(state.qhulAUwd() - 8, state.BrmKXSYhWhqoB1(), state.TXWyNb() + 8);
-                        case wSJeYsJcmjNZf -> new GoalBlock(state.qhulAUwd() + 8, state.BrmKXSYhWhqoB1(), state.TXWyNb() + 8);
-                        case BrmKXSYhWhqoB1 -> new GoalBlock(state.qhulAUwd() - 8, state.BrmKXSYhWhqoB1(), state.TXWyNb() - 8);
-                        case QfZy2gWnKInxFPr -> new GoalBlock(state.qhulAUwd() + 8, state.BrmKXSYhWhqoB1(), state.TXWyNb() - 8);
+                        case NORTH_EAST -> new GoalBlock(state.qhulAUwd() - 8, state.BrmKXSYhWhqoB1(), state.TXWyNb() + 8);
+                        case NORTH_WEST -> new GoalBlock(state.qhulAUwd() + 8, state.BrmKXSYhWhqoB1(), state.TXWyNb() + 8);
+                        case SOUTH_EAST -> new GoalBlock(state.qhulAUwd() - 8, state.BrmKXSYhWhqoB1(), state.TXWyNb() - 8);
+                        case SOUTH_WEST -> new GoalBlock(state.qhulAUwd() + 8, state.BrmKXSYhWhqoB1(), state.TXWyNb() - 8);
                         default -> new GoalBlock(nonObsidianBlock.getX(), state.BrmKXSYhWhqoB1(), nonObsidianBlock.getZ());
                      };
                      obf.GyhoRo.fStlZIvY9lS8(baritoneGoal);
@@ -437,10 +431,10 @@ public class JhujBv5 {
                      }
                   }
 
-                  for (BlockPos posx : gVOhtBej1x.QfZy2gWnKInxFPr(2, 1)) {
-                     Block block = fStlZIvY9lS8.world.getBlockState(posx).getBlock();
-                     if (block != Blocks.NETHER_PORTAL && block != Blocks.BEDROCK && oyDPiOVBGKG.fStlZIvY9lS8(posx, Blocks.AIR)) {
-                        KekNuker.vGAMA89H.add(posx.toImmutable());
+                  for (BlockPos pos : gVOhtBej1x.QfZy2gWnKInxFPr(2, 1)) {
+                     Block block = fStlZIvY9lS8.world.getBlockState(pos).getBlock();
+                     if (block != Blocks.NETHER_PORTAL && block != Blocks.BEDROCK && oyDPiOVBGKG.fStlZIvY9lS8(pos, Blocks.AIR)) {
+                        KekNuker.vGAMA89H.add(pos.toImmutable());
                      }
                   }
                }
@@ -449,8 +443,8 @@ public class JhujBv5 {
                oyDPiOVBGKG.fStlZIvY9lS8(positions, false);
                BlockPos[] ceilingPositions = gVOhtBej1x.wSJeYsJcmjNZf(2, 1, HighwayBuilder.xileXsbo(), HighwayBuilder.nOwp0NYl());
                if (HighwayBuilder.zXcO5rZ()) {
-                  for (BlockPos posxx : ceilingPositions) {
-                     if (oyDPiOVBGKG.TJImwK2(posxx) && BlockUtils.canPlace(posxx, true)) {
+                  for (BlockPos pos : ceilingPositions) {
+                     if (oyDPiOVBGKG.TJImwK2(pos) && BlockUtils.canPlace(pos, true)) {
                         irzXX.fStlZIvY9lS8(false);
                      }
                   }
@@ -488,7 +482,7 @@ public class JhujBv5 {
             irzXX.i2Nu6XHKic();
             irzXX.BrmKXSYhWhqoB1();
             oyDPiOVBGKG.TXWyNb();
-            if (HighwayBuilder.zkcZ4Xkp9Ez7Y() != HighwayBuilder.ScaffoldMode.fStlZIvY9lS8) {
+            if (HighwayBuilder.zkcZ4Xkp9Ez7Y() != HighwayBuilder.ScaffoldMode.Disabled) {
                if (musheor.utils.manager.pvfA15fQSVM.wSJeYsJcmjNZf(HighwayBuilder.umvNbb7iD9UpR().asItem()) == null) {
                   state.i2Nu6XHKic(fStlZIvY9lS8.player.getBlockPos());
                   oyDPiOVBGKG.QfZy2gWnKInxFPr(HighwayBuilder.umvNbb7iD9UpR().asItem());
@@ -505,11 +499,11 @@ public class JhujBv5 {
                }
             }
 
-            if (HighwayBuilder.zkcZ4Xkp9Ez7Y() == HighwayBuilder.ScaffoldMode.TJImwK2) {
+            if (HighwayBuilder.zkcZ4Xkp9Ez7Y() == HighwayBuilder.ScaffoldMode.Full) {
                oyDPiOVBGKG.fStlZIvY9lS8(gVOhtBej1x.fStlZIvY9lS8(3, 2, HighwayBuilder.flWHzEyn(), HighwayBuilder.FVjbhYkk53UT()), true);
             }
 
-            if (HighwayBuilder.zkcZ4Xkp9Ez7Y() == HighwayBuilder.ScaffoldMode.QfZy2gWnKInxFPr) {
+            if (HighwayBuilder.zkcZ4Xkp9Ez7Y() == HighwayBuilder.ScaffoldMode.Simple) {
                oyDPiOVBGKG.BrmKXSYhWhqoB1();
             }
 
@@ -523,12 +517,12 @@ public class JhujBv5 {
                }
             }
 
-            for (BlockPos currentPosx : gVOhtBej1x.fStlZIvY9lS8()) {
-               if (!(fStlZIvY9lS8.world.getBlockState(currentPosx).getBlock() instanceof AirBlock) && oX7ku.fStlZIvY9lS8 > 5) {
+            for (BlockPos currentPos : gVOhtBej1x.fStlZIvY9lS8()) {
+               if (!(fStlZIvY9lS8.world.getBlockState(currentPos).getBlock() instanceof AirBlock) && oX7ku.fStlZIvY9lS8 > 5) {
                   boolean hasLavaNeighbor = false;
 
                   for (Direction direction : Direction.values()) {
-                     BlockPos neighborPos = currentPosx.offset(direction);
+                     BlockPos neighborPos = currentPos.offset(direction);
                      FluidState neighborFluid = fStlZIvY9lS8.world.getFluidState(neighborPos);
                      if (neighborFluid.getFluid() == Fluids.LAVA) {
                         hasLavaNeighbor = true;
@@ -540,9 +534,9 @@ public class JhujBv5 {
                      irzXX.fStlZIvY9lS8(false);
 
                      GoalXZ goal = switch (HighwayBuilder.i2Nu6XHKic()) {
-                        case i2Nu6XHKic, fStlZIvY9lS8 -> new GoalXZ(state.qhulAUwd(), currentPosx.getZ());
-                        case qhulAUwd, TJImwK2 -> new GoalXZ(currentPosx.getX(), state.TXWyNb());
-                        default -> new GoalXZ(currentPosx.getX(), currentPosx.getZ());
+                        case NORTH, SOUTH -> new GoalXZ(state.qhulAUwd(), currentPos.getZ());
+                        case EAST, WEST -> new GoalXZ(currentPos.getX(), state.TXWyNb());
+                        default -> new GoalXZ(currentPos.getX(), currentPos.getZ());
                      };
                      obf.GyhoRo.fStlZIvY9lS8(goal);
                      return;
@@ -584,7 +578,7 @@ public class JhujBv5 {
                irzXX.i2Nu6XHKic();
                irzXX.TXWyNb();
                oyDPiOVBGKG.TXWyNb();
-               if (HighwayBuilder.zkcZ4Xkp9Ez7Y() == HighwayBuilder.ScaffoldMode.TJImwK2) {
+               if (HighwayBuilder.zkcZ4Xkp9Ez7Y() == HighwayBuilder.ScaffoldMode.Full) {
                   if (musheor.utils.manager.pvfA15fQSVM.wSJeYsJcmjNZf(Items.NETHERRACK) == null) {
                      oyDPiOVBGKG.QfZy2gWnKInxFPr(Items.NETHERRACK);
                   }
@@ -592,7 +586,7 @@ public class JhujBv5 {
                   oyDPiOVBGKG.fStlZIvY9lS8(gVOhtBej1x.TJImwK2(2, 1, HighwayBuilder.xileXsbo(), HighwayBuilder.nOwp0NYl()), true);
                }
 
-               if (HighwayBuilder.zkcZ4Xkp9Ez7Y() == HighwayBuilder.ScaffoldMode.QfZy2gWnKInxFPr) {
+               if (HighwayBuilder.zkcZ4Xkp9Ez7Y() == HighwayBuilder.ScaffoldMode.Simple) {
                   if (musheor.utils.manager.pvfA15fQSVM.wSJeYsJcmjNZf(Items.NETHERRACK) == null) {
                      oyDPiOVBGKG.QfZy2gWnKInxFPr(Items.NETHERRACK);
                   }
@@ -615,12 +609,12 @@ public class JhujBv5 {
                         }
                      }
 
-                     for (BlockPos currentPosx : gVOhtBej1x.QfZy2gWnKInxFPr(-2, 5)) {
-                        if (!(fStlZIvY9lS8.world.getBlockState(currentPosx).getBlock() instanceof AirBlock) && oX7ku.fStlZIvY9lS8 > 5) {
+                     for (BlockPos currentPos : gVOhtBej1x.QfZy2gWnKInxFPr(-2, 5)) {
+                        if (!(fStlZIvY9lS8.world.getBlockState(currentPos).getBlock() instanceof AirBlock) && oX7ku.fStlZIvY9lS8 > 5) {
                            boolean hasLavaNeighbor = false;
 
                            for (Direction direction : Direction.values()) {
-                              BlockPos neighborPos = currentPosx.offset(direction);
+                              BlockPos neighborPos = currentPos.offset(direction);
                               FluidState neighborFluid = fStlZIvY9lS8.world.getFluidState(neighborPos);
                               if (neighborFluid.getFluid() == Fluids.LAVA) {
                                  hasLavaNeighbor = true;
@@ -628,17 +622,17 @@ public class JhujBv5 {
                               }
                            }
 
-                           if (!hasLavaNeighbor && !nukerBlacklist.contains(fStlZIvY9lS8.world.getBlockState(currentPosx).getBlock())) {
+                           if (!hasLavaNeighbor && !nukerBlacklist.contains(fStlZIvY9lS8.world.getBlockState(currentPos).getBlock())) {
                               MusheorSystem.debug(
                                  "Detected obstruction behind player... "
-                                    + Registries.BLOCK.getId(fStlZIvY9lS8.world.getBlockState(currentPosx).getBlock()).getPath()
+                                    + Registries.BLOCK.getId(fStlZIvY9lS8.world.getBlockState(currentPos).getBlock()).getPath()
                                     + "at %s %s %s",
-                                 currentPosx.getX(),
-                                 currentPosx.getY(),
-                                 currentPosx.getZ()
+                                 currentPos.getX(),
+                                 currentPos.getY(),
+                                 currentPos.getZ()
                               );
                               irzXX.fStlZIvY9lS8(false);
-                              obf.GyhoRo.fStlZIvY9lS8(new GoalXZ(currentPosx.getX(), currentPosx.getX()));
+                              obf.GyhoRo.fStlZIvY9lS8(new GoalXZ(currentPos.getX(), currentPos.getX()));
                               return;
                            }
                         } else {
@@ -664,21 +658,21 @@ public class JhujBv5 {
       double D = Math.abs(d.qhulAUwd);
       double K = d.qhulAUwd;
       switch (d.i2Nu6XHKic) {
-         case i2Nu6XHKic:
+         case NORTH:
             return pz <= -D + 2.0;
-         case qhulAUwd:
+         case EAST:
             return px >= D - 2.0;
-         case fStlZIvY9lS8:
+         case SOUTH:
             return pz >= D - 2.0;
-         case TJImwK2:
+         case WEST:
             return px <= -D + 2.0;
-         case vGAMA89H:
+         case NORTH_EAST:
             return K > 0.0 ? pz <= 2 : px >= -2;
-         case wSJeYsJcmjNZf:
+         case NORTH_WEST:
             return K > 0.0 ? px <= 2 : pz <= 2;
-         case BrmKXSYhWhqoB1:
+         case SOUTH_EAST:
             return K > 0.0 ? pz >= -2 : px >= -2;
-         case QfZy2gWnKInxFPr:
+         case SOUTH_WEST:
             return K > 0.0 ? px <= 2 : pz >= -2;
          default:
             return false;
@@ -690,21 +684,21 @@ public class JhujBv5 {
       int K = (int)d.qhulAUwd;
       int ax = (int)d.qhulAUwd;
       switch (d.i2Nu6XHKic) {
-         case i2Nu6XHKic:
+         case NORTH:
             return new int[]{ax, -D};
-         case qhulAUwd:
+         case EAST:
             return new int[]{D, ax};
-         case fStlZIvY9lS8:
+         case SOUTH:
             return new int[]{ax, D};
-         case TJImwK2:
+         case WEST:
             return new int[]{-D, ax};
-         case vGAMA89H:
+         case NORTH_EAST:
             return K > 0 ? new int[]{K, 0} : new int[]{0, K};
-         case wSJeYsJcmjNZf:
+         case NORTH_WEST:
             return K > 0 ? new int[]{0, -K} : new int[]{K, 0};
-         case BrmKXSYhWhqoB1:
+         case SOUTH_EAST:
             return K > 0 ? new int[]{K, 0} : new int[]{0, -K};
-         case QfZy2gWnKInxFPr:
+         case SOUTH_WEST:
             return K > 0 ? new int[]{0, K} : new int[]{K, 0};
          default:
             return null;
@@ -714,18 +708,18 @@ public class JhujBv5 {
    private static oyDPiOVBGKG.gVOhtBej1x QfZy2gWnKInxFPr(obf.pvfA15fQSVM.gVOhtBej1x d) {
       boolean pos = d.qhulAUwd > 0.0;
       switch (d.i2Nu6XHKic) {
-         case i2Nu6XHKic:
-         case fStlZIvY9lS8:
-            return pos ? oyDPiOVBGKG.gVOhtBej1x.TJImwK2 : oyDPiOVBGKG.gVOhtBej1x.qhulAUwd;
-         case qhulAUwd:
-         case TJImwK2:
-            return pos ? oyDPiOVBGKG.gVOhtBej1x.i2Nu6XHKic : oyDPiOVBGKG.gVOhtBej1x.fStlZIvY9lS8;
-         case vGAMA89H:
-         case QfZy2gWnKInxFPr:
-            return pos ? oyDPiOVBGKG.gVOhtBej1x.wSJeYsJcmjNZf : oyDPiOVBGKG.gVOhtBej1x.BrmKXSYhWhqoB1;
-         case wSJeYsJcmjNZf:
-         case BrmKXSYhWhqoB1:
-            return pos ? oyDPiOVBGKG.gVOhtBej1x.QfZy2gWnKInxFPr : oyDPiOVBGKG.gVOhtBej1x.vGAMA89H;
+         case NORTH:
+         case SOUTH:
+            return pos ? oyDPiOVBGKG.gVOhtBej1x.WEST : oyDPiOVBGKG.gVOhtBej1x.EAST;
+         case EAST:
+         case WEST:
+            return pos ? oyDPiOVBGKG.gVOhtBej1x.NORTH : oyDPiOVBGKG.gVOhtBej1x.SOUTH;
+         case NORTH_EAST:
+         case SOUTH_WEST:
+            return pos ? oyDPiOVBGKG.gVOhtBej1x.NORTH_WEST : oyDPiOVBGKG.gVOhtBej1x.SOUTH_EAST;
+         case NORTH_WEST:
+         case SOUTH_EAST:
+            return pos ? oyDPiOVBGKG.gVOhtBej1x.SOUTH_WEST : oyDPiOVBGKG.gVOhtBej1x.NORTH_EAST;
          default:
             return null;
       }
@@ -733,54 +727,51 @@ public class JhujBv5 {
 
    private static boolean fStlZIvY9lS8(obf.pvfA15fQSVM.gVOhtBej1x detected, obf.U6PQSXqW state) {
       assert fStlZIvY9lS8.player != null;
-
       int px = fStlZIvY9lS8.player.getBlockX();
       int pz = fStlZIvY9lS8.player.getBlockZ();
       if (state.BrmKXSYhWhqoB1() == null) {
          return false;
-      } else {
-         int py = state.BrmKXSYhWhqoB1();
-         if (!fStlZIvY9lS8(detected, px, pz)) {
-            return false;
-         } else {
-            int[] corner = fStlZIvY9lS8(detected);
-            if (corner == null) {
-               return false;
-            } else {
-               int cx = corner[0];
-               int cz = corner[1];
-               double dist = Math.hypot(px - cx, pz - cz);
-               if (dist > 1.0) {
-                  irzXX.fStlZIvY9lS8(false);
-                  obf.GyhoRo.fStlZIvY9lS8(new GoalBlock(cx, py, cz));
-                  return true;
-               } else {
-                  oyDPiOVBGKG.gVOhtBej1x nextDir = QfZy2gWnKInxFPr(detected);
-                  if (nextDir == null) {
-                     return false;
-                  } else {
-                     obf.pvfA15fQSVM.gVOhtBej1x newDetected = obf.pvfA15fQSVM.fStlZIvY9lS8(
-                        fStlZIvY9lS8.player.getBlockX(), fStlZIvY9lS8.player.getBlockZ(), py, nextDir
-                     );
-                     if (newDetected == null) {
-                        return false;
-                     } else {
-                        state.fStlZIvY9lS8(newDetected);
-                        state.fStlZIvY9lS8(newDetected.i2Nu6XHKic);
-                        state.fStlZIvY9lS8(newDetected.I3psabmOrOI);
-                        state.QfZy2gWnKInxFPr(newDetected.duJ6sPeetAcBh6P);
-                        state.fStlZIvY9lS8(newDetected.BrmKXSYhWhqoB1);
-                        state.QfZy2gWnKInxFPr(newDetected.TXWyNb);
-                        state.fStlZIvY9lS8(Integer.valueOf(fStlZIvY9lS8.player.getBlockX()));
-                        state.TJImwK2(Integer.valueOf(fStlZIvY9lS8.player.getBlockZ()));
-                        irzXX.i2Nu6XHKic();
-                        return true;
-                     }
-                  }
-               }
-            }
-         }
       }
+
+      int py = state.BrmKXSYhWhqoB1();
+      if (!fStlZIvY9lS8(detected, px, pz)) {
+         return false;
+      }
+
+      int[] corner = fStlZIvY9lS8(detected);
+      if (corner == null) {
+         return false;
+      }
+
+      int cx = corner[0];
+      int cz = corner[1];
+      double dist = Math.hypot(px - cx, pz - cz);
+      if (dist > 1.0) {
+         irzXX.fStlZIvY9lS8(false);
+         obf.GyhoRo.fStlZIvY9lS8(new GoalBlock(cx, py, cz));
+         return true;
+      }
+
+      oyDPiOVBGKG.gVOhtBej1x nextDir = QfZy2gWnKInxFPr(detected);
+      if (nextDir == null) {
+         return false;
+      }
+
+      obf.pvfA15fQSVM.gVOhtBej1x newDetected = obf.pvfA15fQSVM.fStlZIvY9lS8(fStlZIvY9lS8.player.getBlockX(), fStlZIvY9lS8.player.getBlockZ(), py, nextDir);
+      if (newDetected == null) {
+         return false;
+      }
+
+      state.fStlZIvY9lS8(newDetected);
+      state.fStlZIvY9lS8(newDetected.i2Nu6XHKic);
+      state.fStlZIvY9lS8(newDetected.I3psabmOrOI);
+      state.QfZy2gWnKInxFPr(newDetected.duJ6sPeetAcBh6P);
+      state.fStlZIvY9lS8(newDetected.BrmKXSYhWhqoB1);
+      state.QfZy2gWnKInxFPr(newDetected.TXWyNb);
+      state.fStlZIvY9lS8(Integer.valueOf(fStlZIvY9lS8.player.getBlockX()));
+      state.TJImwK2(Integer.valueOf(fStlZIvY9lS8.player.getBlockZ()));
+      irzXX.i2Nu6XHKic();
+      return true;
    }
 
    public static boolean qhulAUwd() {
@@ -790,64 +781,61 @@ public class JhujBv5 {
    private static boolean fStlZIvY9lS8(boolean isCardinal, int distance) {
       if (fStlZIvY9lS8.world == null) {
          return false;
-      } else {
-         List<Block> blacklist = KekNuker.QfZy2gWnKInxFPr();
-         BlockPos[] floor = isCardinal
-            ? gVOhtBej1x.fStlZIvY9lS8(distance, 1, HighwayBuilder.xileXsbo(), HighwayBuilder.nOwp0NYl())
-            : gVOhtBej1x.TJImwK2(distance, 1, HighwayBuilder.xileXsbo(), HighwayBuilder.nOwp0NYl());
-
-         for (BlockPos pos : floor) {
-            Block block = fStlZIvY9lS8.world.getBlockState(pos).getBlock();
-            if (!blacklist.contains(block)
-               && (HighwayBuilder.j376sIQ() || block != Blocks.CRYING_OBSIDIAN)
-               && block != Blocks.BEDROCK
-               && block != HighwayBuilder.V7zKJ4n6D()) {
-               return false;
-            }
-         }
-
-         BlockPos[] tunnel = isCardinal ? gVOhtBej1x.fStlZIvY9lS8(distance, 1) : gVOhtBej1x.QfZy2gWnKInxFPr(distance, 1);
-
-         for (BlockPos posx : tunnel) {
-            Block block = fStlZIvY9lS8.world.getBlockState(posx).getBlock();
-            if (!blacklist.contains(block)
-               && block != Blocks.BEDROCK
-               && block != Blocks.NETHER_PORTAL
-               && !fStlZIvY9lS8.world.getBlockState(posx).isAir()) {
-               return false;
-            }
-         }
-
-         return true;
       }
+
+      List<Block> blacklist = KekNuker.QfZy2gWnKInxFPr();
+      BlockPos[] floor = isCardinal
+         ? gVOhtBej1x.fStlZIvY9lS8(distance, 1, HighwayBuilder.xileXsbo(), HighwayBuilder.nOwp0NYl())
+         : gVOhtBej1x.TJImwK2(distance, 1, HighwayBuilder.xileXsbo(), HighwayBuilder.nOwp0NYl());
+
+      for (BlockPos pos : floor) {
+         Block block = fStlZIvY9lS8.world.getBlockState(pos).getBlock();
+         if (!blacklist.contains(block)
+            && (HighwayBuilder.j376sIQ() || block != Blocks.CRYING_OBSIDIAN)
+            && block != Blocks.BEDROCK
+            && block != HighwayBuilder.V7zKJ4n6D()) {
+            return false;
+         }
+      }
+
+      BlockPos[] tunnel = isCardinal ? gVOhtBej1x.fStlZIvY9lS8(distance, 1) : gVOhtBej1x.QfZy2gWnKInxFPr(distance, 1);
+
+      for (BlockPos pos : tunnel) {
+         Block block = fStlZIvY9lS8.world.getBlockState(pos).getBlock();
+         if (!blacklist.contains(block) && block != Blocks.BEDROCK && block != Blocks.NETHER_PORTAL && !fStlZIvY9lS8.world.getBlockState(pos).isAir()) {
+            return false;
+         }
+      }
+
+      return true;
    }
 
    private static boolean TJImwK2(obf.pvfA15fQSVM.gVOhtBej1x d) {
       if (fStlZIvY9lS8.player == null) {
          return false;
-      } else {
-         int px = fStlZIvY9lS8.player.getBlockX();
-         int pz = fStlZIvY9lS8.player.getBlockZ();
-         double D = Math.abs(d.qhulAUwd);
-         double K = d.qhulAUwd;
-         int m = 32;
-
-         return switch (d.i2Nu6XHKic) {
-            case i2Nu6XHKic -> pz <= -D + m;
-            case qhulAUwd -> px >= D - m;
-            case fStlZIvY9lS8 -> pz >= D - m;
-            case TJImwK2 -> px <= -D + m;
-            case vGAMA89H -> K > 0.0 ? pz <= m : px >= -m;
-            case wSJeYsJcmjNZf -> K > 0.0 ? px <= m : pz <= m;
-            case BrmKXSYhWhqoB1 -> K > 0.0 ? pz >= -m : px >= -m;
-            case QfZy2gWnKInxFPr -> K > 0.0 ? px <= m : pz >= -m;
-            default -> false;
-         };
       }
+
+      int px = fStlZIvY9lS8.player.getBlockX();
+      int pz = fStlZIvY9lS8.player.getBlockZ();
+      double D = Math.abs(d.qhulAUwd);
+      double K = d.qhulAUwd;
+      int m = 32;
+
+      return switch (d.i2Nu6XHKic) {
+         case NORTH -> pz <= -D + m;
+         case EAST -> px >= D - m;
+         case SOUTH -> pz >= D - m;
+         case WEST -> px <= -D + m;
+         case NORTH_EAST -> K > 0.0 ? pz <= m : px >= -m;
+         case NORTH_WEST -> K > 0.0 ? px <= m : pz <= m;
+         case SOUTH_EAST -> K > 0.0 ? pz >= -m : px >= -m;
+         case SOUTH_WEST -> K > 0.0 ? px <= m : pz >= -m;
+         default -> false;
+      };
    }
 
    private static void duJ6sPeetAcBh6P() {
-      irzXX.fStlZIvY9lS8(KekBounce.class, "mode", KekBounce.Mode.fStlZIvY9lS8);
+      irzXX.fStlZIvY9lS8(KekBounce.class, "mode", KekBounce.Mode.Simple);
       irzXX.fStlZIvY9lS8(KekBounce.class, "y-motion", false);
       if (fStlZIvY9lS8.player != null) {
          irzXX.fStlZIvY9lS8(KekBounce.class, "y-level", fStlZIvY9lS8.player.getBlockY());
@@ -903,7 +891,9 @@ public class JhujBv5 {
    public static boolean fStlZIvY9lS8(obf.U6PQSXqW state) {
       if (fStlZIvY9lS8.player == null || fStlZIvY9lS8.world == null) {
          return false;
-      } else if (state.BrmKXSYhWhqoB1() != null && state.TJImwK2() != null) {
+      }
+
+      if (state.BrmKXSYhWhqoB1() != null && state.TJImwK2() != null) {
          Module echestFarmer = Modules.get().get(EchestFarmer.class);
          if (!echestFarmer.isActive()
             && !irzXX.qhulAUwd()
@@ -916,45 +906,45 @@ public class JhujBv5 {
             if ((i2Nu6XHKic || vGAMA89H > 0) && !TXWyNb) {
                I3psabmOrOI = 0;
                return false;
-            } else {
-               int targetY = state.BrmKXSYhWhqoB1();
-               boolean atCorrectY = fStlZIvY9lS8.player.getBlockY() == targetY;
-               if (!TXWyNb) {
-                  if (atCorrectY) {
-                     I3psabmOrOI = 0;
-                     return false;
-                  }
+            }
 
-                  if (++I3psabmOrOI < 15) {
-                     return false;
-                  }
-
-                  TXWyNb = true;
-                  duJ6sPeetAcBh6P = 0;
-                  BrmKXSYhWhqoB1();
-                  irzXX.fStlZIvY9lS8(false);
-                  MusheorSystem.debug("Fell off the highway (Y %s != %s) — pathing back...", fStlZIvY9lS8.player.getBlockY(), targetY);
-               }
-
-               if (atCorrectY && fStlZIvY9lS8.player.isOnGround()) {
-                  TXWyNb = false;
+            int targetY = state.BrmKXSYhWhqoB1();
+            boolean atCorrectY = fStlZIvY9lS8.player.getBlockY() == targetY;
+            if (!TXWyNb) {
+               if (atCorrectY) {
                   I3psabmOrOI = 0;
-                  if (obf.GyhoRo.fStlZIvY9lS8()) {
-                     obf.GyhoRo.wSJeYsJcmjNZf();
-                  }
-
-                  MusheorSystem.debug("Back on the highway — resuming paving.");
                   return false;
-               } else {
-                  if (duJ6sPeetAcBh6P <= 0) {
-                     fStlZIvY9lS8(state, targetY);
-                     duJ6sPeetAcBh6P = 40;
-                  } else {
-                     duJ6sPeetAcBh6P--;
-                  }
-
-                  return true;
                }
+
+               if (++I3psabmOrOI < 15) {
+                  return false;
+               }
+
+               TXWyNb = true;
+               duJ6sPeetAcBh6P = 0;
+               BrmKXSYhWhqoB1();
+               irzXX.fStlZIvY9lS8(false);
+               MusheorSystem.debug("Fell off the highway (Y %s != %s) — pathing back...", fStlZIvY9lS8.player.getBlockY(), targetY);
+            }
+
+            if (atCorrectY && fStlZIvY9lS8.player.isOnGround()) {
+               TXWyNb = false;
+               I3psabmOrOI = 0;
+               if (obf.GyhoRo.fStlZIvY9lS8()) {
+                  obf.GyhoRo.wSJeYsJcmjNZf();
+               }
+
+               MusheorSystem.debug("Back on the highway — resuming paving.");
+               return false;
+            } else {
+               if (duJ6sPeetAcBh6P <= 0) {
+                  fStlZIvY9lS8(state, targetY);
+                  duJ6sPeetAcBh6P = 40;
+               } else {
+                  duJ6sPeetAcBh6P--;
+               }
+
+               return true;
             }
          } else {
             I3psabmOrOI = 0;
@@ -1007,15 +997,14 @@ public class JhujBv5 {
 
    public static void I3psabmOrOI() {
       assert fStlZIvY9lS8.player != null && fStlZIvY9lS8.world != null;
-
       obf.U6PQSXqW state = obf.U6PQSXqW.fStlZIvY9lS8();
       if (state.BrmKXSYhWhqoB1() != null && state.TJImwK2() != null) {
          obf.pvfA15fQSVM.gVOhtBej1x detected = state.npfimrDr0hky();
          if (detected != null) {
             if (!fStlZIvY9lS8(state)) {
-               boolean isCardinal = detected.wSJeYsJcmjNZf == HighwayBuilder.HighwayType.fStlZIvY9lS8;
-               boolean isRingOrDiamond = detected.TJImwK2 == obf.pvfA15fQSVM.pvfA15fQSVM.QfZy2gWnKInxFPr
-                  || detected.TJImwK2 == obf.pvfA15fQSVM.pvfA15fQSVM.wSJeYsJcmjNZf;
+               boolean isCardinal = detected.wSJeYsJcmjNZf == HighwayBuilder.HighwayType.Cardinal;
+               boolean isRingOrDiamond = detected.TJImwK2 == obf.pvfA15fQSVM.Mode.RING
+                  || detected.TJImwK2 == obf.pvfA15fQSVM.Mode.DIAMOND;
                if (isRingOrDiamond && fStlZIvY9lS8(detected, state)) {
                   BrmKXSYhWhqoB1();
                }
@@ -1064,7 +1053,7 @@ public class JhujBv5 {
                      irzXX.i2Nu6XHKic();
                      irzXX.BrmKXSYhWhqoB1();
                   } else {
-                     boolean isNESW = state.TJImwK2() == oyDPiOVBGKG.gVOhtBej1x.vGAMA89H || state.TJImwK2() == oyDPiOVBGKG.gVOhtBej1x.QfZy2gWnKInxFPr;
+                     boolean isNESW = state.TJImwK2() == oyDPiOVBGKG.gVOhtBej1x.NORTH_EAST || state.TJImwK2() == oyDPiOVBGKG.gVOhtBej1x.SOUTH_WEST;
                      int playerDiagVal = isNESW
                         ? fStlZIvY9lS8.player.getBlockX() + fStlZIvY9lS8.player.getBlockZ()
                         : fStlZIvY9lS8.player.getBlockX() - fStlZIvY9lS8.player.getBlockZ();
@@ -1101,13 +1090,13 @@ public class JhujBv5 {
                   state.qhulAUwd(false);
                   oyDPiOVBGKG.fStlZIvY9lS8(allPositions);
                   if ((Boolean)HighwayBuilder.TJImwK2.QfZy2gWnKInxFPr.get()) {
-                     for (BlockPos posx : placePositions) {
-                        Block block = fStlZIvY9lS8.world.getBlockState(posx).getBlock();
+                     for (BlockPos pos : placePositions) {
+                        Block block = fStlZIvY9lS8.world.getBlockState(pos).getBlock();
                         if (block != Blocks.NETHER_PORTAL
                            && block != Blocks.BEDROCK
                            && (HighwayBuilder.j376sIQ() || block != Blocks.CRYING_OBSIDIAN)
-                           && oyDPiOVBGKG.fStlZIvY9lS8(posx, HighwayBuilder.V7zKJ4n6D())) {
-                           KekNuker.vGAMA89H.add(posx.toImmutable());
+                           && oyDPiOVBGKG.fStlZIvY9lS8(pos, HighwayBuilder.V7zKJ4n6D())) {
+                           KekNuker.vGAMA89H.add(pos.toImmutable());
                         }
                      }
 
@@ -1115,17 +1104,17 @@ public class JhujBv5 {
                         ? gVOhtBej1x.fStlZIvY9lS8((Integer)MusheorSystem.Manager.highwayForwardRange.get(), 1)
                         : gVOhtBej1x.QfZy2gWnKInxFPr((Integer)MusheorSystem.Manager.highwayForwardRange.get(), 1);
 
-                     for (BlockPos posxx : tunnelClear) {
-                        Block block = fStlZIvY9lS8.world.getBlockState(posxx).getBlock();
-                        if (block != Blocks.NETHER_PORTAL && block != Blocks.BEDROCK && oyDPiOVBGKG.fStlZIvY9lS8(posxx, Blocks.AIR)) {
-                           KekNuker.vGAMA89H.add(posxx.toImmutable());
+                     for (BlockPos pos : tunnelClear) {
+                        Block block = fStlZIvY9lS8.world.getBlockState(pos).getBlock();
+                        if (block != Blocks.NETHER_PORTAL && block != Blocks.BEDROCK && oyDPiOVBGKG.fStlZIvY9lS8(pos, Blocks.AIR)) {
+                           KekNuker.vGAMA89H.add(pos.toImmutable());
                         }
                      }
 
-                     for (BlockPos posxxx : clearPositions) {
-                        Block block = fStlZIvY9lS8.world.getBlockState(posxxx).getBlock();
-                        if (block != Blocks.NETHER_PORTAL && block != Blocks.BEDROCK && oyDPiOVBGKG.fStlZIvY9lS8(posxxx, Blocks.AIR)) {
-                           KekNuker.vGAMA89H.add(posxxx.toImmutable());
+                     for (BlockPos pos : clearPositions) {
+                        Block block = fStlZIvY9lS8.world.getBlockState(pos).getBlock();
+                        if (block != Blocks.NETHER_PORTAL && block != Blocks.BEDROCK && oyDPiOVBGKG.fStlZIvY9lS8(pos, Blocks.AIR)) {
+                           KekNuker.vGAMA89H.add(pos.toImmutable());
                         }
                      }
                   }

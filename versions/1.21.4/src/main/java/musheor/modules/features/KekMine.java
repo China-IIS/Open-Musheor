@@ -6,9 +6,9 @@ import java.util.Deque;
 import meteordevelopment.meteorclient.events.render.Render3DEvent;
 import meteordevelopment.meteorclient.events.world.TickEvent.Pre;
 import meteordevelopment.meteorclient.renderer.ShapeMode;
-import meteordevelopment.meteorclient.settings.BoolSetting.Builder;
 import meteordevelopment.meteorclient.settings.Setting;
 import meteordevelopment.meteorclient.settings.SettingGroup;
+import meteordevelopment.meteorclient.settings.BoolSetting.Builder;
 import meteordevelopment.meteorclient.systems.modules.Module;
 import meteordevelopment.meteorclient.systems.modules.Modules;
 import meteordevelopment.meteorclient.utils.Utils;
@@ -18,7 +18,6 @@ import meteordevelopment.orbit.EventHandler;
 import musheor.compat.VersionHelper;
 import musheor.modules.automation.HighwayBuilder;
 import musheor.modules.automation.KekNuker;
-import musheor.musheor;
 import musheor.utils.jU8xXhmkg;
 import musheor.utils.manager.pvfA15fQSVM;
 import musheor.utils.system.MusheorSystem;
@@ -32,9 +31,9 @@ import net.minecraft.entity.effect.StatusEffectUtil;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.fluid.FluidState;
 import net.minecraft.item.ItemStack;
-import net.minecraft.network.packet.c2s.play.PlayerActionC2SPacket.Action;
 import net.minecraft.network.packet.c2s.play.PlayerActionC2SPacket;
 import net.minecraft.network.packet.c2s.play.UpdateSelectedSlotC2SPacket;
+import net.minecraft.network.packet.c2s.play.PlayerActionC2SPacket.Action;
 import net.minecraft.registry.tag.FluidTags;
 import net.minecraft.sound.BlockSoundGroup;
 import net.minecraft.sound.SoundCategory;
@@ -44,9 +43,9 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3d;
+import net.minecraft.world.RaycastContext;
 import net.minecraft.world.RaycastContext.FluidHandling;
 import net.minecraft.world.RaycastContext.ShapeType;
-import net.minecraft.world.RaycastContext;
 
 public class KekMine extends Module {
    private static final MinecraftClient voxTwgNzyrpaAnP = MinecraftClient.getInstance();
@@ -172,7 +171,7 @@ public class KekMine extends Module {
    private boolean MR1DKzw = true;
 
    public KekMine() {
-      super(musheor.MAIN, "KekMine", "Grim-safe packet miner with START-offset fast break.");
+      super(musheor.musheor.MAIN, "KekMine", "Grim-safe packet miner with START-offset fast break.");
       duJ6sPeetAcBh6P = this;
    }
 
@@ -233,42 +232,42 @@ public class KekMine extends Module {
    private static ItemStack QfZy2gWnKInxFPr(BlockState state) {
       if (voxTwgNzyrpaAnP.player == null) {
          return ItemStack.EMPTY;
-      } else {
-         ItemStack hand = voxTwgNzyrpaAnP.player.getMainHandStack();
-         ItemStack best = hand;
-         float bestSpeed = fStlZIvY9lS8(hand, state) ? hand.getMiningSpeedMultiplier(state) : 0.0F;
+      }
 
-         for (int i = 0; i < 36; i++) {
-            ItemStack stack = voxTwgNzyrpaAnP.player.getInventory().getStack(i);
-            if (!stack.isEmpty() && (!(Boolean)duJ6sPeetAcBh6P.fStlZIvY9lS8.get() || pvfA15fQSVM.fStlZIvY9lS8(stack)) && fStlZIvY9lS8(stack, state)) {
-               float speed = stack.getMiningSpeedMultiplier(state);
-               if (speed > bestSpeed) {
-                  bestSpeed = speed;
-                  best = stack;
-               }
+      ItemStack hand = voxTwgNzyrpaAnP.player.getMainHandStack();
+      ItemStack best = hand;
+      float bestSpeed = fStlZIvY9lS8(hand, state) ? hand.getMiningSpeedMultiplier(state) : 0.0F;
+
+      for (int i = 0; i < 36; i++) {
+         ItemStack stack = voxTwgNzyrpaAnP.player.getInventory().getStack(i);
+         if (!stack.isEmpty() && (!(Boolean)duJ6sPeetAcBh6P.fStlZIvY9lS8.get() || pvfA15fQSVM.fStlZIvY9lS8(stack)) && fStlZIvY9lS8(stack, state)) {
+            float speed = stack.getMiningSpeedMultiplier(state);
+            if (speed > bestSpeed) {
+               bestSpeed = speed;
+               best = stack;
             }
          }
-
-         return best;
       }
+
+      return best;
    }
 
    public static boolean fStlZIvY9lS8(BlockState state) {
       if (voxTwgNzyrpaAnP.player == null) {
          return false;
-      } else {
-         ItemStack hand = voxTwgNzyrpaAnP.player.getMainHandStack();
-         return fStlZIvY9lS8(hand, state) && hand.getMiningSpeedMultiplier(state) > 1.0F;
       }
+
+      ItemStack hand = voxTwgNzyrpaAnP.player.getMainHandStack();
+      return fStlZIvY9lS8(hand, state) && hand.getMiningSpeedMultiplier(state) > 1.0F;
    }
 
    private boolean TJImwK2(BlockState state) {
       if (voxTwgNzyrpaAnP.player == null) {
          return true;
-      } else {
-         ItemStack hand = voxTwgNzyrpaAnP.player.getMainHandStack();
-         return hand.getMiningSpeedMultiplier(state) >= QfZy2gWnKInxFPr(state).getMiningSpeedMultiplier(state);
       }
+
+      ItemStack hand = voxTwgNzyrpaAnP.player.getMainHandStack();
+      return hand.getMiningSpeedMultiplier(state) >= QfZy2gWnKInxFPr(state).getMiningSpeedMultiplier(state);
    }
 
    public void QfZy2gWnKInxFPr(BlockPos pos) {
@@ -408,7 +407,7 @@ public class KekMine extends Module {
 
                   voxTwgNzyrpaAnP.interactionManager.sendSequencedPacket(voxTwgNzyrpaAnP.world, sequence -> {
                      this.fStlZIvY9lS8(pos, state);
-                     return new PlayerActionC2SPacket(PlayerActionC2SPacket.Action.START_DESTROY_BLOCK, pos, dir, sequence);
+                     return new PlayerActionC2SPacket(Action.START_DESTROY_BLOCK, pos, dir, sequence);
                   });
                   if (needSwap) {
                      int hold = (Integer)this.TJImwK2.get();
@@ -467,41 +466,41 @@ public class KekMine extends Module {
    private int wSJeYsJcmjNZf(BlockState state) {
       if (voxTwgNzyrpaAnP.player == null) {
          return 0;
-      } else {
-         float bestSpeed = 1.0F;
-         int bestSlot = voxTwgNzyrpaAnP.player.getInventory().selectedSlot;
-
-         for (int i = 0; i < 9; i++) {
-            ItemStack stack = voxTwgNzyrpaAnP.player.getInventory().getStack(i);
-            if ((!(Boolean)this.fStlZIvY9lS8.get() || pvfA15fQSVM.fStlZIvY9lS8(stack)) && fStlZIvY9lS8(stack, state)) {
-               float speed = stack.getMiningSpeedMultiplier(state);
-               if (speed > bestSpeed) {
-                  bestSpeed = speed;
-                  bestSlot = i;
-               }
-            }
-         }
-
-         int bestInvSlot = -1;
-
-         for (int ix = 9; ix < voxTwgNzyrpaAnP.player.getInventory().main.size(); ix++) {
-            ItemStack stack = voxTwgNzyrpaAnP.player.getInventory().getStack(ix);
-            if (!stack.isEmpty() && (!(Boolean)this.fStlZIvY9lS8.get() || pvfA15fQSVM.fStlZIvY9lS8(stack)) && fStlZIvY9lS8(stack, state)) {
-               float speed = stack.getMiningSpeedMultiplier(state);
-               if (speed > bestSpeed) {
-                  bestSpeed = speed;
-                  bestInvSlot = ix;
-               }
-            }
-         }
-
-         if (bestInvSlot != -1) {
-            int hotbarSlot = pvfA15fQSVM.QfZy2gWnKInxFPr(voxTwgNzyrpaAnP.player.getInventory().getStack(bestInvSlot));
-            bestSlot = Math.max(0, Math.min(8, hotbarSlot));
-         }
-
-         return bestSlot;
       }
+
+      float bestSpeed = 1.0F;
+      int bestSlot = voxTwgNzyrpaAnP.player.getInventory().selectedSlot;
+
+      for (int i = 0; i < 9; i++) {
+         ItemStack stack = voxTwgNzyrpaAnP.player.getInventory().getStack(i);
+         if ((!(Boolean)this.fStlZIvY9lS8.get() || pvfA15fQSVM.fStlZIvY9lS8(stack)) && fStlZIvY9lS8(stack, state)) {
+            float speed = stack.getMiningSpeedMultiplier(state);
+            if (speed > bestSpeed) {
+               bestSpeed = speed;
+               bestSlot = i;
+            }
+         }
+      }
+
+      int bestInvSlot = -1;
+
+      for (int i = 9; i < voxTwgNzyrpaAnP.player.getInventory().main.size(); i++) {
+         ItemStack stack = voxTwgNzyrpaAnP.player.getInventory().getStack(i);
+         if (!stack.isEmpty() && (!(Boolean)this.fStlZIvY9lS8.get() || pvfA15fQSVM.fStlZIvY9lS8(stack)) && fStlZIvY9lS8(stack, state)) {
+            float speed = stack.getMiningSpeedMultiplier(state);
+            if (speed > bestSpeed) {
+               bestSpeed = speed;
+               bestInvSlot = i;
+            }
+         }
+      }
+
+      if (bestInvSlot != -1) {
+         int hotbarSlot = pvfA15fQSVM.QfZy2gWnKInxFPr(voxTwgNzyrpaAnP.player.getInventory().getStack(bestInvSlot));
+         bestSlot = Math.max(0, Math.min(8, hotbarSlot));
+      }
+
+      return bestSlot;
    }
 
    public void fStlZIvY9lS8(BlockPos pos, BlockState state, boolean silent) {
@@ -535,7 +534,7 @@ public class KekMine extends Module {
                   this.fStlZIvY9lS8(pos, dir, this.zXcO5rZ);
                } else {
                   this.fStlZIvY9lS8("PARK", this.zXcO5rZ.fStlZIvY9lS8);
-                  this.fStlZIvY9lS8(PlayerActionC2SPacket.Action.STOP_DESTROY_BLOCK, this.zXcO5rZ.fStlZIvY9lS8, this.vGAMA89H(this.zXcO5rZ.fStlZIvY9lS8));
+                  this.fStlZIvY9lS8(Action.STOP_DESTROY_BLOCK, this.zXcO5rZ.fStlZIvY9lS8, this.vGAMA89H(this.zXcO5rZ.fStlZIvY9lS8));
                   this.jbUe84V1vykfK = this.zXcO5rZ.fStlZIvY9lS8();
                   this.zXcO5rZ = new KekMine.MineContext(pos, state, true, silent);
                   if (!this.fStlZIvY9lS8(this.zXcO5rZ.QfZy2gWnKInxFPr, this.jbUe84V1vykfK.QfZy2gWnKInxFPr)) {
@@ -646,7 +645,7 @@ public class KekMine extends Module {
 
          if (!this.V7zKJ4n6D.isEmpty() && (Boolean)this.qhulAUwd.get() && this.BrmKXSYhWhqoB1()) {
             this.fStlZIvY9lS8("PARK", this.zXcO5rZ.fStlZIvY9lS8);
-            this.fStlZIvY9lS8(PlayerActionC2SPacket.Action.STOP_DESTROY_BLOCK, this.zXcO5rZ.fStlZIvY9lS8, this.vGAMA89H(this.zXcO5rZ.fStlZIvY9lS8));
+            this.fStlZIvY9lS8(Action.STOP_DESTROY_BLOCK, this.zXcO5rZ.fStlZIvY9lS8, this.vGAMA89H(this.zXcO5rZ.fStlZIvY9lS8));
             BlockPos nextPos = this.V7zKJ4n6D.pollFirst();
             BlockState nextState = voxTwgNzyrpaAnP.world.getBlockState(nextPos);
             this.jbUe84V1vykfK = this.zXcO5rZ.fStlZIvY9lS8();
@@ -663,18 +662,18 @@ public class KekMine extends Module {
 
    private void fStlZIvY9lS8(BlockPos pos, Direction dir) {
       if ((Boolean)this.wSJeYsJcmjNZf.get()) {
-         this.fStlZIvY9lS8(PlayerActionC2SPacket.Action.STOP_DESTROY_BLOCK, pos, dir);
+         this.fStlZIvY9lS8(Action.STOP_DESTROY_BLOCK, pos, dir);
       }
 
-      this.fStlZIvY9lS8(PlayerActionC2SPacket.Action.START_DESTROY_BLOCK, pos, dir);
+      this.fStlZIvY9lS8(Action.START_DESTROY_BLOCK, pos, dir);
    }
 
    private void QfZy2gWnKInxFPr(BlockPos pos, Direction dir) {
-      this.fStlZIvY9lS8(PlayerActionC2SPacket.Action.START_DESTROY_BLOCK, new BlockPos(pos.getX(), 1337, pos.getZ()), dir);
+      this.fStlZIvY9lS8(Action.START_DESTROY_BLOCK, new BlockPos(pos.getX(), 1337, pos.getZ()), dir);
    }
 
    private void TJImwK2(BlockPos pos, Direction dir) {
-      this.fStlZIvY9lS8(PlayerActionC2SPacket.Action.STOP_DESTROY_BLOCK, pos, dir);
+      this.fStlZIvY9lS8(Action.STOP_DESTROY_BLOCK, pos, dir);
       this.WGmfQKK = System.currentTimeMillis();
    }
 
@@ -766,7 +765,7 @@ public class KekMine extends Module {
             this.fStlZIvY9lS8(bestSlot);
          }
 
-         this.fStlZIvY9lS8(PlayerActionC2SPacket.Action.STOP_DESTROY_BLOCK, ctx.fStlZIvY9lS8, dir);
+         this.fStlZIvY9lS8(Action.STOP_DESTROY_BLOCK, ctx.fStlZIvY9lS8, dir);
          if (!ctx.QfZy2gWnKInxFPr.isAir()) {
             this.WGmfQKK = System.currentTimeMillis();
          }
@@ -861,9 +860,7 @@ public class KekMine extends Module {
             if (broke) {
                BlockSoundGroup sg = ctx.QfZy2gWnKInxFPr.getSoundGroup();
                VersionHelper.get()
-                  .playSoundAtBlockCenter(
-                     ctx.fStlZIvY9lS8, sg.getBreakSound(), SoundCategory.BLOCKS, (sg.getVolume() + 1.0F) / 2.0F, sg.getPitch() * 0.8F
-                  );
+                  .playSoundAtBlockCenter(ctx.fStlZIvY9lS8, sg.getBreakSound(), SoundCategory.BLOCKS, (sg.getVolume() + 1.0F) / 2.0F, sg.getPitch() * 0.8F);
                HighwayBuilder.fStlZIvY9lS8(ctx.QfZy2gWnKInxFPr);
             }
          }
@@ -877,7 +874,7 @@ public class KekMine extends Module {
       }
    }
 
-   public void fStlZIvY9lS8(PlayerActionC2SPacket.Action action, BlockPos pos) {
+   public void fStlZIvY9lS8(Action action, BlockPos pos) {
       this.fStlZIvY9lS8(action, pos, this.vGAMA89H(pos));
    }
 
@@ -903,12 +900,11 @@ public class KekMine extends Module {
    }
 
    private boolean fStlZIvY9lS8(Vec3d eye, BlockPos pos, Direction d, Vec3d faceCenter) {
-      BlockHitResult hit = voxTwgNzyrpaAnP.world
-         .raycast(new RaycastContext(eye, faceCenter, RaycastContext.ShapeType.OUTLINE, RaycastContext.FluidHandling.NONE, voxTwgNzyrpaAnP.player));
-      return hit != null && hit.getType() == HitResult.Type.BLOCK && hit.getBlockPos().equals(pos) && hit.getSide() == d;
+      BlockHitResult hit = voxTwgNzyrpaAnP.world.raycast(new RaycastContext(eye, faceCenter, ShapeType.OUTLINE, FluidHandling.NONE, voxTwgNzyrpaAnP.player));
+      return hit != null && hit.getType() == Type.BLOCK && hit.getBlockPos().equals(pos) && hit.getSide() == d;
    }
 
-   public void fStlZIvY9lS8(PlayerActionC2SPacket.Action action, BlockPos pos, Direction dir) {
+   public void fStlZIvY9lS8(Action action, BlockPos pos, Direction dir) {
       if (voxTwgNzyrpaAnP.interactionManager != null && voxTwgNzyrpaAnP.world != null) {
          voxTwgNzyrpaAnP.interactionManager.sendSequencedPacket(voxTwgNzyrpaAnP.world, sequence -> new PlayerActionC2SPacket(action, pos, dir, sequence));
       }
@@ -917,8 +913,7 @@ public class KekMine extends Module {
    public boolean qhulAUwd(BlockPos pos) {
       return pos == null
          ? false
-         : voxTwgNzyrpaAnP.player.getEyePos().distanceTo(pos.toCenterPos())
-            > (Double)((KekNuker)Modules.get().get(KekNuker.class)).wSJeYsJcmjNZf.get() + 1.0;
+         : voxTwgNzyrpaAnP.player.getEyePos().distanceTo(pos.toCenterPos()) > (Double)((KekNuker)Modules.get().get(KekNuker.class)).wSJeYsJcmjNZf.get() + 1.0;
    }
 
    public BlockPos wSJeYsJcmjNZf() {
@@ -1104,12 +1099,12 @@ public class KekMine extends Module {
             float perTick = this.i2Nu6XHKic();
             if (perTick <= 0.0F) {
                return 2.147483647E9;
-            } else {
-               float elapsedTicks = Math.max((float)(System.currentTimeMillis() - this.TJImwK2 - 50L) / 50.0F + 1.0F, 1.0F);
-               float currentProgress = perTick * elapsedTicks;
-               float targetProgress = this.qhulAUwd ? ((Double)KekMine.duJ6sPeetAcBh6P.i2Nu6XHKic.get()).floatValue() : 1.0F;
-               return Math.min((double)(currentProgress / targetProgress), 1.0);
             }
+
+            float elapsedTicks = Math.max((float)(System.currentTimeMillis() - this.TJImwK2 - 50L) / 50.0F + 1.0F, 1.0F);
+            float currentProgress = perTick * elapsedTicks;
+            float targetProgress = this.qhulAUwd ? ((Double)KekMine.duJ6sPeetAcBh6P.i2Nu6XHKic.get()).floatValue() : 1.0F;
+            return Math.min(currentProgress / targetProgress, 1.0);
          } else {
             return 0.0;
          }
@@ -1124,11 +1119,11 @@ public class KekMine extends Module {
             float perTick = this.i2Nu6XHKic();
             if (perTick <= 0.0F) {
                return Long.MAX_VALUE;
-            } else {
-               float target = this.qhulAUwd ? ((Double)KekMine.duJ6sPeetAcBh6P.i2Nu6XHKic.get()).floatValue() : 1.0F;
-               float ticks = target / perTick;
-               return (long)(Math.max(ticks - 1.0F, 0.0F) * 50.0F);
             }
+
+            float target = this.qhulAUwd ? ((Double)KekMine.duJ6sPeetAcBh6P.i2Nu6XHKic.get()).floatValue() : 1.0F;
+            float ticks = target / perTick;
+            return (long)(Math.max(ticks - 1.0F, 0.0F) * 50.0F);
          } else {
             return Long.MAX_VALUE;
          }

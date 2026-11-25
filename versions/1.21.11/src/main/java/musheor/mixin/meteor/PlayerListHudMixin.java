@@ -25,7 +25,7 @@ import org.spongepowered.asm.mixin.injection.ModifyVariable;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-@Mixin({PlayerListHud.class})
+@Mixin(PlayerListHud.class)
 public abstract class PlayerListHudMixin implements BetterTabAccessor {
    @Shadow
    @Final
@@ -33,11 +33,10 @@ public abstract class PlayerListHudMixin implements BetterTabAccessor {
    @Unique
    private boolean musheor$scaled;
 
-   @Inject(
-      method = {"collectPlayerEntries"},
-      at = {@At("RETURN")},
-      cancellable = true
-   )
+   public PlayerListHudMixin() {
+   }
+
+   @Inject(method = "collectPlayerEntries", at = @At("RETURN"), cancellable = true)
    private void meteor$filterTabList(CallbackInfoReturnable<List<PlayerListEntry>> cir) {
       BetterTab betterTab = (BetterTab)Modules.get().get(BetterTab.class);
       if (betterTab.isActive()) {
@@ -69,10 +68,7 @@ public abstract class PlayerListHudMixin implements BetterTabAccessor {
       return betterTab != null && betterTab.isActive() ? ((Double)((BetterTabAccessor)betterTab).musheor$getScale().get()).floatValue() : 1.0F;
    }
 
-   @Inject(
-      method = {"render"},
-      at = {@At("HEAD")}
-   )
+   @Inject(method = "render", at = @At("HEAD"))
    private void musheor$scaleTabList(DrawContext context, int scaledWindowWidth, Scoreboard scoreboard, ScoreboardObjective objective, CallbackInfo ci) {
       float scale = musheor$scale();
       this.musheor$scaled = scale != 1.0F;
@@ -81,21 +77,13 @@ public abstract class PlayerListHudMixin implements BetterTabAccessor {
       }
    }
 
-   @ModifyVariable(
-      method = {"render"},
-      at = @At("HEAD"),
-      ordinal = 0,
-      argsOnly = true
-   )
+   @ModifyVariable(method = "render", at = @At("HEAD"), ordinal = 0, argsOnly = true)
    private int musheor$scaleWidth(int scaledWindowWidth) {
       float scale = musheor$scale();
       return scale == 1.0F ? scaledWindowWidth : Math.round(scaledWindowWidth / scale);
    }
 
-   @Inject(
-      method = {"render"},
-      at = {@At("RETURN")}
-   )
+   @Inject(method = "render", at = @At("RETURN"))
    private void musheor$unscaleTabList(DrawContext context, int scaledWindowWidth, Scoreboard scoreboard, ScoreboardObjective objective, CallbackInfo ci) {
       if (this.musheor$scaled) {
          VersionHelper.get().popHudScale(context);

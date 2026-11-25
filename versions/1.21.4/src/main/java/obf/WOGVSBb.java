@@ -56,29 +56,26 @@ public final class WOGVSBb {
       if (current != null && target != null) {
          if (current.getBlock() != target.getBlock()) {
             return -1;
-         } else {
-            net.minecraft.state.property.Property<?> cycled = fStlZIvY9lS8(current);
-            if (cycled == null) {
-               return -1;
-            } else {
-               for (net.minecraft.state.property.Property<?> other : target.getProperties()) {
-                  if (other != cycled
-                     && !fStlZIvY9lS8.contains(other.getName())
-                     && current.contains(other)
-                     && !current.get(other).equals(target.get(other))) {
-                     return -1;
-                  }
-               }
+         }
 
-               return fStlZIvY9lS8(cycled, current, target);
+         Property<?> cycled = fStlZIvY9lS8(current);
+         if (cycled == null) {
+            return -1;
+         }
+
+         for (Property<?> other : target.getProperties()) {
+            if (other != cycled && !fStlZIvY9lS8.contains(other.getName()) && current.contains(other) && !current.get(other).equals(target.get(other))) {
+               return -1;
             }
          }
+
+         return fStlZIvY9lS8(cycled, current, target);
       } else {
          return -1;
       }
    }
 
-   private static net.minecraft.state.property.Property<?> fStlZIvY9lS8(BlockState state) {
+   private static Property<?> fStlZIvY9lS8(BlockState state) {
       Block block = state.getBlock();
       String name;
       if (block instanceof TrapdoorBlock || block instanceof DoorBlock || block instanceof FenceGateBlock) {
@@ -87,7 +84,7 @@ public final class WOGVSBb {
          }
 
          if (block instanceof DoorBlock) {
-            net.minecraft.state.property.Property<?> half = block.getStateManager().getProperty("half");
+            Property<?> half = block.getStateManager().getProperty("half");
             if (half != null && "upper".equals(fStlZIvY9lS8(state, half))) {
                return null;
             }
@@ -113,7 +110,7 @@ public final class WOGVSBb {
       return block.getStateManager().getProperty(name);
    }
 
-   private static <T extends Comparable<T>> int fStlZIvY9lS8(net.minecraft.state.property.Property<T> prop, BlockState current, BlockState target) {
+   private static <T extends Comparable<T>> int fStlZIvY9lS8(Property<T> prop, BlockState current, BlockState target) {
       if (current.contains(prop) && target.contains(prop)) {
          List<T> values = new ArrayList<>(prop.getValues());
          int from = values.indexOf(current.get(prop));
@@ -129,7 +126,7 @@ public final class WOGVSBb {
       }
    }
 
-   private static <T extends Comparable<T>> String fStlZIvY9lS8(BlockState state, net.minecraft.state.property.Property<T> prop) {
+   private static <T extends Comparable<T>> String fStlZIvY9lS8(BlockState state, Property<T> prop) {
       return prop.name(state.get(prop));
    }
 }

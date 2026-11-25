@@ -10,12 +10,12 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-@Mixin({KeyboardInput.class})
+@Mixin(KeyboardInput.class)
 public abstract class MixinKeyboardInput extends Input {
-   @Inject(
-      method = {"tick"},
-      at = {@At("TAIL")}
-   )
+   public MixinKeyboardInput() {
+   }
+
+   @Inject(method = "tick", at = @At("TAIL"))
    private void musheor$rewriteInput(CallbackInfo ci) {
       Vec2f rewritten = RotationManager.rewriteInput(this.getMovementInput());
       if (rewritten != null) {
@@ -26,9 +26,9 @@ public abstract class MixinKeyboardInput extends Input {
             rewritten.y < 0.0F,
             rewritten.x > 0.0F,
             rewritten.x < 0.0F,
-            this.playerInput.comp_3163(),
-            this.playerInput.comp_3164(),
-            this.playerInput.comp_3165()
+            this.playerInput.jump(),
+            this.playerInput.sneak(),
+            this.playerInput.sprint()
          );
       }
    }

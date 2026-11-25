@@ -1,8 +1,8 @@
 package musheor.mixin.meteor;
 
 import meteordevelopment.meteorclient.events.world.TickEvent.Pre;
-import meteordevelopment.meteorclient.settings.BoolSetting.Builder;
 import meteordevelopment.meteorclient.settings.Setting;
+import meteordevelopment.meteorclient.settings.BoolSetting.Builder;
 import meteordevelopment.meteorclient.systems.modules.Module;
 import meteordevelopment.meteorclient.systems.modules.world.Timer;
 import meteordevelopment.orbit.EventHandler;
@@ -18,10 +18,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-@Mixin(
-   value = {Timer.class},
-   remap = false
-)
+@Mixin(value = Timer.class, remap = false)
 public abstract class TimerMixin extends Module {
    @Shadow
    @Final
@@ -47,10 +44,7 @@ public abstract class TimerMixin extends Module {
       super(musheor.AUTOMATION, "auto-timer", "Automatically changes the speed of everything in your client");
    }
 
-   @Inject(
-      method = {"<init>"},
-      at = {@At("TAIL")}
-   )
+   @Inject(method = "<init>", at = @At("TAIL"))
    private void onInit(CallbackInfo ci) {
       this.autoTimer = this.settings
          .getDefaultGroup()

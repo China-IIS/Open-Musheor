@@ -20,7 +20,7 @@ public class EditButtonScreen extends Screen {
    private final CustomHudButton QfZy2gWnKInxFPr;
    private final List<CustomHudButton> TJImwK2;
    private TextFieldWidget wSJeYsJcmjNZf;
-   private EditButtonScreen.ActionType i2Nu6XHKic = EditButtonScreen.ActionType.fStlZIvY9lS8;
+   private EditButtonScreen.ActionType i2Nu6XHKic = EditButtonScreen.ActionType.ToggleModule;
    private TextFieldWidget vGAMA89H;
    private TextFieldWidget qhulAUwd;
    private TextFieldWidget BrmKXSYhWhqoB1;
@@ -44,8 +44,9 @@ public class EditButtonScreen extends Screen {
       }).position(cx - 75 + 152, 30).size(20, 20).build());
 
       for (CustomHudButton.ScreenTarget target : CustomHudButton.ScreenTarget.values()) {
+         CustomHudButton.ScreenTarget t = target;
          this.addDrawableChild(ButtonWidget.builder(Text.literal(target.name()), b -> {
-            this.QfZy2gWnKInxFPr.I3psabmOrOI = target;
+            this.QfZy2gWnKInxFPr.I3psabmOrOI = t;
             MusheorSystem.get().save();
          }).position(cx - 75 + target.ordinal() * 52, 62).size(50, 16).build());
       }
@@ -68,18 +69,16 @@ public class EditButtonScreen extends Screen {
       }).position(cx + 10 + 50, 88).size(16, 16).build());
 
       for (EditButtonScreen.ActionType type : EditButtonScreen.ActionType.values()) {
+         EditButtonScreen.ActionType t = type;
          this.addDrawableChild(ButtonWidget.builder(Text.literal(type.name()), b -> {
-            this.i2Nu6XHKic = type;
+            this.i2Nu6XHKic = t;
             this.fStlZIvY9lS8();
          }).position(cx - 150 + type.ordinal() * 78, 116).size(76, 16).build());
       }
 
       this.fStlZIvY9lS8();
       this.addDrawableChild(
-         ButtonWidget.builder(Text.literal("Add Action"), b -> this.QfZy2gWnKInxFPr())
-            .position(cx - 80, this.height - 55)
-            .size(76, 20)
-            .build()
+         ButtonWidget.builder(Text.literal("Add Action"), b -> this.QfZy2gWnKInxFPr()).position(cx - 80, this.height - 55).size(76, 20).build()
       );
       this.addDrawableChild(ButtonWidget.builder(Text.literal("Save & Back"), b -> {
          if (!this.wSJeYsJcmjNZf.getText().isBlank()) {
@@ -90,10 +89,7 @@ public class EditButtonScreen extends Screen {
          this.client.setScreen(this.fStlZIvY9lS8);
       }).position(cx + 4, this.height - 55).size(76, 20).build());
       this.addDrawableChild(
-         ButtonWidget.builder(Text.literal("← Back"), b -> this.client.setScreen(this.fStlZIvY9lS8))
-            .position(cx - 25, this.height - 28)
-            .size(50, 16)
-            .build()
+         ButtonWidget.builder(Text.literal("← Back"), b -> this.client.setScreen(this.fStlZIvY9lS8)).position(cx - 25, this.height - 28).size(50, 16).build()
       );
    }
 
@@ -113,22 +109,22 @@ public class EditButtonScreen extends Screen {
       int cx = this.width / 2;
       int fy = 136;
       switch (this.i2Nu6XHKic) {
-         case fStlZIvY9lS8:
+         case ToggleModule:
             this.vGAMA89H = this.fStlZIvY9lS8(cx - 75, fy, "Module name (e.g. KillAura)");
             this.qhulAUwd = null;
             this.BrmKXSYhWhqoB1 = null;
             break;
-         case QfZy2gWnKInxFPr:
+         case SendMessage:
             this.vGAMA89H = this.fStlZIvY9lS8(cx - 75, fy, "Message text");
             this.qhulAUwd = null;
             this.BrmKXSYhWhqoB1 = null;
             break;
-         case TJImwK2:
+         case RunCommand:
             this.vGAMA89H = this.fStlZIvY9lS8(cx - 75, fy, "Command (e.g. .tp or /gamemode)");
             this.qhulAUwd = null;
             this.BrmKXSYhWhqoB1 = null;
             break;
-         case wSJeYsJcmjNZf:
+         case ChangeSetting:
             this.vGAMA89H = this.fStlZIvY9lS8(cx - 75, fy, "Module name");
             this.qhulAUwd = this.fStlZIvY9lS8(cx - 75, fy + 24, "Setting name");
             this.BrmKXSYhWhqoB1 = this.fStlZIvY9lS8(cx - 75, fy + 48, "Value");
@@ -156,18 +152,18 @@ public class EditButtonScreen extends Screen {
 
    private void QfZy2gWnKInxFPr() {
       if (this.vGAMA89H != null && !this.vGAMA89H.getText().isBlank()) {
-         ButtonAction action = (ButtonAction)(switch (this.i2Nu6XHKic) {
-            case fStlZIvY9lS8 -> new ToggleModuleAction(this.vGAMA89H.getText().trim());
-            case QfZy2gWnKInxFPr -> new SendMessageAction(this.vGAMA89H.getText().trim());
-            case TJImwK2 -> new RunCommandAction(this.vGAMA89H.getText().trim());
-            case wSJeYsJcmjNZf -> this.qhulAUwd == null || this.BrmKXSYhWhqoB1 == null
+         ButtonAction action = switch (this.i2Nu6XHKic) {
+            case ToggleModule -> new ToggleModuleAction(this.vGAMA89H.getText().trim());
+            case SendMessage -> new SendMessageAction(this.vGAMA89H.getText().trim());
+            case RunCommand -> new RunCommandAction(this.vGAMA89H.getText().trim());
+            case ChangeSetting -> this.qhulAUwd == null || this.BrmKXSYhWhqoB1 == null
                ? null
                : (
                   !this.qhulAUwd.getText().isBlank() && !this.BrmKXSYhWhqoB1.getText().isBlank()
                      ? new ChangeSettingAction(this.vGAMA89H.getText().trim(), this.qhulAUwd.getText().trim(), this.BrmKXSYhWhqoB1.getText().trim())
                      : null
                );
-         });
+         };
          if (action != null) {
             this.QfZy2gWnKInxFPr.V7zKJ4n6D.add(action);
             this.vGAMA89H.setText("");
@@ -182,12 +178,12 @@ public class EditButtonScreen extends Screen {
       }
    }
 
-   public void renderBackground(DrawContext context, int mouseX, int mouseY, float delta) {
+   public void renderBackground(DrawContext context, int mouseX, int mouseY, float deltaTicks) {
       context.fill(0, 0, this.width, this.height, -1072689136);
    }
 
-   public void render(DrawContext context, int mouseX, int mouseY, float delta) {
-      super.render(context, mouseX, mouseY, delta);
+   public void render(DrawContext context, int mouseX, int mouseY, float deltaTicks) {
+      super.render(context, mouseX, mouseY, deltaTicks);
       int cx = this.width / 2;
       context.drawCenteredTextWithShadow(this.textRenderer, this.title, cx, 10, -1);
       context.drawTextWithShadow(this.textRenderer, Text.literal("Label:"), cx - 75, 20, -5592406);
@@ -230,9 +226,7 @@ public class EditButtonScreen extends Screen {
       int ay = 220;
 
       for (int i = 0; i < this.QfZy2gWnKInxFPr.V7zKJ4n6D.size(); i++) {
-         context.drawTextWithShadow(
-            this.textRenderer, Text.literal(i + 1 + ". " + this.fStlZIvY9lS8(this.QfZy2gWnKInxFPr.V7zKJ4n6D.get(i))), cx - 75, ay, -1
-         );
+         context.drawTextWithShadow(this.textRenderer, Text.literal(i + 1 + ". " + this.fStlZIvY9lS8(this.QfZy2gWnKInxFPr.V7zKJ4n6D.get(i))), cx - 75, ay, -1);
          int removeX = cx + 80;
          if (mouseX >= removeX && mouseX <= removeX + 30 && mouseY >= ay - 2 && mouseY <= ay + 10) {
             context.fill(removeX, ay - 2, removeX + 30, ay + 10, -1996541133);
@@ -250,8 +244,8 @@ public class EditButtonScreen extends Screen {
    public boolean mouseClicked(Click click, boolean doubled) {
       int cx = this.width / 2;
       int ay = 220;
-      double mouseX = click.comp_4798();
-      double mouseY = click.comp_4799();
+      double mouseX = click.x();
+      double mouseY = click.y();
 
       for (int i = 0; i < this.QfZy2gWnKInxFPr.V7zKJ4n6D.size(); i++) {
          int removeX = cx + 80;
@@ -269,9 +263,9 @@ public class EditButtonScreen extends Screen {
    private String fStlZIvY9lS8(ButtonAction action) {
       return switch (action) {
          case ToggleModuleAction a -> "Toggle: " + a.fStlZIvY9lS8;
-         case SendMessageAction ax -> "Message: " + this.fStlZIvY9lS8(ax.fStlZIvY9lS8, 24);
-         case RunCommandAction axx -> "Command: " + this.fStlZIvY9lS8(axx.fStlZIvY9lS8, 24);
-         case ChangeSettingAction axxx -> "Setting: " + axxx.fStlZIvY9lS8 + "." + axxx.QfZy2gWnKInxFPr + "=" + axxx.TJImwK2;
+         case SendMessageAction a -> "Message: " + this.fStlZIvY9lS8(a.fStlZIvY9lS8, 24);
+         case RunCommandAction a -> "Command: " + this.fStlZIvY9lS8(a.fStlZIvY9lS8, 24);
+         case ChangeSettingAction a -> "Setting: " + a.fStlZIvY9lS8 + "." + a.QfZy2gWnKInxFPr + "=" + a.TJImwK2;
          default -> action.fStlZIvY9lS8();
       };
    }
@@ -284,10 +278,13 @@ public class EditButtonScreen extends Screen {
       return false;
    }
 
-   private static enum ActionType {
-      fStlZIvY9lS8,
-      QfZy2gWnKInxFPr,
-      TJImwK2,
-      wSJeYsJcmjNZf;
+   private enum ActionType {
+      ToggleModule,
+      SendMessage,
+      RunCommand,
+      ChangeSetting;
+
+      ActionType() {
+      }
    }
 }

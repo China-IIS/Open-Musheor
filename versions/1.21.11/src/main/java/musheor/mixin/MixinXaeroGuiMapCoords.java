@@ -8,26 +8,26 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Slice;
 import xaero.map.gui.GuiMap;
 
-@Mixin(
-   value = {GuiMap.class},
-   remap = false
-)
+@Mixin(value = GuiMap.class, remap = false)
 public abstract class MixinXaeroGuiMapCoords {
+   public MixinXaeroGuiMapCoords() {
+   }
+
    @ModifyExpressionValue(
       method = {"render", "render"},
-      at = {@At(
+      at = @At(
          value = "INVOKE",
          target = "Lxaero/lib/client/config/ClientConfigManager;getEffective(Lxaero/lib/common/config/option/ConfigOption;)Ljava/lang/Object;",
          ordinal = 0,
          remap = false
-      )},
-      slice = {@Slice(
+      ),
+      slice = @Slice(
          from = @At(
             value = "FIELD",
             target = "Lxaero/map/common/config/option/WorldMapProfiledConfigOptions;COORDINATES:Lxaero/lib/common/config/option/BooleanConfigOption;",
             remap = false
          )
-      )}
+      )
    )
    private Object musheor$hideCursorCoords(Object original) {
       CoordHider ch = (CoordHider)Modules.get().get(CoordHider.class);

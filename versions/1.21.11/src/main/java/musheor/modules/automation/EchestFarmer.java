@@ -2,8 +2,8 @@ package musheor.modules.automation;
 
 import baritone.api.pathing.goals.GoalBlock;
 import meteordevelopment.meteorclient.events.world.TickEvent.Pre;
-import meteordevelopment.meteorclient.settings.BoolSetting.Builder;
 import meteordevelopment.meteorclient.settings.Setting;
+import meteordevelopment.meteorclient.settings.BoolSetting.Builder;
 import meteordevelopment.meteorclient.systems.modules.Module;
 import meteordevelopment.meteorclient.systems.modules.Modules;
 import meteordevelopment.meteorclient.utils.player.FindItemResult;
@@ -11,10 +11,9 @@ import meteordevelopment.meteorclient.utils.player.InvUtils;
 import meteordevelopment.meteorclient.utils.world.BlockUtils;
 import meteordevelopment.orbit.EventHandler;
 import musheor.modules.features.KekMine;
-import musheor.musheor;
 import musheor.utils.irzXX;
-import musheor.utils.manager.pvfA15fQSVM;
 import musheor.utils.oyDPiOVBGKG;
+import musheor.utils.manager.pvfA15fQSVM;
 import musheor.utils.system.MusheorSystem;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
@@ -78,7 +77,7 @@ public class EchestFarmer extends Module {
    public static EchestFarmer QfZy2gWnKInxFPr;
 
    public EchestFarmer() {
-      super(musheor.AUTOMATION, "obi-farmer", "An enderchest farmer that considers the player's inventory space when mining for obsidian, its also really fast");
+      super(musheor.musheor.AUTOMATION, "obi-farmer", "An enderchest farmer that considers the player's inventory space when mining for obsidian, its also really fast");
       QfZy2gWnKInxFPr = this;
    }
 
@@ -205,7 +204,7 @@ public class EchestFarmer extends Module {
                                  }
 
                                  pvfA15fQSVM.QfZy2gWnKInxFPr(false);
-                                 KekMine.duJ6sPeetAcBh6P.fStlZIvY9lS8(PlayerActionC2SPacket.Action.STOP_DESTROY_BLOCK, fStlZIvY9lS8);
+                                 KekMine.duJ6sPeetAcBh6P.fStlZIvY9lS8(Action.STOP_DESTROY_BLOCK, fStlZIvY9lS8);
                               }
                            } else {
                               if (isEchestHere) {

@@ -8,6 +8,9 @@ public class U6PQSXqW {
    private static final long fStlZIvY9lS8 = 1346947991059300434L;
    private static final RichPresence QfZy2gWnKInxFPr = new RichPresence();
 
+   public U6PQSXqW() {
+   }
+
    public static void fStlZIvY9lS8() {
       DiscordIPC.start(1346947991059300434L, null);
       QfZy2gWnKInxFPr.setStart(System.currentTimeMillis() / 1000L);

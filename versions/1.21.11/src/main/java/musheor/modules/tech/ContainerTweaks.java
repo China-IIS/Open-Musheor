@@ -2,15 +2,14 @@ package musheor.modules.tech;
 
 import java.util.ArrayList;
 import java.util.List;
-import meteordevelopment.meteorclient.settings.BoolSetting.Builder;
 import meteordevelopment.meteorclient.settings.Setting;
 import meteordevelopment.meteorclient.settings.SettingGroup;
+import meteordevelopment.meteorclient.settings.BoolSetting.Builder;
 import meteordevelopment.meteorclient.systems.modules.Module;
 import meteordevelopment.meteorclient.utils.Utils;
 import meteordevelopment.meteorclient.utils.misc.Keybind;
 import meteordevelopment.meteorclient.utils.network.MeteorExecutor;
 import meteordevelopment.meteorclient.utils.player.SlotUtils;
-import musheor.musheor;
 import musheor.utils.manager.pvfA15fQSVM;
 import net.minecraft.block.ShulkerBoxBlock;
 import net.minecraft.client.MinecraftClient;
@@ -120,7 +119,7 @@ public class ContainerTweaks extends Module {
       );
 
    public ContainerTweaks() {
-      super(musheor.MAIN, "container-tweaks", "A more advanced way to steal and store items in containers");
+      super(musheor.musheor.MAIN, "container-tweaks", "A more advanced way to steal and store items in containers");
       fStlZIvY9lS8 = this;
    }
 
@@ -156,11 +155,7 @@ public class ContainerTweaks extends Module {
                   i++
                ) {
                   Slot slot = handler.getSlot(i);
-                  if ((
-                        clickedInPlayerInv
-                           ? slot.inventory == this.xileXsbo.player.getInventory()
-                           : slot.inventory != this.xileXsbo.player.getInventory()
-                     )
+                  if ((clickedInPlayerInv ? slot.inventory == this.xileXsbo.player.getInventory() : slot.inventory != this.xileXsbo.player.getInventory())
                      && slot.hasStack()
                      && (this.fStlZIvY9lS8(slot.getStack()) || !(Boolean)this.nOwp0NYl.get())
                      && ItemStack.areItemsAndComponentsEqual(slot.getStack(), target)) {
@@ -190,11 +185,7 @@ public class ContainerTweaks extends Module {
                   i++
                ) {
                   Slot slot = handler.getSlot(i);
-                  if ((
-                        clickedInPlayerInv
-                           ? slot.inventory == this.xileXsbo.player.getInventory()
-                           : slot.inventory != this.xileXsbo.player.getInventory()
-                     )
+                  if ((clickedInPlayerInv ? slot.inventory == this.xileXsbo.player.getInventory() : slot.inventory != this.xileXsbo.player.getInventory())
                      && slot.hasStack()
                      && (this.fStlZIvY9lS8(slot.getStack()) || !(Boolean)this.nOwp0NYl.get())) {
                      if (this.xileXsbo.currentScreen == null || !Utils.canUpdate()) {

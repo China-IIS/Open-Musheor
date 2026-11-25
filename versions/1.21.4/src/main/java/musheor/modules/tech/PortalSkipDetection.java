@@ -9,12 +9,11 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicBoolean;
 import meteordevelopment.meteorclient.events.render.Render3DEvent;
-import meteordevelopment.meteorclient.settings.IntSetting.Builder;
 import meteordevelopment.meteorclient.settings.Setting;
 import meteordevelopment.meteorclient.settings.SettingGroup;
+import meteordevelopment.meteorclient.settings.IntSetting.Builder;
 import meteordevelopment.meteorclient.systems.modules.Module;
 import meteordevelopment.orbit.EventHandler;
-import musheor.musheor;
 import musheor.utils.jU8xXhmkg;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -38,7 +37,7 @@ public class PortalSkipDetection extends Module {
    private final AtomicBoolean qhulAUwd = new AtomicBoolean(false);
 
    public PortalSkipDetection() {
-      super(musheor.AUTOMATION, "portal-skip-detection", "Detects portal skip patterns (AIR in CAVE_AIR regions)");
+      super(musheor.musheor.AUTOMATION, "portal-skip-detection", "Detects portal skip patterns (AIR in CAVE_AIR regions)");
    }
 
    public void onActivate() {
@@ -52,7 +51,7 @@ public class PortalSkipDetection extends Module {
          t.setPriority(1);
          return t;
       });
-      this.vGAMA89H.submit(this::fStlZIvY9lS8);
+      this.vGAMA89H.submit((Runnable)this::fStlZIvY9lS8);
       this.info("Portal scanner started.", new Object[0]);
    }
 
@@ -104,7 +103,7 @@ public class PortalSkipDetection extends Module {
             } else {
                Thread.sleep(500L);
             }
-         } catch (InterruptedException var10) {
+         } catch (InterruptedException e) {
             break;
          } catch (Exception var11) {
          }
@@ -132,7 +131,7 @@ public class PortalSkipDetection extends Module {
          if (world.getBlockState(pos).getBlock() != Blocks.AIR) {
             return;
          }
-      } catch (Exception var4) {
+      } catch (Exception e) {
          return;
       }
 
@@ -160,7 +159,7 @@ public class PortalSkipDetection extends Module {
                   }
                }
             }
-         } catch (Exception var14) {
+         } catch (Exception e) {
             return;
          }
 
@@ -199,12 +198,12 @@ public class PortalSkipDetection extends Module {
          boolean rightBounded = true;
 
          for (int h = 0; h < 5; h++) {
-            BlockPos posx = xAligned ? corner.add(4, h, 0) : corner.add(0, h, 4);
-            if (world.getBlockState(posx).getBlock() == Blocks.AIR) {
+            BlockPos pos = xAligned ? corner.add(4, h, 0) : corner.add(0, h, 4);
+            if (world.getBlockState(pos).getBlock() == Blocks.AIR) {
                rightBounded = false;
             }
 
-            if (world.getBlockState(posx).getBlock() == Blocks.CAVE_AIR) {
+            if (world.getBlockState(pos).getBlock() == Blocks.CAVE_AIR) {
                caveAirNearby++;
             }
          }
@@ -216,12 +215,12 @@ public class PortalSkipDetection extends Module {
          boolean bottomBounded = true;
 
          for (int w = 0; w < 4; w++) {
-            BlockPos posxx = xAligned ? corner.add(w, -1, 0) : corner.add(0, -1, w);
-            if (world.getBlockState(posxx).getBlock() == Blocks.AIR) {
+            BlockPos pos = xAligned ? corner.add(w, -1, 0) : corner.add(0, -1, w);
+            if (world.getBlockState(pos).getBlock() == Blocks.AIR) {
                bottomBounded = false;
             }
 
-            if (world.getBlockState(posxx).getBlock() == Blocks.CAVE_AIR) {
+            if (world.getBlockState(pos).getBlock() == Blocks.CAVE_AIR) {
                caveAirNearby++;
             }
          }
@@ -233,12 +232,12 @@ public class PortalSkipDetection extends Module {
          boolean topBounded = true;
 
          for (int w = 0; w < 4; w++) {
-            BlockPos posxxx = xAligned ? corner.add(w, 5, 0) : corner.add(0, 5, w);
-            if (world.getBlockState(posxxx).getBlock() == Blocks.AIR) {
+            BlockPos pos = xAligned ? corner.add(w, 5, 0) : corner.add(0, 5, w);
+            if (world.getBlockState(pos).getBlock() == Blocks.AIR) {
                topBounded = false;
             }
 
-            if (world.getBlockState(posxxx).getBlock() == Blocks.CAVE_AIR) {
+            if (world.getBlockState(pos).getBlock() == Blocks.CAVE_AIR) {
                caveAirNearby++;
             }
          }
@@ -248,7 +247,7 @@ public class PortalSkipDetection extends Module {
          }
 
          return boundedSides >= 2 && caveAirNearby >= 10;
-      } catch (Exception var12) {
+      } catch (Exception e) {
          return false;
       }
    }

@@ -4,11 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 import meteordevelopment.meteorclient.events.render.Render3DEvent;
 import meteordevelopment.meteorclient.events.world.TickEvent.Pre;
-import meteordevelopment.meteorclient.settings.EnumSetting.Builder;
 import meteordevelopment.meteorclient.settings.Setting;
+import meteordevelopment.meteorclient.settings.EnumSetting.Builder;
 import meteordevelopment.meteorclient.systems.modules.Module;
 import meteordevelopment.orbit.EventHandler;
-import musheor.musheor;
 import musheor.utils.jU8xXhmkg;
 import musheor.utils.oyDPiOVBGKG;
 import net.minecraft.block.Blocks;
@@ -17,14 +16,14 @@ import net.minecraft.util.math.BlockPos;
 public class IceRailBuilder extends Module {
    private final Setting<IceRailBuilder.Axis> i2Nu6XHKic = this.settings
       .getDefaultGroup()
-      .add(((Builder)((Builder)new Builder().name("axis")).defaultValue(IceRailBuilder.Axis.wSJeYsJcmjNZf)).build());
+      .add(((Builder)((Builder)new Builder().name("axis")).defaultValue(IceRailBuilder.Axis.West)).build());
    BlockPos fStlZIvY9lS8;
    BlockPos QfZy2gWnKInxFPr;
    List<BlockPos> TJImwK2 = new ArrayList<>();
    List<BlockPos> wSJeYsJcmjNZf = new ArrayList<>();
 
    public IceRailBuilder() {
-      super(musheor.AUTOMATION, "ice-rail-builder", "Semi-automated ice highway building");
+      super(musheor.musheor.AUTOMATION, "ice-rail-builder", "Semi-automated ice highway building");
    }
 
    public void onActivate() {
@@ -49,9 +48,9 @@ public class IceRailBuilder extends Module {
                }
             }
 
-            for (BlockPos posx : this.fStlZIvY9lS8(true)) {
-               if (this.mc.world.getBlockState(posx).isReplaceable()) {
-                  this.wSJeYsJcmjNZf.add(posx.toImmutable());
+            for (BlockPos pos : this.fStlZIvY9lS8(true)) {
+               if (this.mc.world.getBlockState(pos).isReplaceable()) {
+                  this.wSJeYsJcmjNZf.add(pos.toImmutable());
                }
             }
 
@@ -79,12 +78,12 @@ public class IceRailBuilder extends Module {
    private void fStlZIvY9lS8(IceRailBuilder.Axis axis) {
       this.fStlZIvY9lS8 = this.QfZy2gWnKInxFPr = null;
       switch (axis) {
-         case fStlZIvY9lS8:
-         case QfZy2gWnKInxFPr:
+         case North:
+         case East:
             this.fStlZIvY9lS8 = new BlockPos(0, 115, -200);
             break;
-         case TJImwK2:
-         case wSJeYsJcmjNZf:
+         case South:
+         case West:
             this.QfZy2gWnKInxFPr = new BlockPos(-200, 115, 0);
       }
    }
@@ -115,10 +114,13 @@ public class IceRailBuilder extends Module {
       return positions;
    }
 
-   private static enum Axis {
-      fStlZIvY9lS8,
-      QfZy2gWnKInxFPr,
-      TJImwK2,
-      wSJeYsJcmjNZf;
+   private enum Axis {
+      North,
+      East,
+      South,
+      West;
+
+      Axis() {
+      }
    }
 }
